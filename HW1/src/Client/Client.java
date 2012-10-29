@@ -105,7 +105,7 @@ public class Client {
         String sentence;
         String modifiedSentence;
         Client client = new Client("127.0.0.1", 9000);
-        //client.sendMessage("START");
+        client.sendMessage("START\n");
         client.connectGUI();
         client.recvMessage();
 

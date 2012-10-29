@@ -13,6 +13,8 @@ public class ServerApplication extends Thread {
 	private StringBuilder actualSentence;
 	private int clientScore;
 	
+	private Socket socketClient;
+	
 	private BufferedReader in;
 	private DataOutputStream out;
 	
@@ -25,6 +27,8 @@ public class ServerApplication extends Thread {
 	 * @throws IOException 
 	 */
 	public ServerApplication(Socket socket) throws IOException {
+		
+		this.socketClient = socket;
 		
 		System.out.println("Client connected");
 		
@@ -52,6 +56,7 @@ public class ServerApplication extends Thread {
 	public void sendMessage(String message) {
 		try {
 			out.writeBytes(message);
+			out.flush();
 		} catch (IOException e) {
 			System.out.println("Can't write the message for sending to the client");
 			e.printStackTrace();
@@ -97,7 +102,7 @@ public class ServerApplication extends Thread {
 				this.clientScore = this.nbTentatives;
 				
 				// We send a message with the number of tentatives and the encoded word
-				this.sendMessage("STATUS|" + this.clientScore + "|" + this.actualSentence);
+				this.sendMessage("STATUS|" + this.clientScore + "|" + this.actualSentence + "\n");
 				
 			} else if (head.equals("LETTER")) {
 				char letter = result[1].charAt(0);
@@ -118,13 +123,22 @@ public class ServerApplication extends Thread {
 				
 				if (this.clientSentence.equals(this.actualSentence.toString())) {
 					// The player wins the game
-					this.sendMessage("CONGRATULATION|" + this.clientSentence + "|" + this.clientScore);
+					this.sendMessage("CONGRATULATION|" + this.clientSentence + "|" + this.clientScore + "\n");
 				} else if (this.clientScore == 0) {
 					// The player lost the game
-					this.sendMessage("LOOSE|" + this.clientSentence);
+					this.sendMessage("LOOSE|" + this.clientSentence + "\n");
 				} else {
 					// The player is still playing. We send him a STATUS message
-					this.sendMessage("STATUS|" + this.clientScore + "|" + this.actualSentence);
+					this.sendMessage("STATUS|" + this.clientScore + "|" + this.actualSentence + "\n");
+				}
+			} else if (head.equals("QUIT")) {
+				try {
+					this.in.close();
+					this.out.close();
+					this.socketClient.close();
+				} catch (IOException e) {
+					System.out.println("Error when closing Thread variables");
+					e.printStackTrace();
 				}
 			} else {
 				System.out.println("Head Incorrect : " + result[0]);
