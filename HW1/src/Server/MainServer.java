@@ -6,10 +6,6 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- *
- * @author teo
- */
 public class MainServer {
 
     /**
@@ -26,7 +22,7 @@ public class MainServer {
     		if (args.length >0) port = Integer.parseInt(args[0]);
 
     	} catch (NumberFormatException e) {
-    		System.out.println("USAGE: java MainServer [poolSize] [port]");
+    		System.out.println("USAGE: java MainServer [port] [poolSize]");
     		System.exit(1);
     	}
         

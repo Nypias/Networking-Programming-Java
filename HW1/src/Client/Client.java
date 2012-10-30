@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 
 public class Client {
@@ -20,30 +19,44 @@ public class Client {
     private MyGUI gui = null;
     
     //Game Parameters
-    private String letter = "";
     private String word = "";
     private String tries = "";
 
+    /**
+     * Constructor of Client class
+     * @param host Host (IP) of the server
+     * @param port Port of the server listener socket
+     */
     public Client(String host, int port) {
         try {
-
+        	// Initialization of the client socket and input and output communication
             clientSocket = new Socket(host, port);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new DataOutputStream(clientSocket.getOutputStream());
         } catch (UnknownHostException ex) {
+        	System.out.println("Host unknown");
             ex.printStackTrace();
         } catch (IOException ex) {
+        	System.out.println("Communication input/output not created");
             ex.printStackTrace();
         }
     }
 
+    /**
+     * ConnectGUI
+     * Display the graphical user interface
+     */
     void connectGUI() {
         gui = MyGUI.showGUI(this);
     }
 
+    /**
+     * recvMessage
+     * Receive a new message
+     */
     protected void recvMessage() {
         //Read from in stream
-        String line;
+        String line = "";
         Pattern patt = Pattern.compile("|", Pattern.LITERAL);
         try {
             while (true) {
@@ -79,7 +92,6 @@ public class Client {
                         //break;
 
                     }
-
                 }
             }
         } catch (IOException ex) {
@@ -90,7 +102,7 @@ public class Client {
     }
 
     /**
-     *
+     * SendMessage
      * @param message
      */
     protected void sendMessage(String message) {
@@ -99,9 +111,8 @@ public class Client {
             out.writeBytes(message);
             out.flush();
             System.out.println("Client.sendMessage :: Message was sent");
-
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Sending of the message " + message + " failed");
         }
 
     }
