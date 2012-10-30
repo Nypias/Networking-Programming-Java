@@ -11,21 +11,18 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author teo
- */
 public class Client {
 
     //Connection variables
-    BufferedReader in = null;
-    Socket clientSocket = null;
-    DataOutputStream out = null;
-    MyGUI gui = null;
+    private BufferedReader in = null;
+    private Socket clientSocket = null;
+    private DataOutputStream out = null;
+    private MyGUI gui = null;
+    
     //Game Parameters
-    String letter = "";
-    String word = "";
-    String tries = "";
+    private String letter = "";
+    private String word = "";
+    private String tries = "";
 
     public Client(String host, int port) {
         try {
@@ -123,8 +120,7 @@ public class Client {
     }
 
     public static void main(String argv[]) throws Exception {
-        String sentence;
-        String modifiedSentence;
+    	    	
         Client client = new Client("127.0.0.1", 9000);
         //client.sendMessage("START\n");
         client.connectGUI();
