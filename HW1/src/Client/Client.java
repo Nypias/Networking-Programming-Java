@@ -47,7 +47,8 @@ public class Client {
      * Display the graphical user interface
      */
     void connectGUI() {
-        gui = MyGUI.showGUI(this);
+        gui = new MyGUI(this);
+        gui.run();
     }
 
     /**
