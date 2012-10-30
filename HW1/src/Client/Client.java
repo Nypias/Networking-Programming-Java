@@ -120,9 +120,22 @@ public class Client {
     }
 
     public static void main(String argv[]) throws Exception {
+    	
+    	String ip = "127.0.0.1";
+    	int port = 9000;
+    	
+    	// Capture port and server ip from arguments
+        try {
+    		if (argv.length >1) port = Integer.parseInt(argv[1]);
+    		if (argv.length >0) ip = argv[0];
+    	} catch (NumberFormatException e) {
+    		System.out.println("USAGE: java Client [ip] [port]");
+    		System.exit(1);
+    	}
     	    	
-        Client client = new Client("127.0.0.1", 9000);
-        //client.sendMessage("START\n");
+        // Begin the client communication
+        Client client = new Client(ip, port);
+
         client.connectGUI();
         client.recvMessage();
 
