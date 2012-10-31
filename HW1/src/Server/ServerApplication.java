@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 public class ServerApplication extends Thread {
@@ -18,7 +21,8 @@ public class ServerApplication extends Thread {
     private DataOutputStream out;
     private final int nbTentatives = 10;
     private final int initialScore = 0;
-    private final String urlWords = "../british-english";
+    private final List<String> dictionnary;
+    private Random generator;
 
     /**
      * Constructor of ServerApplication
@@ -26,9 +30,12 @@ public class ServerApplication extends Thread {
      * @param socket Client socket
      * @throws IOException
      */
-    public ServerApplication(Socket socket) throws IOException {
+    public ServerApplication(Socket socket, List<String> dictionnary) throws IOException {
 
         this.socketClient = socket;
+        
+        this.dictionnary = new ArrayList<String>();
+        this.generator = new Random();
 
         System.out.println("Client connected");
 
@@ -69,18 +76,9 @@ public class ServerApplication extends Thread {
      * @return String word chosen
      */
     public String retrieveNewWord() {
-        /*File file = new File(this.urlWords);
-         Scanner sc = null;
-         try {
-         sc = new Scanner(file);
-         } catch (FileNotFoundException e) {
-         System.out.println("The file can not be found");
-         e.printStackTrace();
-         }*/
-
-
-
-        return "abcdefg";
+        
+    	int number = generator.nextInt(this.dictionnary.size()-1);
+        return this.dictionnary.get(number);
     }
 
     public void processReceivedMessage(String message) {
