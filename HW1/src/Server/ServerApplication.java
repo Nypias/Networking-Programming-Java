@@ -68,8 +68,8 @@ public class ServerApplication implements Runnable {
     public String retrieveNewWord() {
 
         int number = generator.nextInt(this.dictionnary.size() - 1);
-        System.out.println(this.dictionnary.get(number));
-        return this.dictionnary.get(number);
+        System.out.println(this.dictionnary.get(number).toLowerCase());
+        return this.dictionnary.get(number).toLowerCase();
     }
 
     public void processReceivedMessage(String message) {

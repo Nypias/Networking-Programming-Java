@@ -151,7 +151,7 @@ public class MyGUI extends JFrame implements Runnable {
                 } 
                 else {
                     System.out.println("Sending Letter=" + clientLetter.getText());
-                    client.sendMessage("LETTER|" + clientLetter.getText() + "\n");
+                    client.sendMessage("LETTER|" + clientLetter.getText().toLowerCase() + "\n");
                     // Reset the letter textfield
                     clientLetter.setText("");
                 }
