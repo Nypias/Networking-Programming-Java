@@ -21,7 +21,7 @@ public class Client {
     //Game Parameters
     private String word = "";
     private String tries = "";
-
+    private String score="";
     /**
      * Constructor of Client class
      * @param host Host (IP) of the server
@@ -48,7 +48,8 @@ public class Client {
      */
     void connectGUI() {
         gui = new MyGUI(this);
-        gui.run();
+        Thread t = new Thread(gui);
+        t.start();
     }
 
     /**
@@ -71,14 +72,18 @@ public class Client {
                         System.out.println(patt.split(line)[2]);
                         tries = patt.split(line)[1];
                         word = patt.split(line)[2];
-                        gui.getTriesLabel().setText(tries);
+                        score = patt.split(line)[3];
+                        gui.getTriesLabel().setText("Tries: " + tries);
                         gui.getWordLabel().setText(word);
+                        gui.getScoreLabel().setText("Score: " + score);
                     }
                     if (line.startsWith("CONGRATULATION")) {
                         tries = patt.split(line)[1];
                         word = patt.split(line)[2];
-                        gui.getTriesLabel().setText(tries);
+                        score = patt.split(line)[3];
+                        gui.getTriesLabel().setText("Tries: " + tries);
                         gui.getWordLabel().setText(word);
+                        gui.getScoreLabel().setText("Score: " + score);
                         JOptionPane.showMessageDialog(gui.getF(),"You Won! Start a new Game", "Hangman Result", JOptionPane.PLAIN_MESSAGE);
 
                         //terminate();
@@ -87,7 +92,9 @@ public class Client {
                     }
                     if (line.startsWith("LOOSE")) {
                         word = patt.split(line)[1];
+                        tries = patt.split(line)[2];
                         gui.getWordLabel().setText(word);
+                        gui.getTriesLabel().setText("Tries: " + tries);
                         JOptionPane.showMessageDialog(gui.getF(),"You Lost! Start a new Game", "Hangman Result", JOptionPane.PLAIN_MESSAGE);
                         //terminate();
                         //break;
@@ -120,12 +127,10 @@ public class Client {
 
     protected void terminate() {
         try {
-            in.close();
-            out.flush();
-            out.close();
-            clientSocket.close();
+            //TODO: close streams
+            clientSocket.close();            
         } catch (IOException ex) {
-            ex.printStackTrace();
+            
         }
 
 
@@ -150,9 +155,5 @@ public class Client {
 
         client.connectGUI();
         client.recvMessage();
-
-        //sentence = inFromUser.readLine();
-        //out.writeBytes(sentence + '\n');
-
     }
 }
