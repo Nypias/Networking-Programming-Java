@@ -163,6 +163,7 @@ public class MyGUI extends JFrame implements Runnable {
             new ActionListener(){
                 public void actionPerformed(ActionEvent e)
                 {
+                    client.sendMessage("QUIT");
                     client.terminate();
                     System.exit(0);
                 }
@@ -211,6 +212,7 @@ public class MyGUI extends JFrame implements Runnable {
         // Close the window
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent ev) {
+                client.sendMessage("QUIT");
                 System.exit(0);
             }
         });

@@ -80,7 +80,7 @@ public class ServerApplication extends Thread {
 
 
 
-        return "essai";
+        return "abcdefg";
     }
 
     public void processReceivedMessage(String message) {
@@ -109,7 +109,7 @@ public class ServerApplication extends Thread {
             } else if (head.equals("LETTER")) {
 
                 if (clientSentence.equals(result[1])) {
-                    this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientScore*this.clientSentence.length() +  "\n");
+                    this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length()*this.clientSentence.length()*10 +  "\n");
                 } else {
                     char letter = result[1].charAt(0);
                     boolean found = false;
@@ -119,7 +119,7 @@ public class ServerApplication extends Thread {
                         if (this.clientSentence.charAt(i) == letter) {
                             found = true;
                             this.actualSentence.setCharAt(i, letter);
-                            clientScore+=100;
+                            clientScore+=10*clientSentence.length();
                         }
                     }
 
