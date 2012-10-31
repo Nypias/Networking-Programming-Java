@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -21,6 +23,18 @@ public class Client implements Runnable {
     private String word = "";
     private String tries = "";
     private String score = "";
+    
+    static String host = "127.0.0.1";
+    static int port = 9000;
+    private boolean serverStopped = false;
+
+    public void setServerStopped(boolean serverStopped) {
+        this.serverStopped = serverStopped;
+    }
+
+    public boolean isServerStopped() {
+        return serverStopped;
+    }
 
     /**
      * Constructor of Client class
@@ -99,6 +113,13 @@ public class Client implements Runnable {
                         //terminate();
                         //break;
                     }
+                } else {
+                    
+                    System.out.println("Server must have crashed, exiting..");
+                    terminate();
+                    serverStopped=true;
+                    JOptionPane.showMessageDialog(gui.getF(), "Lost connection to server, try 'New Game'!", "Hangman Result", JOptionPane.WARNING_MESSAGE);
+                    break;
                 }
             }
         } catch (IOException ex) {
@@ -126,28 +147,42 @@ public class Client implements Runnable {
     protected void terminate() {
         try {
             //TODO: maybe close streams
+            in = null;
+            out = null;
             clientSocket.close();
+            clientSocket = null;
         } catch (IOException ex) {
         }
     }
     
     @Override
     public void run() {
+        System.out.println("Starting thread");
+        init();
         recvMessage();
     }
 
+    private void init(){
+        try {
+            clientSocket = new Socket(host, port);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new DataOutputStream(clientSocket.getOutputStream());
+            System.out.println("Init completed");
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+       
+    }
     public static void main(String argv[]) throws Exception {
-
-        String ip = "127.0.0.1";
-        int port = 9000;
-
         // Capture port and server ip from arguments
         try {
             if (argv.length > 1) {
-                port = Integer.parseInt(argv[1]);
+                Client.port = Integer.parseInt(argv[1]);
             }
             if (argv.length > 0) {
-                ip = argv[0];
+                 Client.host = argv[0];
             }
         } catch (NumberFormatException e) {
             System.out.println("USAGE: java Client [ip] [port]");
@@ -155,7 +190,7 @@ public class Client implements Runnable {
         }
 
         // Begin the client communication
-        Client client = new Client(ip, port);
+        Client client = new Client(Client.host, Client.port);
         client.connectGUI();
         Thread clientThread = new Thread(client);
         clientThread.start();

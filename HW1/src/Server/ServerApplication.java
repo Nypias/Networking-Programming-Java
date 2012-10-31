@@ -25,7 +25,6 @@ public class ServerApplication implements Runnable {
     private Random generator;
     private boolean error = false;
     private boolean quit = false;
-    
 
     /**
      * Constructor of ServerApplication
@@ -34,10 +33,10 @@ public class ServerApplication implements Runnable {
      * @throws IOException
      */
     public ServerApplication(Socket socket, List<String> dictionnary) {
-    	 this.socketClient = socket;
-    	 this.dictionnary = new ArrayList<String>(dictionnary);
-    	 
-    	 this.generator = new Random();
+        this.socketClient = socket;
+        this.dictionnary = new ArrayList<String>(dictionnary);
+
+        this.generator = new Random();
     }
 
     public String receiveMessage() throws IOException {
@@ -67,8 +66,9 @@ public class ServerApplication implements Runnable {
      * @return String word chosen
      */
     public String retrieveNewWord() {
-        
-    	int number = generator.nextInt(this.dictionnary.size()-1);
+
+        int number = generator.nextInt(this.dictionnary.size() - 1);
+        System.out.println(this.dictionnary.get(number));
         return this.dictionnary.get(number);
     }
 
@@ -98,7 +98,7 @@ public class ServerApplication implements Runnable {
             } else if (head.equals("LETTER")) {
 
                 if (clientSentence.equals(result[1])) {
-                    this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length()*this.clientSentence.length()*10 +  "\n");
+                    this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length() * this.clientSentence.length() * 10 + "\n");
                 } else {
                     char letter = result[1].charAt(0);
                     boolean found = false;
@@ -108,7 +108,7 @@ public class ServerApplication implements Runnable {
                         if (this.clientSentence.charAt(i) == letter) {
                             found = true;
                             this.actualSentence.setCharAt(i, letter);
-                            clientScore+=10*clientSentence.length();
+                            clientScore += 10 * clientSentence.length();
                         }
                     }
 
@@ -139,49 +139,49 @@ public class ServerApplication implements Runnable {
                     e.printStackTrace();
                 }
             } else {
-            	error = true;
+                error = true;
                 System.out.println("Head Incorrect : " + result[0]);
             }
         }
 
     }
 
-	@Override
-	public void run() {
-	        System.out.println("Client connected");
+    @Override
+    public void run() {
+        System.out.println("Client connected");
 
-	        // Create communication in and out
-	        try {
-				this.in = new BufferedReader(new InputStreamReader(this.socketClient.getInputStream()));
-				this.out = new DataOutputStream(this.socketClient.getOutputStream());
-			} catch (IOException e1) {
-				System.out.println("Error when initializing the in and out communication with the client");
-				e1.printStackTrace();
-			}
+        // Create communication in and out
+        try {
+            this.in = new BufferedReader(new InputStreamReader(this.socketClient.getInputStream()));
+            this.out = new DataOutputStream(this.socketClient.getOutputStream());
+        } catch (IOException e1) {
+            System.out.println("Error when initializing the in and out communication with the client");
+            e1.printStackTrace();
+        }
 
-	        while (!error && !quit) {
-	            String newMessage = "";
-				try {
-					newMessage = this.receiveMessage();
-				} catch (IOException e) {
-					System.out.println("Error when receiving a new message");
-					e.printStackTrace();
-				}
-	            this.processReceivedMessage(newMessage);
-	        }
-	        
-	        if (error) {
-		        try {
-					this.in.close();
-					this.out.close();
-					this.socketClient.close();
-				} catch (IOException e) {
-					System.out.println("Error when closing the client communication");
-					e.printStackTrace();
-				}
-	        }
-	        
-	        
-		
-	}
+        while (!error && !quit) {
+            String newMessage = "";
+            try {
+                newMessage = this.receiveMessage();
+            } catch (IOException e) {
+                System.out.println("Error when receiving a new message");
+                e.printStackTrace();
+            }
+            this.processReceivedMessage(newMessage);
+        }
+
+        if (error) {
+            try {
+                this.in.close();
+                this.out.close();
+                this.socketClient.close();
+            } catch (IOException e) {
+                System.out.println("Error when closing the client communication");
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
 }

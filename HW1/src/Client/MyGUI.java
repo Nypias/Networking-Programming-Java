@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -56,7 +58,17 @@ public class MyGUI extends JFrame implements Runnable {
             public void actionPerformed(ActionEvent e) {
                 //Executed when new game button is pressed
                 System.out.println("---- Starting a new game ----");
-                
+                if(client.isServerStopped()){
+                    System.out.println("Server was stopped");
+                    client.setServerStopped(false);
+                    Thread clientThread = new Thread(client);
+                    clientThread.start();
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MyGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 client.sendMessage("START\n");
                 gameStarted = true;
             }
@@ -138,8 +150,8 @@ public class MyGUI extends JFrame implements Runnable {
                     JOptionPane.showMessageDialog(getF(), "Insert Letter or Word", "Hangman Result", JOptionPane.WARNING_MESSAGE);
                 } 
                 else {
-                    System.out.println("Sending Letter=" + clientLetter.getText().toLowerCase());
-                    client.sendMessage("LETTER|" + clientLetter.getText().toLowerCase() + "\n");
+                    System.out.println("Sending Letter=" + clientLetter.getText());
+                    client.sendMessage("LETTER|" + clientLetter.getText() + "\n");
                     // Reset the letter textfield
                     clientLetter.setText("");
                 }
