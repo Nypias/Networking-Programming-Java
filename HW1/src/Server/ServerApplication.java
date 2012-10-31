@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class ServerApplication extends Thread {
+public class ServerApplication implements Runnable {
 
     private String clientSentence;
     private StringBuilder actualSentence;
@@ -23,6 +23,9 @@ public class ServerApplication extends Thread {
     private final int initialScore = 0;
     private final List<String> dictionnary;
     private Random generator;
+    private boolean error = false;
+    private boolean quit = false;
+    
 
     /**
      * Constructor of ServerApplication
@@ -30,23 +33,11 @@ public class ServerApplication extends Thread {
      * @param socket Client socket
      * @throws IOException
      */
-    public ServerApplication(Socket socket, List<String> dictionnary) throws IOException {
-
-        this.socketClient = socket;
-        
-        this.dictionnary = new ArrayList<String>();
-        this.generator = new Random();
-
-        System.out.println("Client connected");
-
-        // Create communication in and out
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new DataOutputStream(socket.getOutputStream());
-
-        while (true) {
-            String newMessage = this.receiveMessage();
-            this.processReceivedMessage(newMessage);
-        }
+    public ServerApplication(Socket socket, List<String> dictionnary) {
+    	 this.socketClient = socket;
+    	 this.dictionnary = new ArrayList<String>(dictionnary);
+    	 
+    	 this.generator = new Random();
     }
 
     public String receiveMessage() throws IOException {
@@ -142,14 +133,55 @@ public class ServerApplication extends Thread {
                     this.in.close();
                     this.out.close();
                     this.socketClient.close();
+                    quit = true;
                 } catch (IOException e) {
                     System.out.println("Error when closing Thread variables");
                     e.printStackTrace();
                 }
             } else {
+            	error = true;
                 System.out.println("Head Incorrect : " + result[0]);
             }
         }
 
     }
+
+	@Override
+	public void run() {
+	        System.out.println("Client connected");
+
+	        // Create communication in and out
+	        try {
+				this.in = new BufferedReader(new InputStreamReader(this.socketClient.getInputStream()));
+				this.out = new DataOutputStream(this.socketClient.getOutputStream());
+			} catch (IOException e1) {
+				System.out.println("Error when initializing the in and out communication with the client");
+				e1.printStackTrace();
+			}
+
+	        while (!error && !quit) {
+	            String newMessage = "";
+				try {
+					newMessage = this.receiveMessage();
+				} catch (IOException e) {
+					System.out.println("Error when receiving a new message");
+					e.printStackTrace();
+				}
+	            this.processReceivedMessage(newMessage);
+	        }
+	        
+	        if (error) {
+		        try {
+					this.in.close();
+					this.out.close();
+					this.socketClient.close();
+				} catch (IOException e) {
+					System.out.println("Error when closing the client communication");
+					e.printStackTrace();
+				}
+	        }
+	        
+	        
+		
+	}
 }

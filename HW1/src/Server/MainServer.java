@@ -72,7 +72,8 @@ public class MainServer {
 				try {
 					// We accept each connexion from the client and we
 					socket = serverSock.accept();
-					executor.execute(new ServerApplication(socket, dictionnary));
+					ServerApplication newServerAppli = new ServerApplication(socket, dictionnary);
+					executor.execute(newServerAppli);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
