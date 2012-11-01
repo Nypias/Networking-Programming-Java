@@ -14,8 +14,9 @@ import java.util.concurrent.Executors;
 public class MainServer {
 
 	/**
+	 * Main Class of the Server
 	 * @param args
-	 *            the command line arguments
+	 *            java MainServer [port] [poolSize]
 	 */
 	public static void main(String[] args) {
 		int port = 9000;

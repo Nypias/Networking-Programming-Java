@@ -10,20 +10,36 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+/**
+ * Server Application Class
+ * @author thomas, teo
+ *
+ */
 public class ServerApplication implements Runnable {
 
+	// Sentence chosen by the server for the client
     private String clientSentence;
+    // Sentence actually guessed by the client
     private StringBuilder actualSentence;
+    // Score of the client
     private int clientScore;
+    // Number of tries left
     private int clientTries;
+    // Socket of the client and communication in and out
     private Socket socketClient;
     private BufferedReader in;
     private DataOutputStream out;
+    // Number of total tries
     private final int nbTentatives = 10;
+    // Initial score
     private final int initialScore = 0;
+    // Table which contains the letters already entered by the client
     private List<Character> letterAlreadyEntered;
+    // Dictionnary of words
     private final List<String> dictionnary;
+    // Generator of number to choose a word in the dictionnary
     private Random generator;
+    
     private boolean error = false;
     private boolean quit = false;
 
@@ -31,7 +47,7 @@ public class ServerApplication implements Runnable {
      * Constructor of ServerApplication
      *
      * @param socket Client socket
-     * @throws IOException
+     * @param dictionnary List of words
      */
     public ServerApplication(Socket socket, List<String> dictionnary) {
         this.socketClient = socket;
@@ -41,20 +57,24 @@ public class ServerApplication implements Runnable {
         this.generator = new Random();
     }
 
+    /**
+     * Receive a new message from the client
+     * @return String Message that has been read
+     * @throws IOException
+     */
     public String receiveMessage() throws IOException {
         String message = this.in.readLine();
         return message;
     }
 
     /**
-     * Send message to out
+     * Send message to the client
      *
      * @param message String that has to be sent
-     * @throws IOException
      */
     public void sendMessage(String message) {
         try {
-        	System.out.println("Write : " + message);
+        	//System.out.println("Write : " + message);
             out.writeBytes(message);
             out.flush();
         } catch (IOException e) {
@@ -64,7 +84,7 @@ public class ServerApplication implements Runnable {
     }
 
     /**
-     * Retrieve a new word from /usr/dict
+     * Retrieve a new word from the dictionnary
      *
      * @return String word chosen
      */
@@ -75,13 +95,17 @@ public class ServerApplication implements Runnable {
         return this.dictionnary.get(number).toLowerCase();
     }
 
+    /**
+     * Process a received message
+     * @param message Message that has been received by the server
+     */
     public void processReceivedMessage(String message) {
         System.out.println("Message received: " + message);
         Pattern patt = Pattern.compile("|", Pattern.LITERAL);
         String result[] = patt.split(message);
         if (result.length > 0) {
             String head = result[0];
-            // If the client wants to start a new game
+            
             if (head.equals("START")) {
                this.processStartMessage();
             } else if (head.equals("LETTER")) {
@@ -96,7 +120,10 @@ public class ServerApplication implements Runnable {
 
     }
     
-    
+    /**
+     * Process a START Message
+     * Begin a new game
+     */
     public void processStartMessage() {
     	 this.clientSentence = this.retrieveNewWord();
 
@@ -117,6 +144,10 @@ public class ServerApplication implements Runnable {
     }
     
     
+    /**
+     * Process a LETTER message
+     * @param result Message that has been received by the server
+     */
     public void processLetterMessage(String[] result) {
     	if (clientSentence.equals(result[1])) {
             this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length() * this.clientSentence.length() * 10 + "\n");
@@ -161,7 +192,10 @@ public class ServerApplication implements Runnable {
         }
     }
     
-    
+    /**
+     * Process a QUIT message
+     * Close the communication socket for the client
+     */
     public void processQuitMessage () {
     	try {
             this.in.close();
