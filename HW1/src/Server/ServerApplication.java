@@ -52,6 +52,7 @@ public class ServerApplication implements Runnable {
      */
     public void sendMessage(String message) {
         try {
+        	System.out.println("Write : " + message);
             out.writeBytes(message);
             out.flush();
         } catch (IOException e) {

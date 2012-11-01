@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -55,6 +53,8 @@ public class Client implements Runnable {
             System.out.println("Communication input/output not created");
             ex.printStackTrace();
         }
+        
+        System.out.println("Init completed");
     }
 
     /**
@@ -158,23 +158,9 @@ public class Client implements Runnable {
     @Override
     public void run() {
         System.out.println("Starting thread");
-        init();
         recvMessage();
     }
 
-    private void init(){
-        try {
-            clientSocket = new Socket(host, port);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new DataOutputStream(clientSocket.getOutputStream());
-            System.out.println("Init completed");
-        } catch (UnknownHostException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-       
-    }
     public static void main(String argv[]) throws Exception {
         // Capture port and server ip from arguments
         try {
