@@ -21,6 +21,7 @@ public class ServerApplication implements Runnable {
     private DataOutputStream out;
     private final int nbTentatives = 10;
     private final int initialScore = 0;
+    private List<Character> letterAlreadyEntered;
     private final List<String> dictionnary;
     private Random generator;
     private boolean error = false;
@@ -35,6 +36,7 @@ public class ServerApplication implements Runnable {
     public ServerApplication(Socket socket, List<String> dictionnary) {
         this.socketClient = socket;
         this.dictionnary = new ArrayList<String>(dictionnary);
+        this.letterAlreadyEntered = new ArrayList<Character>();
 
         this.generator = new Random();
     }
@@ -81,70 +83,95 @@ public class ServerApplication implements Runnable {
             String head = result[0];
             // If the client wants to start a new game
             if (head.equals("START")) {
-                this.clientSentence = this.retrieveNewWord();
-
-                this.actualSentence = new StringBuilder("");
-                // We create the dashed word - Actual version of the client
-                for (int i = 0; i < this.clientSentence.length(); i++) {
-                    this.actualSentence.append("-");
-                }
-
-                // We reset the tries
-                this.clientTries = this.nbTentatives;
-                // We reset thr score
-                clientScore = initialScore;
-                // We send a message with the number of tentatives and the encoded word
-                this.sendMessage("STATUS|" + this.clientTries + "|" + this.actualSentence + "|" + this.clientScore + "\n");
-
+               this.processStartMessage();
             } else if (head.equals("LETTER")) {
-
-                if (clientSentence.equals(result[1])) {
-                    this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length() * this.clientSentence.length() * 10 + "\n");
-                } else {
-                    char letter = result[1].charAt(0);
-                    boolean found = false;
-
-                    // We refresh the actual word of the client
-                    for (int i = 0; i < this.clientSentence.length(); i++) {
-                        if (this.clientSentence.charAt(i) == letter) {
-                            found = true;
-                            this.actualSentence.setCharAt(i, letter);
-                            clientScore += 10 * clientSentence.length();
-                        }
-                    }
-
-                    // We decrement the score if the letter is not in the word
-                    if (found == false) {
-                        this.clientTries--;
-                    }
-
-                    if (this.clientSentence.equals(this.actualSentence.toString())) {
-                        // The player wins the game
-                        this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientScore + "\n");
-                    } else if (this.clientTries == 0) {
-                        // The player lost the game
-                        this.sendMessage("LOOSE|" + this.clientSentence + "|" + this.clientTries + "\n");
-                    } else {
-                        // The player is still playing. We send him a STATUS message
-                        this.sendMessage("STATUS|" + this.clientTries + "|" + this.actualSentence + "|" + this.clientScore + "\n");
-                    }
-                }
+            	this.processLetterMessage(result);
             } else if (head.equals("QUIT")) {
-                try {
-                    this.in.close();
-                    this.out.close();
-                    this.socketClient.close();
-                    quit = true;
-                } catch (IOException e) {
-                    System.out.println("Error when closing Thread variables");
-                    e.printStackTrace();
-                }
+                this.processQuitMessage();
             } else {
                 error = true;
                 System.out.println("Head Incorrect : " + result[0]);
             }
         }
 
+    }
+    
+    
+    public void processStartMessage() {
+    	 this.clientSentence = this.retrieveNewWord();
+
+         this.actualSentence = new StringBuilder("");
+         // We create the dashed word - Actual version of the client
+         for (int i = 0; i < this.clientSentence.length(); i++) {
+             this.actualSentence.append("-");
+         }
+
+         // We reset the tries
+         this.clientTries = this.nbTentatives;
+         // We reset the score
+         clientScore = initialScore;
+         // We reset the table which contains the letter already typed by the client
+         this.letterAlreadyEntered = new ArrayList<Character>();
+         // We send a message with the number of tentatives and the encoded word
+         this.sendMessage("STATUS|" + this.clientTries + "|" + this.actualSentence + "|" + this.clientScore + "\n");
+    }
+    
+    
+    public void processLetterMessage(String[] result) {
+    	if (clientSentence.equals(result[1])) {
+            this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientSentence.length() * this.clientSentence.length() * 10 + "\n");
+        } else {
+            char letter = result[1].charAt(0);
+            
+            // We check if the client already typed this letter
+            boolean alreadyEntered = false;
+            if (this.letterAlreadyEntered.contains(letter)) {
+            	alreadyEntered = true;
+            } else {
+            	this.letterAlreadyEntered.add(letter);
+            }
+            
+            boolean found = false;
+
+            // We refresh the actual word of the client
+            for (int i = 0; i < this.clientSentence.length(); i++) {
+                if (this.clientSentence.charAt(i) == letter) {
+                    found = true;
+                    this.actualSentence.setCharAt(i, letter);
+                    
+                    if (!alreadyEntered) {clientScore += 10 * clientSentence.length();}
+                }
+            }
+
+            // We decrement the score if the letter is not in the word
+            if (found == false) {
+                this.clientTries--;
+            }
+
+            if (this.clientSentence.equals(this.actualSentence.toString())) {
+                // The player wins the game
+                this.sendMessage("CONGRATULATION|" + this.clientTries + "|" + this.clientSentence + "|" + this.clientScore + "\n");
+            } else if (this.clientTries == 0) {
+                // The player lost the game
+                this.sendMessage("LOOSE|" + this.clientSentence + "|" + this.clientTries + "\n");
+            } else {
+                // The player is still playing. We send him a STATUS message
+                this.sendMessage("STATUS|" + this.clientTries + "|" + this.actualSentence + "|" + this.clientScore + "\n");
+            }
+        }
+    }
+    
+    
+    public void processQuitMessage () {
+    	try {
+            this.in.close();
+            this.out.close();
+            this.socketClient.close();
+            quit = true;
+        } catch (IOException e) {
+            System.out.println("Error when closing Thread variables");
+            e.printStackTrace();
+        }
     }
 
     @Override
