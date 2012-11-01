@@ -7,9 +7,13 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
 
+/**
+ * Class that initializes the client.
+ * Also spawns the GUI thread
+ * @author teo, thomas
+ */
 public class Client implements Runnable {
 
     //Connection variables
@@ -26,10 +30,18 @@ public class Client implements Runnable {
     static int port = 9000;
     private boolean serverStopped = false;
 
+    /**
+     * 
+     * @param serverStopped 
+     */
     public void setServerStopped(boolean serverStopped) {
         this.serverStopped = serverStopped;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isServerStopped() {
         return serverStopped;
     }
@@ -48,10 +60,10 @@ public class Client implements Runnable {
             out = new DataOutputStream(clientSocket.getOutputStream());
         } catch (UnknownHostException ex) {
             System.out.println("Host unknown");
-            ex.printStackTrace();
+            
         } catch (IOException ex) {
             System.out.println("Communication input/output not created");
-            ex.printStackTrace();
+            
         }
         
         System.out.println("Init completed");
@@ -123,7 +135,7 @@ public class Client implements Runnable {
                 }
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            
         }
     }
 
@@ -144,6 +156,9 @@ public class Client implements Runnable {
 
     }
 
+    /**
+     * Called when client is terminating
+     */
     protected void terminate() {
         try {
             //TODO: maybe close streams
@@ -154,13 +169,20 @@ public class Client implements Runnable {
         } catch (IOException ex) {
         }
     }
-    
+    /**
+     * Called when the client thread starts
+     */
     @Override
     public void run() {
         System.out.println("Starting thread");
         recvMessage();
     }
 
+    /**
+     * 
+     * @param argv
+     * @throws Exception 
+     */
     public static void main(String argv[]) throws Exception {
         // Capture port and server ip from arguments
         try {
