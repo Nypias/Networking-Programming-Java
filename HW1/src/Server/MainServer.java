@@ -21,7 +21,7 @@ public class MainServer {
 		int port = 9000;
 		int poolSize = 3;
 		ServerSocket serverSock = null;
-		String urlDictionnary = "/resources/british-english";
+		String urlDictionnary = "/british-english";
 		List<String> dictionnary = new ArrayList<String>();
 
 		// Capture port and poolSize from arguments
