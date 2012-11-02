@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -53,20 +55,22 @@ public class Client implements Runnable {
      * @param port Port of the server listener socket
      */
     public Client(String host, int port) {
-        try {
+        this.host = host;
+        this.port = port;
+        //try {
             // Initialization of the client socket and input and output communication
-            clientSocket = new Socket(host, port);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new DataOutputStream(clientSocket.getOutputStream());
-        } catch (UnknownHostException ex) {
+            //clientSocket = new Socket(host, port);
+            //in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            //out = new DataOutputStream(clientSocket.getOutputStream());
+        /*} catch (UnknownHostException ex) {
             System.out.println("Host unknown");
             
         } catch (IOException ex) {
             System.out.println("Communication input/output not created");
             
         }
-        
-        System.out.println("Init completed");
+        */
+        //System.out.println("Init completed");
     }
 
     /**
@@ -175,6 +179,16 @@ public class Client implements Runnable {
     @Override
     public void run() {
         System.out.println("Starting thread");
+        try {
+            clientSocket = new Socket(host, port);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new DataOutputStream(clientSocket.getOutputStream());
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
         recvMessage();
     }
 
