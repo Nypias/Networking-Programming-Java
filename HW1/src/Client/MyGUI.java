@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 /**
  * Class implementing the client GUI
  * @author teo, thomas
@@ -75,6 +76,7 @@ public class MyGUI extends JFrame implements Runnable {
                 if (client.isServerStopped()) {
                     System.out.println("Server was stopped");
                     client.setServerStopped(false);
+                    
                     Thread clientThread = new Thread(client);
                     clientThread.start();
                 }
