@@ -1,0 +1,6 @@
+1) Check bug of the following scenario
+    a) Trader1 sells item
+    b) Trader2 wishes and receives item
+    c) Trader3 makes a wish (for the same item?)
+
+2) Change point where buy() is called in sell() and wish()

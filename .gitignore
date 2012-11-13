@@ -1,0 +1,18 @@
+# Ignore class files
+*.class
+
+# Ignore Eclipse / Netbeans files
+*.project
+*.classpath
+bin/
+
+# Ignore Project report
+DHT-Chord/*
+
+# Ignore HW1 files
+HW1/*
+
+# Ignore RMI Exercise
+RMI-Exercise/*
+
+
