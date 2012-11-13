@@ -89,17 +89,19 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             if (!checkItemExists(item)) {
                 items.add(item);
                 traders.get(traderName).sendNotification("Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
-
+                Wish wishToRemove = null;
                 //Check if new Item corresponds to a wish. 
                 for (Wish wish : wishes) {
                     System.out.println("Wish in loop:" + wish);
                     //If new item to be sold matches a wish, send callback
                     if (wish.getName().equals(item.getName()) && wish.getPrice() >= item.getPrice()) {
                         //Send to requester notification
+                        wishToRemove = wish;
                         traders.get(wish.getRequester()).sendNotification("Your wished item has arrived!");
                         break;
                     }
                 }
+                wishes.remove(wishToRemove);
             } // If item to be sold already exists in list, send appropriate notification
             else {
                 traders.get(traderName).sendNotification("Item: " + item.getName() + "-" + item.getPrice() + " already exists!");
@@ -110,39 +112,45 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     /**
      * Places a wish in the items Map. If an item with the same name and wished
      * price already exists, the wish can not be registered (whoever makes the
-     * wish first, wins).
+     * wish first, wins). We add wishes with same properties and notify all
+     * requesters (wishers). If wished item already exists, we do not record the
+     * wish, instead we immediately send the notification to the requester.
      *
      * @param trader
      * @param item
      * @throws RemoteException
      */
     @Override
-    public synchronized void wish(String traderName, Item item) throws RemoteException {
+    public synchronized void wish(String traderName, Wish wish) throws RemoteException {
         //Check if trader is registered
         if (!traders.containsKey(traderName)) {
             //traders.get(traderName).sendNotification("Register first!");
             System.out.println("Received request from unregistered trader!");
         } else {
+            //Search wishes and see if there is a wish with the same properties
+            /*boolean sameWishFound = false;
+             for (Wish currentWish : wishes){
+             if(currentWish.getName().equals(wish.getName()) && currentWish.getPrice()==wish.getPrice()){
+             sameWishFound = true;
+             }
+             }*/
+            
+            System.out.println("wish() :: wish:" + wish);
             //TODO: Check if wish matches item
-            boolean registerWish = true;
+            boolean wishedItemFound = false;
             for (Item it : items) {
                 System.out.println("it:" + it);
-                System.out.println("it2:" + it);
-                if (it.getName().equals(item.getName()) && it.getPrice() < 0 && it.getPrice() <= item.getPrice()) {
-                    
+                if (it.getName().equals(wish.getName()) && it.getPrice() <= wish.getPrice()) {
                     traders.get(traderName).sendNotification("Your wish can be served");
-                    registerWish = false;
+                    wishedItemFound = true;
                     break;
                 }
             }
-            if (registerWish) {
-                if (!checkItemExists(item)) {
-                    items.add(item);
-                    traders.get(traderName).sendNotification("Your wish has been registered !");
-                } else {
-                    traders.get(traderName).sendNotification("That wished item already exists !");
-                }
-            }            
+            if (!wishedItemFound) {
+                wishes.add(wish);
+                traders.get(traderName).sendNotification("Your wish has been registered");
+            }
+            
         }
     }
 
@@ -153,7 +161,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * @throws RemoteException
      */
     @Override
-    public synchronized void buy(String traderName, Wish item) throws RemoteException {
+    public synchronized void buy(String traderName, Item item) throws RemoteException {
         System.out.println("buy() :: " + item);
         
         if (!traders.containsKey(traderName)) {
@@ -168,7 +176,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 if (currentItem.getName().equals(item.getName()) && currentItem.getPrice() == item.getPrice()) {
                     //Remove item from list
                     itemToRemove = currentItem;
-                    System.out.println("Found item to remove:"+itemToRemove);
+                    System.out.println("Found item to remove:" + itemToRemove);
                     break;
                 }
             }
