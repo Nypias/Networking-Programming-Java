@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import trader.Trader;
 
+import tools.Utilities;
+
 /**
  *
  * @author teo
@@ -88,7 +90,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             System.out.println("Selling item: " + item);
             if (!checkItemExists(item)) {
                 items.add(item);
-                traders.get(traderName).sendNotification("Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
+                traders.get(traderName).sendNotification(Utilities.ITEM_ADDED_SALE,"Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
 
                 //Check if new Item corresponds to a wish. 
                 for (Wish wish : wishes) {
@@ -96,13 +98,13 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                     //If new item to be sold matches a wish, send callback
                     if (wish.getName().equals(item.getName()) && wish.getPrice() >= item.getPrice()) {
                         //Send to requester notification
-                        traders.get(wish.getRequester()).sendNotification("Your wished item has arrived!");
+                        traders.get(wish.getRequester()).sendNotification(Utilities.ITEM_WISHED_RECEIVED, "Your wished item has arrived!");
                         break;
                     }
                 }
             } // If item to be sold already exists in list, send appropriate notification
             else {
-                traders.get(traderName).sendNotification("Item: " + item.getName() + "-" + item.getPrice() + " already exists!");
+                traders.get(traderName).sendNotification(Utilities.ITEM_ALREADY_EXISTS, "Item: " + item.getName() + "-" + item.getPrice() + " already exists!");
             }
         }
     }
@@ -130,7 +132,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 System.out.println("it2:" + it);
                 if (it.getName().equals(item.getName()) && it.getPrice() < 0 && it.getPrice() <= item.getPrice()) {
                     
-                    traders.get(traderName).sendNotification("Your wish can be served");
+                    traders.get(traderName).sendNotification(Utilities.ITEM_WISHED_AVAILABLE, "Your wish can be served");
                     registerWish = false;
                     break;
                 }
@@ -138,9 +140,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             if (registerWish) {
                 if (!checkItemExists(item)) {
                     items.add(item);
-                    traders.get(traderName).sendNotification("Your wish has been registered !");
+                    traders.get(traderName).sendNotification(Utilities.WISH_REGISTERED,"Your wish has been registered !");
                 } else {
-                    traders.get(traderName).sendNotification("That wished item already exists !");
+                    traders.get(traderName).sendNotification(Utilities.ITEM_WISHED_ALREADY_EXISTS, "That wished item already exists !");
                 }
             }            
         }
@@ -176,8 +178,8 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             System.out.println("Size of items before: " + items.size());
             items.remove(itemToRemove);
             System.out.println("Size of items after: " + items.size());
-            traders.get(traderName).sendNotification("Congratulations you bought the product!");
-            traders.get(itemToRemove.getSeller()).sendNotification("Your item was sold");
+            traders.get(traderName).sendNotification(Utilities.PRODUCT_BOUGHT, "Congratulations you bought the product!");
+            traders.get(itemToRemove.getSeller()).sendNotification(Utilities.PRODUCT_SOLD, "Your item was sold");
         }
     }
 
@@ -197,7 +199,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             for (Item i : items) {
                 itemsStr.append(i.toString()).append("\n==========\n");
             }
-            traders.get(traderName).sendNotification("Items at market:\n" + items);
+            traders.get(traderName).sendNotification(Utilities.ALL_PRODUCTS_FROM_MARKET, items);
         }
     }
 
