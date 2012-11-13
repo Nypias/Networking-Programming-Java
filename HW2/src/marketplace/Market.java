@@ -22,5 +22,5 @@ public interface Market extends Remote {
     // If item is not available, display message to make a wish instead
     public void buy(String traderName, Item item) throws RemoteException;
     
-    public void listItems(String traderName) throws RemoteException;
+    public void listItems(String traderName, boolean allItems) throws RemoteException;
 }

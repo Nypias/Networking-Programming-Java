@@ -1,10 +1,12 @@
 package marketplace;
 
+import java.io.Serializable;
+
 /**
  *
  * @author teo
  */
-class Wish {
+public class Wish implements Serializable {
     
     private String name;
     private int price;
@@ -40,4 +42,11 @@ class Wish {
         this.requester = requester;
     }
     
+     @Override
+    public String toString(){
+        return  "Name:" + name + "\n" +
+                "Price: " + price + "\n" +
+                "Requester: " + requester + "\n";
+    }
+     
 }

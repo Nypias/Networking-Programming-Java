@@ -3,4 +3,6 @@
     b) Trader2 wishes and receives item
     c) Trader3 makes a wish (for the same item?)
 
-2) Change point where buy() is called in sell() and wish()
+
+2) Check when to remove wishes from list (if we have to)
+3) If client crashes, we can not start another one with the same name
