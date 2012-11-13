@@ -5,6 +5,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+
+import tools.Utilities;
 
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
@@ -42,10 +45,14 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     }
 
     @Override
-    public void sendNotification(String text) throws RemoteException {
-        //TODO: Update GUI Label text
+    public void sendNotification(Integer typeMessage, Object message) throws RemoteException {
+        switch (typeMessage) {
+        	case Utilities.ALL_PRODUCTS_FROM_MARKET:
+        		this.gui.createListItems(this.gui.transformTable((List<Item>) message));
+        		break;
+        }
     	
-        System.out.println("TraderImpl.setLabelText() :: " + text);
+        //System.out.println("TraderImpl.setLabelText() :: " + text);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -90,6 +97,8 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         }*/
     	
     	String marketName = "MyMarket";
+    	gui = new TraderGUI();
+    	new Thread(gui).start();
     	Market marketObj;
 		try {
 			marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
@@ -100,12 +109,12 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
 	    	Item item2 = new Item("PEN",10);
 	    	marketObj.sell(traderTheo.getName(), item2);
 	    	
-	    	marketObj.listItems(traderTheo);
+	    	marketObj.listItems(traderTheo.getName());
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			e.printStackTrace();
 		}
     	
-    	gui = new TraderGUI();
+    	
 
     }
 }

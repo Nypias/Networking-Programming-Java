@@ -16,7 +16,7 @@ import javax.swing.JTable;
 
 import marketplace.Item;
 
-public class TraderGUI extends JFrame implements MouseListener{
+public class TraderGUI extends JFrame implements MouseListener, Runnable{
 	private static final long serialVersionUID = 3786034680888498980L;
 	
 	private JPanel listProducts, pendingSellProducts;
@@ -24,31 +24,29 @@ public class TraderGUI extends JFrame implements MouseListener{
 
 	private List<Item> productsMarket;
 	
-	public TraderGUI() {
-		super();
-
-		this.productsMarket = new ArrayList<Item>();
-		
-		this.setSize(1000, 800);
-		this.setTitle("MarketPlace - Created by Theo and Thomas");
-		this.setLocationRelativeTo(this);
-
-		this.setLayout(new BorderLayout());
-
-		this.createListItems(transformTable(productsMarket));
-		this.add(listProducts, BorderLayout.WEST);
-		
+	@Override
+	public void run() {
+		System.out.println("Run method for client");
 		this.setVisible(true);
-
-		// Close the window
-		addWindowListener (new WindowAdapter() {
+		addWindowListener (new WindowAdapter() {	// Close the window
 			public void windowClosing (WindowEvent ev){System.exit(0);}
 		});
 	}
 	
+	public TraderGUI() {
+		super();
+		this.productsMarket = new ArrayList<Item>();
+
+		this.setSize(1000, 800);
+		this.setTitle("MarketPlace - Created by Theo and Thomas");
+		this.setLocationRelativeTo(this);
+		this.setLayout(new BorderLayout());
+		this.createListItems(transformTable(productsMarket));
+		this.add(listProducts, BorderLayout.WEST);
+	}
+	
 	public void createListItems(Object[][] data) {
 		listProducts = new JPanel();
-		
 		
 		String[] columns = {"Name", "Price", "Seller"};
 		listItems = new JTable(data, columns);
@@ -106,6 +104,8 @@ public class TraderGUI extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 	
 
 }

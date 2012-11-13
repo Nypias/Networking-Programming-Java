@@ -10,5 +10,5 @@ import java.rmi.RemoteException;
 public interface Trader extends Remote {
     public void wishAvailable() throws RemoteException;
     public String getName() throws RemoteException;
-    public void sendNotification(String text) throws RemoteException;
+    public void sendNotification(Integer typeMessage, Object message) throws RemoteException;
 }
