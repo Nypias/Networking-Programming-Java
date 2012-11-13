@@ -10,14 +10,14 @@ import java.io.Serializable;
  * DIFFERENT wished price.
  * @author teo
  */
+
+
 public class Item implements Serializable {
     
     private String name;
     private int price;
-    private int wishedPrice;
-    private String requesterName;
     private String seller;
-
+    
     public String getSeller() {
         return seller;
     }
@@ -35,21 +35,7 @@ public class Item implements Serializable {
     }
     private String buyer;
 
-    public int getWishedPrice() {
-        return wishedPrice;
-    }
-
-    public void setWishedPrice(int wishedPrice) {
-        this.wishedPrice = wishedPrice;
-    }
-
-    public String getRequesterName() {
-        return requesterName;
-    }
-
-    public void setRequesterName(String requesterName) {
-        this.requesterName = requesterName;
-    }
+   
     
     
     public String getName() {
@@ -71,17 +57,13 @@ public class Item implements Serializable {
     public Item(String name, int price) {
         this.name = name;
         this.price = price;
-        this.wishedPrice = -1;
     }
     
     @Override
     public String toString(){
-        return  "Name:"+name + "\n" +
-                "Price: "+price + "\n" +
-                "Seller: "+seller + "\n" +
-                "Requester: "+ requesterName + "\n" +
-                "Wished Price: "+wishedPrice;
-        
+        return  "Name:" + name + "\n" +
+                "Price: " + price + "\n" +
+                "Seller: " + seller + "\n";
     }
     
 }

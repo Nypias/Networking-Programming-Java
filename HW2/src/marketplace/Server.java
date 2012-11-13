@@ -14,13 +14,10 @@ public class Server {
             Market marketObj = new MarketImpl(marketName);
             java.rmi.Naming.rebind("rmi:/localhost:1099/"+marketName, marketObj);
             System.out.println("Market server is ready");
-        } catch (MalformedURLException  ex) {
+        } catch (MalformedURLException | RemoteException ex) {
             System.out.println("Server.constructor() :: Error occured while rebinding ...");
             ex.printStackTrace();
-        } catch (RemoteException e) {
-        	System.out.println("Server.constructor() :: Error occured while rebinding ...");
-			e.printStackTrace();
-		}
+        }
     }
     
     public static void main(String[] args){
