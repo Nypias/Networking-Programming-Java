@@ -22,9 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
-import javax.swing.table.AbstractTableModel;
 
 import marketplace.*;
 import bank.Account;
@@ -32,31 +32,30 @@ import bank.Account;
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
     private static final long serialVersionUID = 3786034680888498980L;
-    private JPanel listProductsPanel, pendingSellProductsPanel, panelLeft,
+    private JPanel listProductsPanel, panelLeft,
             panelRight, sellProductPanel, titleProductPanel,
             panelAccountBalance, titleBuyPanel, panelBuy, titleWishPanel, panelWish;
     private JTextField nameProduct, priceProduct, balanceTrader, nameProductWished, priceProductWished;
-    private JButton sellProduct, newAccountButton, newBuyButton, addWishedProduct, refreshListItemButton, refreshPendingListButton;
-    private JTable listItems, listPendingItems;
-    private TableModel listItemsModel, listPendingModel;
+    private JButton sellProduct, newAccountButton, newBuyButton, addWishedProduct, refreshListItemButton;
+    private JTable listItems;
+    private JTextArea textArea;
+    private TableModel listItemsModel;
     private List<Item> productsMarket;
-    private List<Item> productsPending;
     private TraderImpl trader;
     private Account account;
     
-    public TraderGUI(TraderImpl trader) {
+    public TraderGUI(final TraderImpl trader) {
         super();
         this.trader = trader;
         this.productsMarket = new ArrayList<Item>();
-        this.productsPending = new ArrayList<Item>();
         this.account = null;
         this.setSize(1000, 800);
         this.setTitle("MarketPlace - Created by Theo and Thomas");
         //
         this.setLocationRelativeTo(this);
         this.setLayout(new BorderLayout());
-        this.createListItems(transformTable(productsMarket));
-        this.createListPendingItem(transformTable(productsPending));
+        this.createListItems();
+        this.createListPendingItem();
         this.createPanelLeft();
 
         this.createSellProduct();
@@ -73,17 +72,20 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
         addWindowListener(new WindowAdapter() {	// Close the window
             public void windowClosing(WindowEvent ev) {
+            	/*try {
+					trader.getMarketObj().unregister(trader.getName());
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}*/
                 System.exit(0);
             }
         });
 
     }
 
-    public void createListItems(Object[][] data) {
+    public void createListItems() {
         listProductsPanel = new JPanel();
-
-        String[] columns = {"Name", "Price"};
-        listItems = new JTable(data, columns);
+        listItems = new JTable();
         listItems.setPreferredScrollableViewportSize(new Dimension(450, 350));
         listItems.setFillsViewportHeight(true);
         listItems.addMouseListener(this);
@@ -107,27 +109,18 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 		this.listItemsModel = listItemsModel;
 	}
 
-	public TableModel getListPendingModel() {
-		return listPendingModel;
-	}
+	public void createListPendingItem() {
+        
+        textArea = new JTextArea();
+        textArea.setColumns(20);
+        textArea.setLineWrap(true);
+        textArea.setRows(20);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+        
+        textArea.setText("");
+        
 
-	public void setListPendingModel(TableModel listPendingModel) {
-		this.listPendingModel = listPendingModel;
-	}
-
-	public void createListPendingItem(Object[][] data) {
-        pendingSellProductsPanel = new JPanel();
-
-        String[] columns = {"Name", "Price"};
-        listPendingItems = new JTable(data, columns);
-        listPendingItems.setPreferredScrollableViewportSize(new Dimension(450, 350));
-        listPendingItems.setFillsViewportHeight(true);
-        listPendingItems.addMouseListener(this);
-
-        JScrollPane scrollPane = new JScrollPane(listPendingItems);
-        scrollPane.addMouseListener(this);
-        pendingSellProductsPanel.removeAll();
-        pendingSellProductsPanel.add(scrollPane);
         this.revalidate();
         this.repaint();
     }
@@ -135,7 +128,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     public void createPanelLeft() {
         panelLeft = new JPanel(new BorderLayout());
         panelLeft.add(listProductsPanel, BorderLayout.NORTH);
-        panelLeft.add(pendingSellProductsPanel, BorderLayout.CENTER);
+        panelLeft.add(textArea, BorderLayout.CENTER);
     }
 
     public void createSellProduct() {
@@ -164,12 +157,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                             e.printStackTrace();
                         }
                         return 1;
-                    }
-
-                    //runs on EDT, allowed to update gui
-                    protected void process(String fileName) {
-                        //receives the name of the file from publish() and sets it on the textfield.
-                        // textField.setText("scanning file: " + fileName);
                     }
 
                     //runs on EDT, allowed to update gui
@@ -247,9 +234,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         return 1;
                     }
 
-                    //runs on EDT, allowed to update gui
-                    protected void process(String fileName) {
-                    }
 
                     //runs on EDT, allowed to update gui
                     protected void done() {
@@ -307,9 +291,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         return 1;
                     }
 
-                    //runs on EDT, allowed to update gui
-                    protected void process(String fileName) {
-                    }
 
                     //runs on EDT, allowed to update gui
                     protected void done() {
@@ -377,16 +358,8 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         panelRight.add(sellProductPanel);
     }
 
-    public Object[][] transformTable(List<Item> list) {
-        Object[][] data = new Object[list.size()][2];
-        int numberRow = 0;
-        for (int i = 0; i < list.size(); i++) {
-            Item cur = list.get(i);
-            Object[] row = {cur.getName(), cur.getPrice()};
-            data[numberRow] = row;
-            numberRow++;
-        }
-        return data;
+    public void addLog(String text) {
+    	textArea.append(text + "\n");
     }
 
     @Override
@@ -426,12 +399,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 				e.printStackTrace();
 			}
         } else if (arg.getActionCommand().equals("refreshListItemButton")) {
-        	/*Item item1 = new Item("CAMERA", 400, trader.getName());
-            trader.getMarketObj().sell(trader.getName(), item1);
-            
-            Item item2 = new Item("BIKE", 600, trader.getName());
-            trader.getMarketObj().sell(trader.getName(), item2);*/
-            
             try {
 				trader.getMarketObj().listItems(trader.getName(), false);
 			} catch (RemoteException e) {

@@ -81,8 +81,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * @throws RemoteException
      */
     @Override
-    public synchronized String unregister(Trader trader) throws RemoteException {
-        String traderName = trader.getName();
+    public synchronized String unregister(String traderName) throws RemoteException {
         if (traders.containsKey(traderName)) {
             traders.remove(traderName);
             System.out.println("MarketImpl.unregister() :: Traders=" + traders);
@@ -209,7 +208,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                         itemToRemove = currentItem;
                         System.out.println("Found item to remove:" + itemToRemove);
                     } else {
-                        traders.get(traderName).sendNotification(Utilities.BALANCE_INSUFFICIENT, "Not enough money for item");
+                        traders.get(traderName).sendNotification(Utilities.BALANCE_INSUFFICIENT, "Balance Insufficient : You don't have enough money for that item");
                     }
                     break;
                 }

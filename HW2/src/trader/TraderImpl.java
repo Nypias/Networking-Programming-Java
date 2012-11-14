@@ -58,13 +58,44 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         System.out.println("Your wish, our command!");
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void sendNotification(Integer typeMessage, Object message) throws RemoteException {
         System.out.println("Message received by the client - " + typeMessage);
         switch (typeMessage) {
+		case Utilities.ITEM_ADDED_SALE:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.ITEM_WISHED_RECEIVED:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.ITEM_ALREADY_EXISTS:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.ITEM_WISHED_AVAILABLE:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.ITEM_WISHED_ALREADY_EXISTS:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.WISH_REGISTERED:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.WISH_CAN_BE_SERVED:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.WISH_ALREADY_REGISTERED:
+			this.gui.addLog((String) message);
+			break;
+		case Utilities.BALANCE_INSUFFICIENT:
+			this.gui.addLog((String) message);
+			break;
             case Utilities.ALL_PRODUCTS_FROM_MARKET:
                 System.out.println("ALL PRODUCTS FROM MARKET : " + ((List<Item>) message).size());
                 this.gui.getListItemsModel().addAllItems((List<Item>) message);
+                this.gui.getListItemsModel().fireTableDataChanged();
+                
+                this.gui.addLog("All products have been updated from the Market");
                 break;
             case Utilities.PRODUCT_SOLD:
                 System.out.println("CurrentBalance:" + bankObj.getAccount(name).getBalance());
@@ -131,7 +162,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
          ex.printStackTrace();
          }*/
 
-        String traderName = "Theo20"; //JOptionPane.showInputDialog("Enter trader name");
+        String traderName = "Theo25"; //JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
         

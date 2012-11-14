@@ -13,8 +13,9 @@ import java.io.Serializable;
 
 
 public class Item implements Serializable {
-    
-    private String name;
+	private static final long serialVersionUID = 730717577711231086L;
+	
+	private String name;
     private int price;
     private String seller;
     

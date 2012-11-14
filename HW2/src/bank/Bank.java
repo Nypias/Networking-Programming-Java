@@ -2,7 +2,6 @@ package bank;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Set;
 
 public interface Bank extends Remote {
     public Account newAccount(String name) throws RemoteException, RejectedException;

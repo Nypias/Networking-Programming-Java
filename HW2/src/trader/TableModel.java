@@ -48,8 +48,18 @@ public class TableModel extends AbstractTableModel {
 			return myItem.getName();
 		case 1:
 			return myItem.getPrice();
-		default:
+		default: 
 			return null;
+		}
+	}
+	
+	public void removeItem(Item item) {
+		String name = item.getName();
+		int price = item.getPrice();
+		for (Item i : list) {
+			if (i.getName().equals(name) && i.getPrice() == price) {
+				this.list.remove(i);
+			}
 		}
 	}
 
