@@ -20,9 +20,9 @@ import bank.RejectedException;
  * @author teo
  */
 public class MarketImpl extends UnicastRemoteObject implements Market {
-	private static final long serialVersionUID = 3454174232092028530L;
-	
-	private String marketName;
+
+    private static final long serialVersionUID = 3454174232092028530L;
+    private String marketName;
     private String bankName;
     // Stores all items of the market
     private List<Item> items = null;
@@ -100,7 +100,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     @Override
     public synchronized void sell(String traderName, Item item) throws RemoteException {
-               
+
         System.out.println("Trying to add item for sale");
         //Check if trader is registered
         if (!traders.containsKey(traderName)) {
@@ -116,7 +116,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 for (Wish wish : wishes) {
                     System.out.println("Wish in loop:" + wish);
                     //If new item to be sold matches a wish, send callback
-                    if (wish.getName().equals(item.getName()) && wish.getPrice() >= item.getPrice()) {
+                    if (wish.getName().equalsIgnoreCase(item.getName()) && wish.getPrice() >= item.getPrice()) {
                         //Send to requester notification
                         wishesToRemove.add(wish);
                         traders.get(wish.getRequester()).sendNotification(Utilities.ITEM_WISHED_RECEIVED, "Your wished item has arrived!");
@@ -157,7 +157,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             //Search wishes and see if there is a wish with the same properties
             boolean sameWishFound = false;
             for (Wish currentWish : wishes) {
-                if (currentWish.getName().equals(wish.getName()) && currentWish.getPrice() == wish.getPrice() && currentWish.getRequester().equals(wish.getRequester())) {
+                if (currentWish.getName().equalsIgnoreCase(wish.getName()) && currentWish.getPrice() == wish.getPrice() && currentWish.getRequester().equalsIgnoreCase(wish.getRequester())) {
                     sameWishFound = true;
                 }
             }
@@ -168,7 +168,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 boolean wishedItemFound = false;
                 for (Item it : items) {
                     System.out.println("it:" + it);
-                    if (it.getName().equals(wish.getName()) && it.getPrice() <= wish.getPrice()) {
+                    if (it.getName().equalsIgnoreCase(wish.getName()) && it.getPrice() <= wish.getPrice()) {
                         traders.get(traderName).sendNotification(Utilities.WISH_CAN_BE_SERVED, "Your wish can be served");
                         wishedItemFound = true;
                         break;
@@ -201,7 +201,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             for (Item currentItem : items) {
                 System.out.println("currentItem:" + currentItem);
                 //TODO: fix clause to consider buying a wished item.
-                if (currentItem.getName().equals(item.getName()) && currentItem.getPrice() == item.getPrice()) {
+                if (currentItem.getName().equalsIgnoreCase(item.getName()) && currentItem.getPrice() == item.getPrice()) {
                     //Check if buyer has enough account balance for the Item
                     float traderBalance = bankObj.getAccount(traderName).getBalance();
                     if (traderBalance >= currentItem.getPrice()) {
@@ -220,9 +220,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 //Put transaction in try-catch for atomic transaction
                 try {
                     //Withdraw money from buyer
-                    bankObj.getAccount(traderName).withdraw((float)itemToRemove.getPrice());
+                    bankObj.getAccount(traderName).withdraw((float) itemToRemove.getPrice());
                     //Deposit money to seller
-                    bankObj.getAccount(itemToRemove.getSeller()).deposit((float)itemToRemove.getPrice());
+                    bankObj.getAccount(itemToRemove.getSeller()).deposit((float) itemToRemove.getPrice());
                     //Remove item from list
                     items.remove(itemToRemove);
                     System.out.println("Size of items after: " + items.size());
@@ -255,7 +255,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             } else {
                 List<Item> tradersItems = new ArrayList<>();
                 for (Item item : items) {
-                    if (item.getSeller() != null && item.getSeller().equals(traderName)) {
+                    if (item.getSeller() != null && item.getSeller().equalsIgnoreCase(traderName)) {
                         tradersItems.add(item);
                     }
                 }
@@ -273,7 +273,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     private synchronized boolean checkItemExists(Item item) {
         for (Item it : items) {
-            if (it.getName().equals(item.getName()) && it.getPrice() == item.getPrice()) {
+            if (it.getName().equalsIgnoreCase(item.getName()) && it.getPrice() == item.getPrice()) {
                 return true;
             }
         }
