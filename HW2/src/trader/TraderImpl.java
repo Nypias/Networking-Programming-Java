@@ -7,8 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import marketplace.Item;
 import marketplace.Market;
 import tools.Utilities;
@@ -19,8 +17,9 @@ import bank.Bank;
  * @author teo
  */
 public class TraderImpl extends UnicastRemoteObject implements Trader {
-
-    //Unique identifier of Traider
+	private static final long serialVersionUID = -8577687714557513311L;
+	
+	//Unique identifier of Traider
     private String name;
     //Client should check if it has registered.
     private boolean registered;
@@ -65,7 +64,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         switch (typeMessage) {
             case Utilities.ALL_PRODUCTS_FROM_MARKET:
                 System.out.println("ALL PRODUCTS FROM MARKET");
-                this.gui.createListItems(this.gui.transformTable((List<Item>) message));
+                this.gui.getListItemsModel().addAllItems((List<Item>) message);
                 break;
             case Utilities.PRODUCT_SOLD:
                 System.out.println("CurrentBalance:" + bankObj.getAccount(name).getBalance());
@@ -132,7 +131,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
          ex.printStackTrace();
          }*/
 
-        String traderName = "Theo9"; //JOptionPane.showInputDialog("Enter trader name");
+        String traderName = "Theo17"; //JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
         
@@ -143,7 +142,9 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         try { 
             TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
             trader.getMarketObj().register(trader);	// We register the trader
+            
             trader.startGUI();
+            
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }

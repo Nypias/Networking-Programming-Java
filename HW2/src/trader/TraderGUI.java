@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+import javax.swing.table.AbstractTableModel;
 
 import marketplace.*;
 import bank.Account;
@@ -35,8 +36,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
             panelRight, sellProductPanel, titleProductPanel,
             panelAccountBalance, titleBuyPanel, panelBuy, titleWishPanel, panelWish;
     private JTextField nameProduct, priceProduct, balanceTrader, nameProductWished, priceProductWished;
-    private JButton sellProduct, newAccountButton, newBuyButton, addWishedProduct;
+    private JButton sellProduct, newAccountButton, newBuyButton, addWishedProduct, refreshListItemButton, refreshPendingListButton;
     private JTable listItems, listPendingItems;
+    private TableModel listItemsModel, listPendingModel;
     private List<Item> productsMarket;
     private List<Item> productsPending;
     private TraderImpl trader;
@@ -85,6 +87,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         listItems.setPreferredScrollableViewportSize(new Dimension(450, 350));
         listItems.setFillsViewportHeight(true);
         listItems.addMouseListener(this);
+        
+        TableModel listItemsModel = new TableModel(this.productsMarket);
+        listItems.setModel(listItemsModel);
 
         JScrollPane scrollPane = new JScrollPane(listItems);
         scrollPane.addMouseListener(this);
@@ -94,7 +99,23 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         this.repaint();
     }
 
-    public void createListPendingItem(Object[][] data) {
+    public TableModel getListItemsModel() {
+		return listItemsModel;
+	}
+
+	public void setListItemsModel(TableModel listItemsModel) {
+		this.listItemsModel = listItemsModel;
+	}
+
+	public TableModel getListPendingModel() {
+		return listPendingModel;
+	}
+
+	public void setListPendingModel(TableModel listPendingModel) {
+		this.listPendingModel = listPendingModel;
+	}
+
+	public void createListPendingItem(Object[][] data) {
         pendingSellProductsPanel = new JPanel();
 
         String[] columns = {"Name", "Price"};
@@ -246,8 +267,15 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
             }
         });
         panelContent.add(newAccountButton);
+        
+        // Refresh the list
+        refreshListItemButton = new JButton("Refresh the list of products");
+        refreshListItemButton.setActionCommand("refreshListItemButton");
+        refreshListItemButton.addActionListener(this);
+        
+        
         panelContent.add(new JPanel());
-        panelContent.add(new JPanel());
+        panelContent.add(refreshListItemButton);
         panelContent.add(new JPanel());
         panelContent.add(new JLabel("Current Balance : "));
         balanceTrader = new JTextField("", 10);
@@ -394,6 +422,18 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         	Wish wish = new Wish(nameWishProduct, priceWishProduct, trader.getName());
         	try {
 				this.trader.getMarketObj().wish(trader.getName(), wish);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+        } else if (arg.getActionCommand().equals("refreshListItemButton")) {
+        	/*Item item1 = new Item("CAMERA", 400, trader.getName());
+            trader.getMarketObj().sell(trader.getName(), item1);
+            
+            Item item2 = new Item("BIKE", 600, trader.getName());
+            trader.getMarketObj().sell(trader.getName(), item2);*/
+            
+            try {
+				trader.getMarketObj().listItems(trader.getName(), false);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}

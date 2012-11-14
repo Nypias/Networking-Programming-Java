@@ -1,7 +1,5 @@
 package marketplace;
 
-import bank.Bank;
-import bank.RejectedException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -11,19 +9,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import trader.Trader;
 
 import tools.Utilities;
+import trader.Trader;
+import bank.Bank;
+import bank.RejectedException;
 
 /**
  *
  * @author teo
  */
 public class MarketImpl extends UnicastRemoteObject implements Market {
-
-    private String marketName;
+	private static final long serialVersionUID = 3454174232092028530L;
+	
+	private String marketName;
     private String bankName;
     // Stores all items of the market
     private List<Item> items = null;
