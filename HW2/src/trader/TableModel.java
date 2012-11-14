@@ -31,6 +31,10 @@ public class TableModel extends AbstractTableModel {
 		return 2;
 	}
 	
+	public Item getRow(int row) {
+		return this.list.get(row);
+	}
+	
 	public String getColumnName(int col) {
 		return headerList[col];
 	}
