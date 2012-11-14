@@ -1,5 +1,6 @@
 package trader;
 
+import bank.Account;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,13 +43,13 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     private List<Item> productsMarket;
     private List<Item> productsPending;
     private TraderImpl trader;
-
+    private Account account;
     public TraderGUI(TraderImpl trader) {
         super();
         this.trader = trader;
         this.productsMarket = new ArrayList<Item>();
         this.productsPending = new ArrayList<Item>();
-
+        this.account = null;
         this.setSize(1000, 800);
         this.setTitle("MarketPlace - Created by Theo and Thomas");
         //
@@ -135,6 +136,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
                         try {
+                            //publish(file.getName); //passes the name of the file to process()
                             trader.getMarketObj().register(trader);
                             Item item1 = new Item(nameProduct.getText(), Integer.parseInt(priceProduct.getText()), trader.getName());
                             trader.getMarketObj().sell(trader.getName(), item1);
@@ -161,9 +163,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         }
                     }
                 }.execute();
-
-
-                System.out.println("Sell clicked!");
 
 
                 System.out.println("Sell clicked! after");
@@ -212,6 +211,41 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         panelAccountBalance = new JPanel();
         JPanel panelContent = new JPanel(new GridLayout(3, 2));
         newAccountButton = new JButton("Create a new account");
+        newAccountButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new SwingWorker<Integer, String>() {
+                    //runs on a background thread.
+                    @Override
+                    protected Integer doInBackground() throws Exception {
+                        try {
+                            account = trader.getBankObj().newAccount(trader.getName());
+                            account.deposit(1000f);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                        return 1;
+                    }
+
+                    //runs on EDT, allowed to update gui
+                    protected void process(String fileName) {
+                    }
+
+                    //runs on EDT, allowed to update gui
+                    protected void done() {
+                        try {
+                            //textField.setText("UPDATE GUI");
+                        } catch (Exception e) {
+                            //this is where you handle any exceptions that occurred in the
+                            //doInBackground() method
+                        }
+                    }
+                }.execute();
+
+
+                System.out.println("Sell clicked! after");
+            }
+        });
         panelContent.add(newAccountButton);
         panelContent.add(new JPanel());
         panelContent.add(new JPanel());
@@ -229,6 +263,44 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         JLabel instructions = new JLabel("Click on an item in the left table to buy it !");
         smallPanelBuy.add(instructions);
         newBuyButton = new JButton("Buy it");
+        newBuyButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new SwingWorker<Integer, String>() {
+                    //runs on a background thread.
+                    @Override
+                    protected Integer doInBackground() throws Exception {
+                        try {
+                           
+                            trader.getMarketObj().register(trader);
+                            Item item1 = new Item(nameProduct.getText(), Integer.parseInt(priceProduct.getText()), null);
+                            trader.getMarketObj().buy(trader.getName(), item1);
+
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                        return 1;
+                    }
+
+                    //runs on EDT, allowed to update gui
+                    protected void process(String fileName) {
+                    }
+
+                    //runs on EDT, allowed to update gui
+                    protected void done() {
+                        try {
+                            //textField.setText("UPDATE GUI");
+                        } catch (Exception e) {
+                            //this is where you handle any exceptions that occurred in the
+                            //doInBackground() method
+                        }
+                    }
+                }.execute();
+
+
+                System.out.println("Sell clicked! after");
+            }
+        });
         smallPanelBuy.add(newBuyButton);
         panelBuy.add(smallPanelBuy);
     }

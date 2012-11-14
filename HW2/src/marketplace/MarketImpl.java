@@ -46,7 +46,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         this.traders = new HashMap<>();
         this.wishes = new ArrayList<>();
         try {
-            this.bankObj = (Bank) Naming.lookup("rmi:/localhost:1099/" + bankName);
+            this.bankObj = (Bank) Naming.lookup(/*"rmi:/localhost:1099/" + */bankName);
         } catch (NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
         }

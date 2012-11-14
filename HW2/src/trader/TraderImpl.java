@@ -38,8 +38,8 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         this.registered = false;
         
         try {
-            marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
-            bankObj = (Bank) Naming.lookup("rmi:/localhost:1099/" + bankName);
+            marketObj = (Market) Naming.lookup(marketName);
+            bankObj = (Bank) Naming.lookup(bankName);
         } catch (NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
         }
