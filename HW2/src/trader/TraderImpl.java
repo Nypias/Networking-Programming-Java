@@ -5,6 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 import tools.Utilities;
@@ -46,8 +47,10 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
 
     @Override
     public void sendNotification(Integer typeMessage, Object message) throws RemoteException {
+    	System.out.println("Message received by the client - " + typeMessage);
         switch (typeMessage) {
         	case Utilities.ALL_PRODUCTS_FROM_MARKET:
+        		System.out.println("ALL PRODUCTS FROM MARKET");
         		this.gui.createListItems(this.gui.transformTable((List<Item>) message));
         		break;
         }
@@ -102,7 +105,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     	Market marketObj;
 		try {
 			marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
-			Trader traderTheo = new TraderImpl("Theo");
+			Trader traderTheo = new TraderImpl("Theo1");
 	    	marketObj.register(traderTheo);
 	    	Item item1 = new Item("CAMERA", 600);
 	    	marketObj.sell(traderTheo.getName(), item1);
@@ -113,8 +116,5 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			e.printStackTrace();
 		}
-    	
-    	
-
     }
 }
