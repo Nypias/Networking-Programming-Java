@@ -1,19 +1,20 @@
 package trader;
 
+import bank.Account;
+import bank.Bank;
+import bank.RejectedException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
-
-import tools.Utilities;
-
-import com.sun.xml.internal.bind.v2.model.core.ID;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import marketplace.Item;
 import marketplace.Market;
+import tools.Utilities;
 
 /**
  *
@@ -25,18 +26,33 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     private String name;
     //Client should check if it has registered.
     private boolean registered;
+    private TraderGUI gui;
+    private Market marketObj;
+    private Bank bankObj;
     
-    private static TraderGUI gui;
+   
 
-    @Override
-    public String getName() {
-        System.out.println("Retrieved name");
-        return name;
-    }
+    public TraderImpl(String name, String marketName, String bankName) throws RemoteException {
 
-    public TraderImpl(String name) throws RemoteException {
         this.name = name;
         this.registered = false;
+        
+        try {
+            marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
+            bankObj = (Bank) Naming.lookup("rmi:/localhost:1099/" + bankName);
+        } catch (NotBoundException | MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void startGUI(){
+        this.gui = new TraderGUI(this);
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                gui.setVisible(true);
+            }
+        });
     }
 
     @Override
@@ -47,74 +63,89 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
 
     @Override
     public void sendNotification(Integer typeMessage, Object message) throws RemoteException {
-    	System.out.println("Message received by the client - " + typeMessage);
+        System.out.println("Message received by the client - " + typeMessage);
         switch (typeMessage) {
-        	case Utilities.ALL_PRODUCTS_FROM_MARKET:
-        		System.out.println("ALL PRODUCTS FROM MARKET");
-        		this.gui.createListItems(this.gui.transformTable((List<Item>) message));
-        		break;
+            case Utilities.ALL_PRODUCTS_FROM_MARKET:
+                System.out.println("ALL PRODUCTS FROM MARKET");
+                this.gui.createListItems(this.gui.transformTable((List<Item>) message));
+                break;
+            case Utilities.PRODUCT_SOLD:
+                System.out.println("CurrentBalance:" + bankObj.getAccount(name).getBalance());
+            case Utilities.PRODUCT_BOUGHT:
+                System.out.println("CurrentBalance:" + bankObj.getAccount(name).getBalance());
         }
-    	
+
         //System.out.println("TraderImpl.setLabelText() :: " + text);
     }
 
+     public Market getMarketObj() {
+        return marketObj;
+    }
+
+    public Bank getBankObj() {
+        return bankObj;
+    }
+   
+
+    @Override
+    public String getName() {
+        System.out.println("Retrieved name");
+        return name;
+    }
+    
     public static void main(String[] args) throws InterruptedException {
         /*try {
-            String marketName = "MyMarket";
-            int choice = 1;
-            if (choice == 2) {
-                Trader trader1 = new TraderImpl("trader1");
-                Item item1 = new Item("CAMERA", 500);
-                //Item item2 = new Item("BIKE",11500);
-                item1.setSeller(trader1.getName());
-                //Item item3 = new Item("PEN",10);
-                //item1.setSeller(trader1.getName());
+         int choice = 2;
+         if (choice == 1) {
+         TraderImpl trader1 = new TraderImpl("trader1");
+         Item item1 = new Item("CAMERA", 400, trader1.getName());
+         item1.setSeller(trader1.getName());
 
-                Market marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
-                System.out.println(marketObj.register(trader1));
-                marketObj.listItems(trader1);
+         System.out.println(trader1.getMarketObj().register(trader1));
+         trader1.getMarketObj().sell(trader1.getName(), item1);
+         try {
+         Account myAccount = trader1.getBankObj().newAccount(trader1.getName());
+         myAccount.deposit(1000f);
+         } catch (RejectedException ex) {
+         ex.printStackTrace();
+         }
 
-                marketObj.sell(trader1.getName(), item1);
-                //marketObj.sell(trader, item3);
+         } else {   //TRADER 2 TEST
+         TraderImpl trader2 = new TraderImpl("trader2");
+         try {
+         Account myAccount = trader2.getBankObj().newAccount(trader2.getName());
+         myAccount.deposit(100f);
+         } catch (RejectedException ex) {
+         ex.printStackTrace();
+         }
 
-                //System.out.println(marketObj.unregister(trader));
+         //Wish wish1 = new Wish("CAMERA", 500, trader2.getName());
 
-            } else {   //TRADER 2 TEST
-                Trader trader2 = new TraderImpl("trader2");
-                Item item1 = new Item("CAMERA", 600);
-                item1.setWishedPrice(600);
-                item1.setRequesterName(trader2.getName());
-                Market marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
-                System.out.println(marketObj.register(trader2));
-                marketObj.listItems(trader2);
-                marketObj.buy(trader2, item1);
-            }
-    	
+         System.out.println(trader2.getMarketObj().register(trader2));
+         //marketObj.listItems(trader2.getName());
+         Item buyItem = new Item("CAMERA", 400, null);
+         trader2.getMarketObj().buy(trader2.getName(), buyItem);
+         //marketObj.wish(trader2.getName(), wish1);
 
-        } catch (NotBoundException ex) {
-            ex.printStackTrace();
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
+         }
+
+
+         } catch (RemoteException ex) {
+         ex.printStackTrace();
+         }*/
+
+        String traderName = JOptionPane.showInputDialog("Enter trader name");
+        String marketName = JOptionPane.showInputDialog("Enter market name");
+        String bankName = JOptionPane.showInputDialog("Enter bank name");
+        
+        try { 
+            TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
+            trader.startGUI();
         } catch (RemoteException ex) {
             ex.printStackTrace();
-        }*/
-    	
-    	String marketName = "MyMarket";
-    	gui = new TraderGUI();
-    	new Thread(gui).start();
-    	Market marketObj;
-		try {
-			marketObj = (Market) Naming.lookup("rmi:/localhost:1099/" + marketName);
-			Trader traderTheo = new TraderImpl("Theo1");
-	    	marketObj.register(traderTheo);
-	    	Item item1 = new Item("CAMERA", 600);
-	    	marketObj.sell(traderTheo.getName(), item1);
-	    	Item item2 = new Item("PEN",10);
-	    	marketObj.sell(traderTheo.getName(), item2);
-	    	
-	    	marketObj.listItems(traderTheo.getName());
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			e.printStackTrace();
-		}
+        }
+        
+        
+       
     }
 }

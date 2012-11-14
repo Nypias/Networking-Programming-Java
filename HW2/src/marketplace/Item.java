@@ -42,9 +42,10 @@ public class Item implements Serializable {
         this.price = price;
     }
 
-    public Item(String name, int price) {
+    public Item(String name, int price, String seller) {
         this.name = name;
         this.price = price;
+        this.seller = seller;
     }
     
     @Override
