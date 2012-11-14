@@ -14,6 +14,7 @@ public class Utilities {
 	public final static int PRODUCT_BOUGHT = 9;
 	public final static int PRODUCT_SOLD = 10;
 	public final static int ALL_PRODUCTS_FROM_MARKET = 11;
+        public final static int WISH_ALREADY_REGISTERED = 12;
 
 
 }
