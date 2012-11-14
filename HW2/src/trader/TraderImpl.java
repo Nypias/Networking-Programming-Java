@@ -1,20 +1,18 @@
 package trader;
 
-import bank.Account;
-import bank.Bank;
-import bank.RejectedException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
 import marketplace.Item;
 import marketplace.Market;
 import tools.Utilities;
+import bank.Bank;
 
 /**
  *
@@ -75,7 +73,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
                 System.out.println("CurrentBalance:" + bankObj.getAccount(name).getBalance());
         }
 
-        //System.out.println("TraderImpl.setLabelText() :: " + text);
+        System.out.println("TraderImpl.setLabelText() :: " + typeMessage);
     }
 
      public Market getMarketObj() {
@@ -134,12 +132,17 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
          ex.printStackTrace();
          }*/
 
-        String traderName = JOptionPane.showInputDialog("Enter trader name");
-        String marketName = JOptionPane.showInputDialog("Enter market name");
-        String bankName = JOptionPane.showInputDialog("Enter bank name");
+        String traderName = "Theo9"; //JOptionPane.showInputDialog("Enter trader name");
+        String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
+        String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
+        
+        //System.setProperty("java.rmi.server.hostname", "192.168.1.15");
+
+        
         
         try { 
             TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
+            trader.getMarketObj().register(trader);	// We register the trader
             trader.startGUI();
         } catch (RemoteException ex) {
             ex.printStackTrace();

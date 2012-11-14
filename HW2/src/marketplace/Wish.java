@@ -7,8 +7,9 @@ import java.io.Serializable;
  * @author teo
  */
 public class Wish implements Serializable {
-    
-    private String name;
+	private static final long serialVersionUID = 717463913441944169L;
+	
+	private String name;
     private int price;
     private String requester;
 

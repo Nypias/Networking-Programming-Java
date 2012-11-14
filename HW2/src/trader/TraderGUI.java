@@ -1,6 +1,5 @@
 package trader;
 
-import bank.Account;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,8 +12,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +25,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-import marketplace.Item;
-import marketplace.Market;
+import marketplace.*;
+import bank.Account;
 
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
@@ -44,6 +41,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     private List<Item> productsPending;
     private TraderImpl trader;
     private Account account;
+    
     public TraderGUI(TraderImpl trader) {
         super();
         this.trader = trader;
@@ -221,6 +219,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         try {
                             account = trader.getBankObj().newAccount(trader.getName());
                             account.deposit(1000f);
+                            balanceTrader.setText(account.getBalance()+" €");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -271,8 +270,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     @Override
                     protected Integer doInBackground() throws Exception {
                         try {
-                           
-                            trader.getMarketObj().register(trader);
                             Item item1 = new Item(nameProduct.getText(), Integer.parseInt(priceProduct.getText()), null);
                             trader.getMarketObj().buy(trader.getName(), item1);
 
@@ -390,7 +387,16 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub
+    public void actionPerformed(ActionEvent arg) {
+        if (arg.getActionCommand().equals("addWishedButton")) {
+        	String nameWishProduct = nameProductWished.getText();
+        	int priceWishProduct = Integer.parseInt(priceProductWished.getText());
+        	Wish wish = new Wish(nameWishProduct, priceWishProduct, trader.getName());
+        	try {
+				this.trader.getMarketObj().wish(trader.getName(), wish);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+        }
     }
 }
