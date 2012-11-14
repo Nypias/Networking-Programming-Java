@@ -63,7 +63,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         System.out.println("Message received by the client - " + typeMessage);
         switch (typeMessage) {
             case Utilities.ALL_PRODUCTS_FROM_MARKET:
-                System.out.println("ALL PRODUCTS FROM MARKET");
+                System.out.println("ALL PRODUCTS FROM MARKET : " + ((List<Item>) message).size());
                 this.gui.getListItemsModel().addAllItems((List<Item>) message);
                 break;
             case Utilities.PRODUCT_SOLD:
@@ -131,7 +131,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
          ex.printStackTrace();
          }*/
 
-        String traderName = "Theo17"; //JOptionPane.showInputDialog("Enter trader name");
+        String traderName = "Theo20"; //JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
         

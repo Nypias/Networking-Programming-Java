@@ -88,7 +88,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         listItems.setFillsViewportHeight(true);
         listItems.addMouseListener(this);
         
-        TableModel listItemsModel = new TableModel(this.productsMarket);
+        listItemsModel = new TableModel(this.productsMarket);
         listItems.setModel(listItemsModel);
 
         JScrollPane scrollPane = new JScrollPane(listItems);
