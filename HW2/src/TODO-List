@@ -1,2 +1,3 @@
 1) If client crashes, we can not start another one with the same name
 2) Add register and unregister buttons. Unregister should also close trader account on bank.
+3) Fix buy item action performed (get item from table).
