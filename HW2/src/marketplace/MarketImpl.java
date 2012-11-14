@@ -90,19 +90,23 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             if (!checkItemExists(item)) {
                 items.add(item);
                 traders.get(traderName).sendNotification(Utilities.ITEM_ADDED_SALE,"Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
-                Wish wishToRemove = null;
+                List<Wish> wishesToRemove = new ArrayList<>();
                 //Check if new Item corresponds to a wish. 
                 for (Wish wish : wishes) {
                     System.out.println("Wish in loop:" + wish);
                     //If new item to be sold matches a wish, send callback
                     if (wish.getName().equals(item.getName()) && wish.getPrice() >= item.getPrice()) {
                         //Send to requester notification
-                        wishToRemove = wish;
+                        wishesToRemove.add(wish);
                         traders.get(wish.getRequester()).sendNotification(Utilities.ITEM_WISHED_RECEIVED,"Your wished item has arrived!");
-                        break;
                     }
                 }
-                wishes.remove(wishToRemove);
+                
+                //Remove wishes
+                for(Wish wishToRem : wishesToRemove){
+                    System.out.println("sell() :: Removing wish :"+wishToRem);
+                    wishes.remove(wishToRem);
+                }
             } // If item to be sold already exists in list, send appropriate notification
             else {
                 traders.get(traderName).sendNotification(Utilities.ITEM_ALREADY_EXISTS, "Item: " + item.getName() + "-" + item.getPrice() + " already exists!");
@@ -195,17 +199,24 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * @throws RemoteException
      */
     @Override
-    public synchronized void listItems(String traderName) throws RemoteException {
+    public synchronized void listItems(String traderName, boolean allItems) throws RemoteException {
         
         if (!traders.containsKey(traderName)) {
-            //trader.sendNotification("Register first!");
+            
             System.out.println("Received request from unregistered trader!");
         } else {
-            StringBuilder itemsStr = new StringBuilder();
-            for (Item i : items) {
-                itemsStr.append(i.toString()).append("\n==========\n");
+            if(allItems){
+                traders.get(traderName).sendNotification(Utilities.ALL_PRODUCTS_FROM_MARKET, items);
             }
-            traders.get(traderName).sendNotification(Utilities.ALL_PRODUCTS_FROM_MARKET, items);
+            else {
+                List<Item> tradersItems = new ArrayList<>();
+                for(Item item : items){
+                    if (item.getSeller().equals(traderName)){
+                        tradersItems.add(item);
+                    }
+                }
+                traders.get(traderName).sendNotification(Utilities.ALL_PRODUCTS_FROM_MARKET,tradersItems);
+            }
         }
     }
 

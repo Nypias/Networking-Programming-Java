@@ -25,18 +25,6 @@ public class Item implements Serializable {
     public void setSeller(String seller) {
         this.seller = seller;
     }
-
-    public String getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
-    }
-    private String buyer;
-
-   
-    
     
     public String getName() {
         return name;
