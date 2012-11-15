@@ -45,14 +45,14 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     private TraderImpl trader;
     private Account account;
     private Item itemClicked = null;
-    
+
     public TraderGUI(final TraderImpl trader) {
         super();
         this.trader = trader;
         this.productsMarket = new ArrayList<Item>();
         this.account = null;
         this.setSize(1000, 800);
-        this.setTitle("MarketPlace - Created by Theo and Thomas --- Trader:"+trader.getName());
+        this.setTitle("MarketPlace - Created by Theo and Thomas --- Trader:" + trader.getName());
         //
         this.setLocationRelativeTo(this);
         this.setLayout(new BorderLayout());
@@ -74,11 +74,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
         addWindowListener(new WindowAdapter() {	// Close the window
             public void windowClosing(WindowEvent ev) {
-            	/*try {
-					trader.getMarketObj().unregister(trader.getName());
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}*/
+                try {
+                    trader.getBankObj().deleteAccount(trader.getName());
+                    trader.getMarketObj().unregister(trader.getName());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 System.exit(0);
             }
         });
@@ -91,7 +92,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         listItems.setPreferredScrollableViewportSize(new Dimension(450, 350));
         listItems.setFillsViewportHeight(true);
         listItems.addMouseListener(this);
-        
+
         listItemsModel = new TableModel(this.productsMarket);
         listItems.setModel(listItemsModel);
 
@@ -104,14 +105,14 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     public TableModel getListItemsModel() {
-		return listItemsModel;
-	}
+        return listItemsModel;
+    }
 
-	public void setListItemsModel(TableModel listItemsModel) {
-		this.listItemsModel = listItemsModel;
-	}
+    public void setListItemsModel(TableModel listItemsModel) {
+        this.listItemsModel = listItemsModel;
+    }
 
-	public void createListPendingItem() {
+    public void createListPendingItem() {
         textArea = new JTextArea();
         textArea.setColumns(20);
         textArea.setLineWrap(true);
@@ -119,7 +120,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
         textArea.setText("");
-        
+
         // We create a scroll and we add the JTextArea into the scroll
         scrPaneTextArea = new JScrollPane(textArea);
         scrPaneTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -152,10 +153,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
                         try {
-                            trader.getMarketObj().register(trader);
                             Item item1 = new Item(nameProduct.getText(), Integer.parseInt(priceProduct.getText()), trader.getName());
                             trader.getMarketObj().sell(trader.getName(), item1);
-                            trader.getMarketObj().listItems(trader.getName(), true);
+                            //trader.getMarketObj().listItems(trader.getName(), true);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -165,9 +165,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     //runs on EDT, allowed to update gui
                     protected void done() {
                         try {
-                           // We reset the textfield
-                        	nameProduct.setText("");
-                        	priceProduct.setText("");
+                            // We reset the textfield
+                            nameProduct.setText("");
+                            priceProduct.setText("");
                         } catch (Exception e) {
                             //this is where you handle any exceptions that occurred in the
                             //doInBackground() method
@@ -232,13 +232,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         try {
                             account = trader.getBankObj().newAccount(trader.getName());
                             account.deposit(1000f);
-                            balanceTrader.setText(account.getBalance()+" €");
+                            balanceTrader.setText(account.getBalance() + " €");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                         return 1;
                     }
-
 
                     //runs on EDT, allowed to update gui
                     protected void done() {
@@ -255,13 +254,13 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 System.out.println("Sell clicked! after");
             }
         });
-        
-        
+
+
         // Refresh the list
         refreshListItemButton = new JButton("Refresh the list of products");
         refreshListItemButton.setActionCommand("refreshListItemButton");
         refreshListItemButton.addActionListener(this);
-        
+
         panelContent.add(refreshListItemButton);
         panelContent.add(newAccountButton);
         panelContent.add(new JPanel());
@@ -281,7 +280,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         newBuyButton = new JButton("Buy it");
         this.newBuyButton.setEnabled(false);
         newBuyButton.setActionCommand("newBuyButton");
-        
+
         newBuyButton.addActionListener(this);
         smallPanelBuy.add(newBuyButton);
         panelBuy.add(smallPanelBuy);
@@ -335,12 +334,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     public void addLog(String text) {
-    	textArea.append(text + "\n");
+        textArea.append(text + "\n");
     }
-    
+
     public void setBalanceTrader(String price) {
-		this.balanceTrader.setText(price + " €");
-	}
+        this.balanceTrader.setText(price + " €");
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -359,9 +358,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-    	JTable jtable = (JTable) e.getSource();
-        int selection= jtable.getSelectedRow();
-        
+        JTable jtable = (JTable) e.getSource();
+        int selection = jtable.getSelectedRow();
+
         this.itemClicked = listItemsModel.getRow(selection);
         this.newBuyButton.setEnabled(true);
     }
@@ -374,14 +373,14 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg) {
         if (arg.getActionCommand().equals("addWishedButton")) {
-        	final String nameWishProduct = nameProductWished.getText();
-        	final int priceWishProduct = Integer.parseInt(priceProductWished.getText());
-        	
-        	new SwingWorker<Integer, String>() {
+            final String nameWishProduct = nameProductWished.getText();
+            final int priceWishProduct = Integer.parseInt(priceProductWished.getText());
+
+            new SwingWorker<Integer, String>() {
                 protected Integer doInBackground() throws Exception {
                     try {
-                    	Wish wish = new Wish(nameWishProduct, priceWishProduct, trader.getName());
-            			trader.getMarketObj().wish(trader.getName(), wish);
+                        Wish wish = new Wish(nameWishProduct, priceWishProduct, trader.getName());
+                        trader.getMarketObj().wish(trader.getName(), wish);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -391,9 +390,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 protected void done() {
                     try {
                     } catch (Exception e) {
-                    	// We reset the textfields
-        				nameProductWished.setText("");
-        				priceProductWished.setText("");
+                        // We reset the textfields
+                        nameProductWished.setText("");
+                        priceProductWished.setText("");
                     }
                 }
             }.execute();
@@ -402,7 +401,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 @Override
                 protected Integer doInBackground() throws Exception {
                     try {
-                    	trader.getMarketObj().listItems(trader.getName(), true);	// We want all the items
+                        trader.getMarketObj().listItems(trader.getName(), true);	// We want all the items
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -410,26 +409,27 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 }
             }.execute();
         } else if (arg.getActionCommand().equals("newBuyButton")) {
-        	 new SwingWorker<Integer, String>() {
-                 @Override
-                 protected Integer doInBackground() throws Exception {
-                     try {
-                         Item item1 = new Item(itemClicked.getName(), itemClicked.getPrice(), null);
-                         trader.getMarketObj().buy(trader.getName(), item1);
-                         trader.getMarketObj().listItems(trader.getName(), true);
-                     } catch (RemoteException e) {
-                         e.printStackTrace();
-                     }
-                     return 1;
-                 }
-                 protected void done() {
-                     try {
-                         newBuyButton.setEnabled(false);
-                     } catch (Exception e) {
-                    	 e.printStackTrace();
-                     }
-                 }
-             }.execute();
+            new SwingWorker<Integer, String>() {
+                @Override
+                protected Integer doInBackground() throws Exception {
+                    try {
+                        Item item1 = new Item(itemClicked.getName(), itemClicked.getPrice(), null);
+                        trader.getMarketObj().buy(trader.getName(), item1);
+                        //trader.getMarketObj().listItems(trader.getName(), true);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    return 1;
+                }
+
+                protected void done() {
+                    try {
+                        newBuyButton.setEnabled(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.execute();
         }
     }
 }

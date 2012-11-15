@@ -11,6 +11,7 @@ import marketplace.Item;
 import marketplace.Market;
 import tools.Utilities;
 import bank.Bank;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -108,6 +109,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
 					+ bankObj.getAccount(name).getBalance());
 			this.gui.setBalanceTrader(bankObj.getAccount(name).getBalance() + "");
 			break;
+                
         }
 
         System.out.println("TraderImpl.setLabelText() :: " + typeMessage);
@@ -169,7 +171,7 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
          ex.printStackTrace();
          }*/
 
-        String traderName = "Theo8"; //JOptionPane.showInputDialog("Enter trader name");
+        String traderName = JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
         

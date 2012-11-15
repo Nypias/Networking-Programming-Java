@@ -14,6 +14,8 @@ import tools.Utilities;
 import trader.Trader;
 import bank.Bank;
 import bank.RejectedException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -92,6 +94,20 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     }
 
     /**
+     * Notify traders to refresh their list.
+     */
+    private synchronized void notifyTraders(){
+        for(String traderName : traders.keySet()){
+            try {
+                System.out.println("Sending notification to :"+traderName);
+                traders.get(traderName).sendNotification(Utilities.ALL_PRODUCTS_FROM_MARKET,items);
+            } catch (RemoteException ex) {
+                Logger.getLogger(MarketImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
      *
      * @param trader
      * @param item
@@ -110,6 +126,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             if (!checkItemExists(item)) {
                 items.add(item);
                 traders.get(traderName).sendNotification(Utilities.ITEM_ADDED_SALE, "Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
+                notifyTraders();
                 List<Wish> wishesToRemove = new ArrayList<>();
                 //Check if new Item corresponds to a wish. 
                 for (Wish wish : wishes) {
@@ -227,7 +244,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                     System.out.println("Size of items after: " + items.size());
                     traders.get(traderName).sendNotification(Utilities.PRODUCT_BOUGHT, "Congratulations you bought the product!");
                     traders.get(itemToRemove.getSeller()).sendNotification(Utilities.PRODUCT_SOLD, "Your item was sold");
-
+                    notifyTraders();
                 } catch (RemoteException | RejectedException ex) {
                     ex.printStackTrace();
                 } finally {
