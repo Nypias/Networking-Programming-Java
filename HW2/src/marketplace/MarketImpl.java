@@ -234,6 +234,10 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                     //TODO: Rollback transactions
                 }
             }
+            else {
+                  traders.get(traderName).sendNotification(Utilities.ITEM_NOT_FOUND, "The requested item was not found!");
+
+            }
         }
     }
 

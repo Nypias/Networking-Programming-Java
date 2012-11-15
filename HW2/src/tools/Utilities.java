@@ -22,6 +22,7 @@ public class Utilities {
 	public final static int ALL_PRODUCTS_FROM_MARKET = 11;
         public final static int WISH_ALREADY_REGISTERED = 12;
         public final static int BALANCE_INSUFFICIENT = 13;
+        public final static int ITEM_NOT_FOUND = 14;
         
         public final static int port = 1099;
         

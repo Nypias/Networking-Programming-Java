@@ -52,7 +52,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         this.productsMarket = new ArrayList<Item>();
         this.account = null;
         this.setSize(1000, 800);
-        this.setTitle("MarketPlace - Created by Theo and Thomas");
+        this.setTitle("MarketPlace - Created by Theo and Thomas --- Trader:"+trader.getName());
         //
         this.setLocationRelativeTo(this);
         this.setLayout(new BorderLayout());
@@ -155,7 +155,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                             trader.getMarketObj().register(trader);
                             Item item1 = new Item(nameProduct.getText(), Integer.parseInt(priceProduct.getText()), trader.getName());
                             trader.getMarketObj().sell(trader.getName(), item1);
-
+                            trader.getMarketObj().listItems(trader.getName(), true);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -361,6 +361,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     public void mousePressed(MouseEvent e) {
     	JTable jtable = (JTable) e.getSource();
         int selection= jtable.getSelectedRow();
+        
         this.itemClicked = listItemsModel.getRow(selection);
         this.newBuyButton.setEnabled(true);
     }
@@ -415,6 +416,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                      try {
                          Item item1 = new Item(itemClicked.getName(), itemClicked.getPrice(), null);
                          trader.getMarketObj().buy(trader.getName(), item1);
+                         trader.getMarketObj().listItems(trader.getName(), true);
                      } catch (RemoteException e) {
                          e.printStackTrace();
                      }
