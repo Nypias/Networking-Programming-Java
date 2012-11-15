@@ -1,3 +1,25 @@
 1) If client crashes, we can not start another one with the same name
 2) Add register and unregister buttons. Unregister should also close trader account on bank.
 3) Fix buy item action performed (get item from table).
+
+
+
+SCENARIOS
+PASSED!
+1) T1: Sell - bike,600
+   T1: Sell - camera, 300
+   T2: Buy - bike, 600 
+PASSED!
+2) T1: Wish - bike,500
+   T2: Wish - bike,400
+   T3: Sell - bike,600
+   T3: Sell - bike,450
+   T1: Buy  - bike,450
+PASSED!
+3) T1: Sell - bike,500
+   T1: Wish - camera,300
+   T2: Buy  - bike,500
+   T2: Sell - camera,250
+   T1: Buy  - camera,250
+   T1: unregister
+   T1: register 

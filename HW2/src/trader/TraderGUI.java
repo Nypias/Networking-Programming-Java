@@ -249,9 +249,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         }
                     }
                 }.execute();
-
-
-                System.out.println("Sell clicked! after");
             }
         });
 

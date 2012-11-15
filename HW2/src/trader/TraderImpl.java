@@ -18,23 +18,21 @@ import javax.swing.JOptionPane;
  * @author teo
  */
 public class TraderImpl extends UnicastRemoteObject implements Trader {
-	private static final long serialVersionUID = -8577687714557513311L;
-	
-	//Unique identifier of Traider
+
+    private static final long serialVersionUID = -8577687714557513311L;
+    //Unique identifier of Traider
     private String name;
     //Client should check if it has registered.
     private boolean registered;
     private TraderGUI gui;
     private Market marketObj;
     private Bank bankObj;
-    
-   
 
     public TraderImpl(String name, String marketName, String bankName) throws RemoteException {
 
         this.name = name;
         this.registered = false;
-        
+
         try {
             marketObj = (Market) Naming.lookup(marketName);
             bankObj = (Bank) Naming.lookup(bankName);
@@ -42,8 +40,8 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
             ex.printStackTrace();
         }
     }
-    
-    public void startGUI(){
+
+    public void startGUI() {
         this.gui = new TraderGUI(this);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -60,76 +58,77 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public void sendNotification(Integer typeMessage, Object message) throws RemoteException {
-		System.out.println("Message received by the client - " + typeMessage);
-		switch (typeMessage) {
-		case Utilities.ITEM_ADDED_SALE:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.ITEM_WISHED_RECEIVED:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.ITEM_ALREADY_EXISTS:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.ITEM_WISHED_AVAILABLE:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.ITEM_WISHED_ALREADY_EXISTS:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.WISH_REGISTERED:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.WISH_CAN_BE_SERVED:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.WISH_ALREADY_REGISTERED:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.BALANCE_INSUFFICIENT:
-			this.gui.addLog((String) message);
-			break;
-		case Utilities.ALL_PRODUCTS_FROM_MARKET:
-			System.out.println("ALL PRODUCTS FROM MARKET : "
-					+ ((List<Item>) message).size());
-			this.gui.getListItemsModel().addAllItems((List<Item>) message);
-			this.gui.getListItemsModel().fireTableDataChanged();
+        System.out.println("Message received by the client - " + typeMessage);
+        switch (typeMessage) {
+            case Utilities.ITEM_ADDED_SALE:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.ITEM_WISHED_RECEIVED:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.ITEM_ALREADY_EXISTS:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.ITEM_WISHED_AVAILABLE:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.ITEM_WISHED_ALREADY_EXISTS:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.WISH_REGISTERED:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.WISH_CAN_BE_SERVED:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.WISH_ALREADY_REGISTERED:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.BALANCE_INSUFFICIENT:
+                this.gui.addLog((String) message);
+                break;
+            case Utilities.ALL_PRODUCTS_FROM_MARKET:
+                System.out.println("ALL PRODUCTS FROM MARKET : "
+                        + ((List<Item>) message).size());
+                this.gui.getListItemsModel().addAllItems((List<Item>) message);
+                this.gui.getListItemsModel().fireTableDataChanged();
 
-			this.gui.addLog("All products have been updated from the Market");
-			break;
-		case Utilities.PRODUCT_SOLD:
-			this.gui.addLog("CurrentBalance:"
-					+ bankObj.getAccount(name).getBalance());
-			this.gui.setBalanceTrader(bankObj.getAccount(name).getBalance() + "");
-			break;
-		case Utilities.PRODUCT_BOUGHT:
-			this.gui.addLog("CurrentBalance:"
-					+ bankObj.getAccount(name).getBalance());
-			this.gui.setBalanceTrader(bankObj.getAccount(name).getBalance() + "");
-			break;
-                
+                this.gui.addLog("All products have been updated from the Market");
+                break;
+            case Utilities.PRODUCT_SOLD:
+                this.gui.addLog((String) message);
+                this.gui.addLog("CurrentBalance:"
+                        + bankObj.getAccount(name).getBalance());
+                this.gui.setBalanceTrader(bankObj.getAccount(name).getBalance() + "");
+                break;
+            case Utilities.PRODUCT_BOUGHT:
+                this.gui.addLog((String) message);
+                this.gui.addLog("CurrentBalance:"
+                        + bankObj.getAccount(name).getBalance());
+                this.gui.setBalanceTrader(bankObj.getAccount(name).getBalance() + "");
+                break;
+
         }
 
         System.out.println("TraderImpl.setLabelText() :: " + typeMessage);
     }
 
-     public Market getMarketObj() {
+    public Market getMarketObj() {
         return marketObj;
     }
 
     public Bank getBankObj() {
         return bankObj;
     }
-   
 
     @Override
     public String getName() {
         System.out.println("Retrieved name");
         return name;
     }
-    
+
     public static void main(String[] args) throws InterruptedException {
         /*try {
          int choice = 2;
@@ -174,22 +173,22 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
         String traderName = JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
-        
+
         //System.setProperty("java.rmi.server.hostname", "192.168.1.15");
 
-        
-        
-        try { 
+
+
+        try {
             TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
             trader.getMarketObj().register(trader);	// We register the trader
-            
+
             trader.startGUI();
-            
+
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
-        
-        
-       
+
+
+
     }
 }
