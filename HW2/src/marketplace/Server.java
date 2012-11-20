@@ -1,14 +1,11 @@
 package marketplace;
 
+import bankjpa.Bank;
+import bankjpa.BankImpl;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
-
-import javax.swing.JOptionPane;
-
 import tools.Utilities;
-import bank.Bank;
-import bank.BankImpl;
 
 /**
  * Initiates a market remote class.
@@ -20,7 +17,7 @@ public class Server {
         try {
             String ip =  Utilities.getCurrentEnvironmentNetworkIp().toString();
             System.out.println("Server listening on IP:"+ip);
-            Bank bankobj = new BankImpl(bankName);
+            Bank bankobj = new BankImpl();
          
             java.rmi.Naming.rebind(/*"rmi:/"+ip+":"+Utilities.port+"/"+*/bankName, bankobj);
 	    System.out.println(bankName + " server is ready.");
@@ -37,8 +34,8 @@ public class Server {
     
     public static void main(String[] args){
         //System.out.println(args[1]);
-        String marketName = JOptionPane.showInputDialog("Enter market name");
-        String bankName = JOptionPane.showInputDialog("Enter bank name");
+        String marketName = "m1";//JOptionPane.showInputDialog("Enter market name");
+        String bankName = "b1";//JOptionPane.showInputDialog("Enter bank name");
         new Server(marketName, bankName);
         
     }

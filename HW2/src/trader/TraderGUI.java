@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import marketplace.*;
-import bank.Account;
+import bankjpa.Account;
 
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 

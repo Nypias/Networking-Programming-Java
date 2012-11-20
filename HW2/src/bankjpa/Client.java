@@ -1,4 +1,4 @@
-package bank;
+package bankjpa;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,17 +14,18 @@ public class Client {
     Account account;
     Bank bankobj;
     private String bankname;
-    String clientname;
+    String clientName;
 
     static enum CommandName {
 
-        newAccount, getAccount, deleteAccount, deposit, withdraw, balance, quit, help, list;
+        newAccount, getAccount, deleteAccount, deposit, withdraw, balance, quit, help;
     };
 
     public Client(String bankName) {
         this.bankname = bankName;
         try {
             bankobj = (Bank) Naming.lookup(bankname);
+
         } catch (Exception e) {
             System.out.println("The runtime failed: " + e.getMessage());
             System.exit(0);
@@ -40,7 +41,7 @@ public class Client {
         BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
-            System.out.print(clientname + "@" + bankname + ">");
+            System.out.print(clientName + "@" + bankname + ">");
             try {
                 String userInput = consoleIn.readLine();
                 execute(parse(userInput));
@@ -99,77 +100,66 @@ public class Client {
     }
 
     void execute(Command command) throws RemoteException, RejectedException {
-        if (command == null) {
-            return;
-        }
+        try {
+            if (command == null) {
+                return;
+            }
 
-        switch (command.getCommandName()) {
-            case list:
-                try {
-                    for (String accountHolder : bankobj.listAccounts()) {
-                        System.out.println(accountHolder);
+            switch (command.getCommandName()) {
+                case quit:
+                    System.exit(1);
+                case help:
+                    for (CommandName commandName : CommandName.values()) {
+                        System.out.println(commandName);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    return;
+            }
+
+            String userName = command.getUserName();
+            if (userName == null) {
+                userName = clientName;
+                if (userName == null) {
+                    System.out.println("You must specify account holder");
                     return;
                 }
-                return;
-            case quit:
-                System.exit(1);
-            case help:
-                for (CommandName commandName : CommandName.values()) {
-                    System.out.println(commandName);
-                }
-                return;
-        }
+            } else {
+                clientName = userName;
+            }
 
-        // all further commands require a name to be specified
-        String userName = command.getUserName();
-        if (userName == null) {
-            userName = clientname;
-        }
-
-        if (userName == null) {
-            System.out.println("name is not specified");
-            return;
-        }
-
-        switch (command.getCommandName()) {
-            case newAccount:
-                clientname = userName;
-                bankobj.newAccount(userName);
-                return;
-            case deleteAccount:
-                clientname = userName;
-                bankobj.deleteAccount(userName);
-                return;
-        }
-
-        // all further commands require a Account reference
-        Account acc = bankobj.getAccount(userName);
-        if (acc == null) {
-            System.out.println("No account for" + userName);
-            return;
-        } else {
-            account = acc;
-            clientname = userName;
-        }
-
-        switch (command.getCommandName()) {
-            case getAccount:
-                System.out.println(account);
-                break;
-            case deposit:
-                account.deposit(command.getAmount());
-                break;
-            case withdraw:
-                account.withdraw(command.getAmount());
-                break;
-            case balance:
-                System.out.println("balance: $" + account.getBalance());
-                break;
-            default:
-                System.out.println("Illegal command");
+            switch (command.getCommandName()) {
+                case newAccount:
+                    bankobj.newAccount(userName);
+                    return;
+                case deleteAccount:
+                    bankobj.deleteAccount(userName);
+                    return;
+                case getAccount:
+                    Account getAcct = bankobj.findAccount(userName);
+                    if (getAcct == null) {
+                        System.out.println("No such account.");
+                    } else {
+                        System.out.println(getAcct);
+                    }
+                    break;
+                case deposit:
+                    bankobj.deposit(userName, command.getAmount());
+                    break;
+                case withdraw:
+                    bankobj.withdraw(userName, command.getAmount());
+                    break;
+                case balance:
+                    Account balanceAcct = bankobj.findAccount(userName);
+                    if (balanceAcct == null) {
+                        System.out.println("No such account.");
+                    } else {
+                        System.out.println("balance: $" + balanceAcct.getBalance());
+                    }
+                    break;
+                default:
+                    System.out.println("Illegal command");
+            }
+        } catch (Exception e) {
+            System.out.println("Operation failed, reson: " + e.getMessage());
         }
     }
 
@@ -199,6 +189,23 @@ public class Client {
     }
 
     public static void main(String[] args) {
+        Bank bankobj = null;
+        String bankname = "Nordea";
+        try {
+            bankobj = (Bank) Naming.lookup(bankname);
+            
+
+            System.out.println("Connected to bank: " + bankname);
+            //bankobj.newAccount("t2");
+            //bankobj.deposit("t2",100f);
+            //bankobj.findAccount("t1").withdraw(40f);
+           // System.out.println(bankobj.findAccount("t2").getBalance());
+            bankobj.deleteAccount("t2");
+
+        } catch (Exception e) {
+            System.out.println("The runtime failed: " + e.getMessage());
+            System.exit(0);
+        }
         /*if ((args.length > 1) || (args.length > 0 && args[0].equals("-h"))) {
          System.out.println(USAGE);
          System.exit(1);
@@ -208,23 +215,9 @@ public class Client {
          if (args.length > 0) {
          bankName =  args[0];
          new Client(bankName).run();
+                        
          } else {
          new Client().run();
          }*/
-        String bankname = "Nordea";
-        try {
-            for(String name : Naming.list(bankname)){
-                System.out.println(name);
-            }
-            Bank bankobj = (Bank) Naming.lookup("rmi:/127.0.0.1:1099/"+bankname);
-            bankobj.newAccount("Teo");
-            bankobj.getAccount("Teo").deposit(100f);
-            System.out.println(bankobj.getAccount("Teo").getBalance());
-        } catch (Exception e) {
-            System.out.println("The runtime failed: " + e.getMessage());
-            e.printStackTrace();
-            System.exit(0);
-        }
-        System.out.println("Connected to bank: " + bankname);
     }
 }

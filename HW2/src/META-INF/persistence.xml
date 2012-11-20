@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <persistence-unit name="bank" transaction-type="RESOURCE_LOCAL">
+    <provider>
+           org.eclipse.persistence.jpa.PersistenceProvider
+        </provider>
+    <class>bankjpa.Owner</class>
+    <class>bankjpa.Account</class>
+    <class>marketplace.Traderlocal</class>
+    <properties>
+      <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+      <property name="eclipselink.logging.level" value="INFO"/>
+      <property name="javax.persistence.jdbc.password" value="mypass"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/bank"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+    </properties>
+  </persistence-unit>
+</persistence>

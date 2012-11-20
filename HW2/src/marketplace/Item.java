@@ -1,24 +1,63 @@
 package marketplace;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  * Represents the Item of the marketplace.
- * If the item is not on sale but a trader has wished it
- * then the price is zero and only the wishedPrice has an actual value.
- * Two or more clients can wish for an Item with the same name but with 
- * DIFFERENT wished price.
+ *
  * @author teo
  */
-
-
+@Entity
 public class Item implements Serializable {
-	private static final long serialVersionUID = 730717577711231086L;
-	
-	private String name;
+
+    private static final long serialVersionUID = 730717577711231086L;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+    private String name;
     private int price;
     private String seller;
-    
+    private String buyer;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date sellDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date soldDate;
+
+    public Item() {
+    }
+
+    public Date getSoldDate() {
+        return soldDate;
+    }
+
+    public void setSoldDate(Date soldDate) {
+        this.soldDate = soldDate;
+    }
+
+    public Date getSellDate() {
+        return sellDate;
+    }
+
+    public void setSellDate(Date sellDate) {
+        this.sellDate = sellDate;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
+    }
+
     public String getSeller() {
         return seller;
     }
@@ -26,7 +65,7 @@ public class Item implements Serializable {
     public void setSeller(String seller) {
         this.seller = seller;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -48,12 +87,19 @@ public class Item implements Serializable {
         this.price = price;
         this.seller = seller;
     }
-    
+
     @Override
-    public String toString(){
-        return  "Name:" + name + "\n" +
-                "Price: " + price + "\n" +
-                "Seller: " + seller + "\n";
+    public String toString() {
+        return "Name:" + name + "\n"
+                + "Price: " + price + "\n"
+                + "Seller: " + seller + "\n";
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

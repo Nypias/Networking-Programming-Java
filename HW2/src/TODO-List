@@ -4,7 +4,7 @@
 
 
 
-SCENARIOS
+HW2 SCENARIOS
 PASSED!
 1) T1: Sell - bike,600
    T1: Sell - camera, 300
@@ -23,3 +23,14 @@ PASSED!
    T1: Buy  - camera,250
    T1: unregister
    T1: register 
+
+
+HW3 Scenarios
+    TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
+    TraderImpl trader2 = new TraderImpl(traderName+"123", marketName, bankName);
+    trader.getMarketObj().register(trader,"12345678");	// We register the trader
+    trader2.getMarketObj().register(trader2,"12345679");
+    trader.getMarketObj().login(trader, "12345678");
+    trader2.getMarketObj().login(trader2, "aaa");
+    trader.getMarketObj().unregister(traderName);
+    trader.getMarketObj().login(trader, "12345678");
