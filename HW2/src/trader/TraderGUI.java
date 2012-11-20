@@ -75,8 +75,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         addWindowListener(new WindowAdapter() {	// Close the window
             public void windowClosing(WindowEvent ev) {
                 try {
-                    trader.getBankObj().deleteAccount(trader.getName());
-                    trader.getMarketObj().unregister(trader.getName());
+                    trader.getMarketObj().logout(trader.getName());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -174,9 +173,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         }
                     }
                 }.execute();
-
-
-                System.out.println("Sell clicked! after");
             }
         });
         textFieldPanel.add(name);
@@ -231,8 +227,8 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     protected Integer doInBackground() throws Exception {
                         try {
                             account = trader.getBankObj().newAccount(trader.getName());
-                            account.deposit(1000f);
-                            balanceTrader.setText(account.getBalance() + " €");
+                            trader.getBankObj().deposit(trader.getName(), 2000);
+                            balanceTrader.setText(trader.getBankObj().findAccount(trader.getName()).getBalance() + " €");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
