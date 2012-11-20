@@ -15,7 +15,9 @@ public interface Market extends Remote {
     public String register(Trader trader, String password) throws RemoteException;
     // Returns true/false on success/failure
     public String unregister(String username) throws RemoteException;
-    public void login(Trader trader, String password) throws RemoteException;
+    public boolean login(Trader trader, String password) throws RemoteException;
+    //Delete remote reference of trader.
+    public void logout(String traderName) throws RemoteException;
     public void sell(String traderName, Item item) throws RemoteException;
     
     public void wish(String traderName, Wish wish) throws RemoteException;

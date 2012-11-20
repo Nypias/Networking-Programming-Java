@@ -28,6 +28,7 @@ public class Utilities {
     public final static int LOGIN_INVALID = 17;
     public final static int LOGIN_SUCCESSFUL = 18;
     public final static int REGISTRATION_SUCCESSFUL = 19;
+    public final static int PASSWORD_LENGTH = 20;
     
     public final static int port = 1099;
     public final static String datasource = "bank";

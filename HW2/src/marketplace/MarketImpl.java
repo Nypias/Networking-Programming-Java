@@ -2,7 +2,6 @@ package marketplace;
 
 import bankjpa.Bank;
 import bankjpa.RejectedException;
-import bankjpa.Account;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -25,7 +24,6 @@ import trader.Trader;
  *
  * @author teo
  */
-@SuppressWarnings("serial")
 public class MarketImpl extends UnicastRemoteObject implements Market {
 
     private static final long serialVersionUID = 3454174232092028530L;
@@ -33,8 +31,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     private List<Item> items = null;
     // Stores <TraderID,Trader remote reference>
     private Map<String, Trader> tradersRemote = null;
-    //@OneToMany(mappedBy="traderlocal")
-    //private Map<String, Traderlocal> tradersLocal = null;
     private List<Wish> wishes = null;
     private Bank bankObj = null;
     private EntityManagerFactory emFactory;
@@ -47,18 +43,28 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     public MarketImpl(String marketName, String bankName) throws RemoteException {
         super();
-        this.items = new ArrayList<>();
+        emFactory = Persistence.createEntityManagerFactory(Utilities.datasource);
+        //Load all items in List of Items
+        EntityManager em = null;
+        try {
+            em = beginTransaction();
+            this.items = em.createNamedQuery("getItemWithNamePrice").
+                    setParameter("fName", "%%").setParameter("fPrice", "%%").getResultList();
+            this.wishes = em.createNamedQuery("getWishWithNamePrice").
+                    setParameter("fName", "%%").setParameter("fPrice", "%%").getResultList();
+        } catch (Exception ex) {
+        } finally {
+            commitTransaction(em);
+        }
+
+
         this.tradersRemote = new HashMap<>();
-        //this.tradersLocal = new HashMap<>();
         this.wishes = new ArrayList<>();
         try {
             this.bankObj = (Bank) Naming.lookup(/*"rmi:/localhost:1099/" + */bankName);
         } catch (NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
         }
-
-        emFactory = Persistence.createEntityManagerFactory(Utilities.datasource);
-
     }
 
     /**
@@ -71,7 +77,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     @Override
     public synchronized String register(Trader trader, String password) throws RemoteException {
-        if (!isPasswordValid(password, 8)) {
+        if (!isPasswordValid(password, Utilities.PASSWORD_LENGTH)) {
             trader.sendNotification(Utilities.PASSWORD_LENGTH_INVALID, "Invalid password length");
         } else {
             EntityManager em = null;
@@ -152,7 +158,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      *
      */
     @Override
-    public void login(Trader trader, String password) throws RemoteException {
+    public boolean login(Trader trader, String password) throws RemoteException {
         EntityManager em = null;
         try {
             em = beginTransaction();
@@ -165,11 +171,14 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             }
             if (traderFound == null) {
                 trader.sendNotification(Utilities.LOGIN_INVALID, "Invalid username or password");
+                return false;
             } else if (!traderFound.getPassword().equals(password)) {
                 trader.sendNotification(Utilities.LOGIN_INVALID, "Invalid username or password");
+                return false;
             } else {
                 tradersRemote.put(traderName, trader);
                 trader.sendNotification(Utilities.LOGIN_SUCCESSFUL, "You have successfully logged in!");
+                return true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -177,6 +186,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         } finally {
             commitTransaction(em);
         }
+        return false;
     }
 
     /**
@@ -203,44 +213,41 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     public synchronized void sell(String traderName, Item item) throws RemoteException {
         //Check if trader is registered
         if (!tradersRemote.containsKey(traderName)) {
-            //traders.get(traderName).sendNotification("Register first!");
             System.out.println("sell() :: Received request from unregistered trader!");
         } else {
-            EntityManager em = null;
-            System.out.println("sell() :: Selling item: " + item);
             if (!checkItemExists(item)) {
+                EntityManager em = null;
+                System.out.println("sell() :: Selling item: " + item);
+
                 try {
                     em = beginTransaction();
                     item.setSellDate(new Date());
                     items.add(item);
-
+                    em.persist(item);
                     tradersRemote.get(traderName).sendNotification(Utilities.ITEM_ADDED_SALE, "Item: " + item.getName() + "-" + item.getPrice() + " added for sale!");
                     notifyTraders();
-                    List<Wish> wishesToRemove = new ArrayList<>();
+                    List<Wish> wishesToFulFill = new ArrayList<>();
                     //Check if new Item corresponds to a wish. 
                     for (Wish wish : wishes) {
                         //If new item to be sold matches a wish, send callback
-                        if (wish.getName().equalsIgnoreCase(item.getName()) && wish.getPrice() >= item.getPrice()) {
+                        if (wish.getFulfilledDate()==null && wish.getName().equalsIgnoreCase(item.getName()) && wish.getPrice() >= item.getPrice()) {
                             //Send to requester notification
-                            wishesToRemove.add(wish);
+                            wishesToFulFill.add(wish);
                             tradersRemote.get(wish.getRequester()).sendNotification(Utilities.ITEM_WISHED_RECEIVED, "Your wished item has arrived!");
                         }
                     }
 
-                    //Remove wishes
-                    for (Wish wishToRem : wishesToRemove) {
-                        System.out.println("sell() :: Removing wish :" + wishToRem);
-                        //TODO: One transaction for each removal
-                        wishes.remove(wishToRem);
+                    //Update wishes
+                    for (Wish wishToFulFill : wishesToFulFill) {
+                        System.out.println("sell() :: Removing wish :" + wishToFulFill);
+                        wishToFulFill.setFulfilledDate(new Date());
+                        em.persist(wishToFulFill);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-
                 } finally {
                     commitTransaction(em);
-
                 }
-
 
             } // If item to be sold already exists in list, send appropriate notification
             else {
@@ -264,14 +271,13 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     public synchronized void wish(String traderName, Wish wish) throws RemoteException {
         //Check if trader is registered
         if (!tradersRemote.containsKey(traderName)) {
-            //traders.get(traderName).sendNotification("Register first!");
             System.out.println("wish() :: Received request from unregistered trader!");
         } else {
             System.out.println("wish() :: wish:" + wish);
             //Search wishes and see if there is a wish with the same properties
             boolean sameWishFound = false;
             for (Wish currentWish : wishes) {
-                if (currentWish.getName().equalsIgnoreCase(wish.getName()) && currentWish.getPrice() == wish.getPrice() && currentWish.getRequester().equalsIgnoreCase(wish.getRequester())) {
+                if (currentWish.getFulfilledDate() != null && currentWish.getName().equalsIgnoreCase(wish.getName()) && currentWish.getPrice() == wish.getPrice() && currentWish.getRequester().equalsIgnoreCase(wish.getRequester())) {
                     sameWishFound = true;
                 }
             }
@@ -289,7 +295,17 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                     }
                 }
                 if (!wishedItemFound) {
-                    wishes.add(wish);
+                    EntityManager em = null;
+                    try {
+                        em = beginTransaction();
+                        wish.setAddedDate(new Date());
+                        wishes.add(wish);
+                        em.persist(wish);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        commitTransaction(em);
+                    }
                     tradersRemote.get(traderName).sendNotification(Utilities.WISH_REGISTERED, "Your wish has been registered");
                 }
             }
@@ -307,10 +323,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         System.out.println("buy() :: " + item);
 
         if (!tradersRemote.containsKey(traderName)) {
-            //trader.sendNotification("Register first!");
             System.out.println("buy() :: Received request from unregistered trader!");
         } else {
-            Item itemToRemove = null;
+            Item itemToBuy = null;
             //Find item to be bought and remove it from list of items
             for (Item currentItem : items) {
                 System.out.println("buy() :: currentItem:" + currentItem);
@@ -320,34 +335,36 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                     float traderBalance = bankObj.findAccount(traderName).getBalance();
                     if (traderBalance >= currentItem.getPrice()) {
                         //Remove item from list
-                        itemToRemove = currentItem;
-                        itemToRemove.setBuyer(traderName);
-                        System.out.println("buy() :: Found item to remove:" + itemToRemove);
+                        itemToBuy = currentItem;
                     } else {
                         tradersRemote.get(traderName).sendNotification(Utilities.BALANCE_INSUFFICIENT, "Balance Insufficient : You don't have enough money for that item");
                     }
                     break;
                 }
             }
-            System.out.println("buy() :: Removing item: " + itemToRemove);
-            System.out.println("Size of items before: " + items.size());
-            if (itemToRemove != null) {
-                //Put transaction in try-catch for atomic transaction
+            System.out.println("buy() :: Buying item - " + itemToBuy);
+            if (itemToBuy != null) {
+                EntityManager em=null;
                 try {
+                    em = beginTransaction();
+                    //Fetch itemtobuy from DB and update it
+                    Item itemToBuyDB = em.find(Item.class, itemToBuy.getId());
                     //Withdraw money from buyer
-                    bankObj.withdraw(traderName, (float) itemToRemove.getPrice());
+                    bankObj.withdraw(traderName, (float) itemToBuy.getPrice());
                     //Deposit money to seller
-                    bankObj.deposit(traderName, (float) itemToRemove.getPrice());
-                    //Remove item from list
-                    //items.remove(itemToRemove);
-                    System.out.println("Size of items after: " + items.size());
+                    bankObj.deposit(itemToBuy.getSeller(), (float) itemToBuy.getPrice());
+                    //Mark item as bought
+                    itemToBuyDB.setBuyer(traderName);
+                    itemToBuyDB.setSoldDate(new Date());
+                    itemToBuy.setBuyer(traderName);
+                    itemToBuy.setSoldDate(new Date());
                     tradersRemote.get(traderName).sendNotification(Utilities.PRODUCT_BOUGHT, "Congratulations you bought the product!");
-                    tradersRemote.get(itemToRemove.getSeller()).sendNotification(Utilities.PRODUCT_SOLD, "Your item was sold");
+                    tradersRemote.get(itemToBuy.getSeller()).sendNotification(Utilities.PRODUCT_SOLD, "Your item was sold");
                     notifyTraders();
                 } catch (RemoteException | RejectedException ex) {
                     ex.printStackTrace();
                 } finally {
-                    //TODO: Rollback transactions
+                    commitTransaction(em);
                 }
             } else {
                 tradersRemote.get(traderName).sendNotification(Utilities.ITEM_NOT_FOUND, "The requested item was not found!");
@@ -391,7 +408,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     private synchronized boolean checkItemExists(Item item) {
         for (Item it : items) {
-            if (it.getName().equalsIgnoreCase(item.getName()) && it.getPrice() == item.getPrice() && it.getBuyer() == null) {
+            if (it.getBuyer() == null && it.getName().equalsIgnoreCase(item.getName()) && it.getPrice() == item.getPrice() && it.getBuyer() == null) {
                 return true;
             }
         }
@@ -417,5 +434,10 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
         System.out.println("isPasswordValid() :: Invalid Password");
         return false;
+    }
+
+    @Override
+    public void logout(String traderName) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -7,12 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 
 /**
  *
  * @author teo
  */
+@NamedQueries({
+    @NamedQuery(
+		name = "getWishWithNamePrice",
+    query = "SELECT mywish FROM Wish mywish WHERE mywish.name LIKE :fName AND mywish.price LIKE :fPrice")
+})
 @Entity
 public class Wish implements Serializable {
 
@@ -27,7 +34,7 @@ public class Wish implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date addedDate;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fullfilledDate;
+    private Date fulfilledDate;
     
 
     public Wish() {
@@ -41,12 +48,12 @@ public class Wish implements Serializable {
         this.addedDate = addedDate;
     }
 
-    public Date getFullfilledDate() {
-        return fullfilledDate;
+    public Date getFulfilledDate() {
+        return fulfilledDate;
     }
 
-    public void setFullfilledDate(Date fullfilledDate) {
-        this.fullfilledDate = fullfilledDate;
+    public void setFulfilledDate(Date fulfilledDate) {
+        this.fulfilledDate = fulfilledDate;
     }
 
     public String getName() {
