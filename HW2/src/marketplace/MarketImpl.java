@@ -186,6 +186,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         } finally {
             commitTransaction(em);
         }
+        
         return false;
     }
 
@@ -239,9 +240,11 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
 
                     //Update wishes
                     for (Wish wishToFulFill : wishesToFulFill) {
-                        System.out.println("sell() :: Removing wish :" + wishToFulFill);
+                        System.out.println("sell() :: Updating wish :" + wishToFulFill);
                         wishToFulFill.setFulfilledDate(new Date());
-                        em.persist(wishToFulFill);
+                        Wish wishToUpdate = em.find(Wish.class, wishToFulFill.getId());
+                        wishToUpdate.setFulfilledDate(wishToFulFill.getFulfilledDate());
+                        
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
