@@ -28,6 +28,8 @@ import javax.swing.SwingWorker;
 
 import marketplace.*;
 import bankjpa.Account;
+import com.mysql.jdbc.Util;
+import tools.Utilities;
 
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
@@ -394,7 +396,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 @Override
                 protected Integer doInBackground() throws Exception {
                     try {
-                        trader.getMarketObj().listItems(trader.getName(), true);	// We want all the items
+                        trader.getMarketObj().listItems(trader.getName(), Utilities.ALL_PRODUCTS_FROM_MARKET);	// We want all the items
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }

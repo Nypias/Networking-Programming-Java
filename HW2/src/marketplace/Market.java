@@ -23,6 +23,11 @@ public interface Market extends Remote {
     public void wish(String traderName, Wish wish) throws RemoteException;
     // If item is not available, display message to make a wish instead
     public void buy(String traderName, Item item) throws RemoteException;
-    
-    public void listItems(String traderName, boolean allItems) throws RemoteException;
+    /**
+     * Return items based on parameters.
+     * @param traderName
+     * @param type
+     * @throws RemoteException 
+     */
+    public void listItems(String traderName, int type) throws RemoteException;
 }
