@@ -76,11 +76,16 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 		numberItemsBought.setActionCommand("numberItemsBought");
 		numberItemsBought.addActionListener(this);
 		this.statisticsMenu.add(numberItemsBought);
-
-		JMenuItem numberItemsSold = new JMenuItem("Number of Items On Sale");
+		
+		JMenuItem numberItemsSold = new JMenuItem("Number of Items Sold");
 		numberItemsSold.setActionCommand("numberItemsSold");
 		numberItemsSold.addActionListener(this);
 		this.statisticsMenu.add(numberItemsSold);
+
+		JMenuItem numberItemsOnSale = new JMenuItem("Number of Items On Sale");
+		numberItemsOnSale.setActionCommand("numberItemsOnSale");
+		numberItemsOnSale.addActionListener(this);
+		this.statisticsMenu.add(numberItemsOnSale);
 	}
 
 	@Override
@@ -92,6 +97,12 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
                     	trader.getMarketObj().logout(trader.getName());
+                    	
+                    	// We close the current frame to open the login frame
+                    	currentFrame.setVisible(false);
+                    	currentFrame.dispose();
+                    	
+                    	new LoginGUI(trader, trader.getMarketObj());
                     	return 1;
                     }
                     
@@ -200,8 +211,7 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	            }.execute();
 	            break;
 				
-			case "numberItemsSold":
-				
+			case "numberItemsOnSale":
 				new SwingWorker<Integer, String>() {
 	                @Override
 	                protected Integer doInBackground() throws Exception {
@@ -213,7 +223,20 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	                    return 1;
 	                }
 	            }.execute();
+				break;
 				
+			case "numberItemsSold":
+				new SwingWorker<Integer, String>() {
+	                @Override
+	                protected Integer doInBackground() throws Exception {
+	                    try {
+	                        trader.getMarketObj().listItems(trader.getName(), Utilities.LISTITEMS_SOLD_TRADER);	// We want all the items
+	                    } catch (RemoteException e) {
+	                        e.printStackTrace();
+	                    }
+	                    return 1;
+	                }
+	            }.execute();
 				break;
 			}
 
