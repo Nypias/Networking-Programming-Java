@@ -436,6 +436,14 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 }
                 tradersRemote.get(traderName).sendNotification(Utilities.LISTITEMS_WISHED_TRADER, wishesToReturn);
                 break;
+            case Utilities.LISTITEMS_SOLD_TRADER:
+                for (Item item : items) {
+                    if (item.getSoldDate() != null && item.getSeller().equals(traderName)) {
+                        itemsToReturn.add(item);
+                    }
+                }
+                tradersRemote.get(traderName).sendNotification(Utilities.LISTITEMS_SOLD_TRADER, itemsToReturn);
+                break;
         }
     }
 

@@ -35,6 +35,7 @@ public class Utilities {
     
     
     public final static int LISTITEMS_ON_SALE_TRADER = 23;
+    public final static int LISTITEMS_SOLD_TRADER = 26;
     public final static int LISTITEMS_BOUGHT_TRADER = 24;
     public final static int LISTITEMS_WISHED_TRADER = 25;
     
