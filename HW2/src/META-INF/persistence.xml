@@ -7,13 +7,15 @@
     <class>bankjpa.Owner</class>
     <class>bankjpa.Account</class>
     <class>marketplace.Traderlocal</class>
+    <class>marketplace.Item</class>
+    <class>marketplace.Wish</class>
     <properties>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>
       <property name="eclipselink.logging.level" value="INFO"/>
       <property name="javax.persistence.jdbc.password" value="sempron"/>
       <property name="javax.persistence.jdbc.user" value="Nypias"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/bank"/>
-      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
     </properties>
   </persistence-unit>

@@ -29,6 +29,7 @@ import javax.swing.SwingWorker;
 import marketplace.Item;
 import marketplace.Wish;
 import bankjpa.Account;
+import tools.Utilities;
 
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
@@ -49,6 +50,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
     public TraderGUI(final TraderImpl trader) {
         super();
+        System.out.println("In TraderGUI");
         this.trader = trader;
         this.productsMarket = new ArrayList<Item>();
         this.account = null;
@@ -57,6 +59,9 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         //
         this.setLocationRelativeTo(this);
         this.setLayout(new BorderLayout());
+        
+        this.setJMenuBar(new TraderGUIMenuBar(this, this.trader));
+        
         this.createListItems();
         this.createListPendingItem();
         this.createPanelLeft();
@@ -72,12 +77,13 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
         this.add(panelLeft, BorderLayout.WEST);
         this.add(panelRight, BorderLayout.CENTER);
+        
+        this.setVisible(true);
 
         addWindowListener(new WindowAdapter() {	// Close the window
             public void windowClosing(WindowEvent ev) {
                 try {
-                    trader.getBankObj().deleteAccount(trader.getName());
-                    trader.getMarketObj().unregister(trader.getName());
+                    trader.getMarketObj().logout(trader.getName());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -175,9 +181,6 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                         }
                     }
                 }.execute();
-
-
-                System.out.println("Sell clicked! after");
             }
         });
         textFieldPanel.add(name);
@@ -232,8 +235,8 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     protected Integer doInBackground() throws Exception {
                         try {
                             account = trader.getBankObj().newAccount(trader.getName());
-                            account.deposit(1000f);
-                            balanceTrader.setText(account.getBalance() + " €");
+                            trader.getBankObj().deposit(trader.getName(), 2000);
+                            balanceTrader.setText(trader.getBankObj().findAccount(trader.getName()).getBalance() + " €");
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -399,7 +402,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                 @Override
                 protected Integer doInBackground() throws Exception {
                     try {
-                        trader.getMarketObj().listItems(trader.getName(), true);	// We want all the items
+                        trader.getMarketObj().listItems(trader.getName(), Utilities.ALL_PRODUCTS_FROM_MARKET);	// We want all the items
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
