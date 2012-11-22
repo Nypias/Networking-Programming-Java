@@ -43,6 +43,11 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	}
 
 	public void createFileItemMenu() {
+		JMenuItem unregister = new JMenuItem("Unregister");
+		unregister.setActionCommand("unregister");
+		unregister.addActionListener(this);
+		this.fileMenu.add(unregister);
+		
 		JMenuItem logout = new JMenuItem("Logout");
 		logout.setActionCommand("logout");
 		logout.addActionListener(this);
@@ -91,8 +96,26 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
-			case "logout":
+			case "unregister":
 				// We unregister the client
+				new SwingWorker<Integer, String>() {
+                    //runs on a background thread.
+                    protected Integer doInBackground() throws Exception {
+                    	trader.getMarketObj().unregister(trader.getName());
+                    	
+                    	// We close the current frame to open the login frame
+                    	currentFrame.setVisible(false);
+                    	currentFrame.dispose();
+                    	
+                    	new LoginGUI(trader, trader.getMarketObj());
+                    	return 1;
+                    }
+                    
+                    public void done() {}
+				}.execute();
+				break;
+			case "logout":
+				// We logout the client
 				new SwingWorker<Integer, String>() {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
