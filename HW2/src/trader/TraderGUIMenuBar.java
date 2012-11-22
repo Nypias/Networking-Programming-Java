@@ -96,11 +96,6 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 		numberItemsOnSale.setActionCommand("numberItemsOnSale");
 		numberItemsOnSale.addActionListener(this);
 		this.statisticsMenu.add(numberItemsOnSale);
-		
-		JMenuItem numberItemsWished = new JMenuItem("Number of Wished Items");
-		numberItemsWished.setActionCommand("numberItemsWished");
-		numberItemsWished.addActionListener(this);
-		this.statisticsMenu.add(numberItemsWished);
 	}
 
 	@Override
@@ -282,19 +277,7 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	                }
 	            }.execute();
 				break;
-			case "numberItemsWished":
-				new SwingWorker<Integer, String>() {
-	                @Override
-	                protected Integer doInBackground() throws Exception {
-	                    try {
-	                        trader.getMarketObj().listItems(trader.getName(), Utilities.LISTITEMS_WISHED_TRADER);	
-	                    } catch (RemoteException e) {
-	                        e.printStackTrace();
-	                    }
-	                    return 1;
-	                }
-	            }.execute();
-				break;
+
 			}
 	}
 }
