@@ -52,9 +52,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         try {
             em = beginTransaction();
             this.items = em.createNamedQuery("getItemWithNamePrice").
-                    setParameter("fName", "%%").setParameter("fPrice", "%%").getResultList();
+                    setParameter("fName", "%%").getResultList();
             this.wishes = em.createNamedQuery("getWishWithNamePrice").
-                    setParameter("fName", "%%").setParameter("fPrice", "%%").getResultList();
+                    setParameter("fName", "%%").getResultList();
             System.out.println("Wishes:"+wishes.toString());
         } catch (Exception ex) {
         	System.out.println(ex.getMessage());

@@ -19,7 +19,7 @@ import javax.persistence.Temporal;
 @NamedQueries({
     @NamedQuery(
 		name = "getWishWithNamePrice",
-    query = "SELECT mywish FROM Wish mywish WHERE mywish.name LIKE :fName AND mywish.price LIKE :fPrice")
+    query = "SELECT mywish FROM Wish mywish WHERE mywish.name LIKE :fName")
 })
 @Entity
 public class Wish implements Serializable {
