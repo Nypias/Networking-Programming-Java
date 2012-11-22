@@ -67,7 +67,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         } catch (Exception e) {
             font = new Font("serif", Font.PLAIN, 20); //Default
         }
-        JLabel title = new JLabel("New Account");
+        JLabel title = new JLabel("Login");
         title.setFont(font);
         titlePanel.add(title);
 	}
@@ -145,7 +145,6 @@ public class LoginGUI extends JFrame implements ActionListener {
 		if (arg0.getActionCommand().equals("newAccount")) {
 			this.setVisible(false);
 			this.dispose();
-			System.out.println("ici");
 			new NewTrader(this.trader);
 			
 			

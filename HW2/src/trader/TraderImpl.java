@@ -114,6 +114,14 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
                 this.gui.getListItemsModel().fireTableDataChanged();
                 this.gui.addLog("The list of on sale items is displayed");
             	break;
+            case Utilities.LISTITEMS_SOLD_TRADER:
+            	int numberSold = ((List<Item>) message).size();
+            	this.gui.setStatistics("Number of sold items : " + numberSold);
+            	
+            	this.gui.getListItemsModel().addAllItems((List<Item>) message);
+                this.gui.getListItemsModel().fireTableDataChanged();
+                this.gui.addLog("The list of sold items is displayed");
+            	break;
             case Utilities.LISTITEMS_BOUGHT_TRADER:
             	int numberBought = ((List<Item>) message).size();
             	this.gui.setStatistics("Number of bought items : " + numberBought);
