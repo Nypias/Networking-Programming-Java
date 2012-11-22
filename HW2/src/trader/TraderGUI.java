@@ -26,7 +26,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-import marketplace.*;
+import marketplace.Item;
+import marketplace.Wish;
 import bankjpa.Account;
 
 public class TraderGUI extends JFrame implements MouseListener, ActionListener {
@@ -100,7 +101,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         scrollPane.addMouseListener(this);
         listProductsPanel.removeAll();
         listProductsPanel.add(scrollPane);
-        this.revalidate();
+        //this.revalidate();
         this.repaint();
     }
 
@@ -126,7 +127,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         scrPaneTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrPaneTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        this.revalidate();
+        //this.revalidate();
         this.repaint();
     }
 

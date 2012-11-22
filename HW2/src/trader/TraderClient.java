@@ -3,6 +3,7 @@ package trader;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -54,25 +55,34 @@ public class TraderClient {
          ex.printStackTrace();
          }
 */
-        String traderName = JOptionPane.showInputDialog("Enter trader name");
+        //String traderName = JOptionPane.showInputDialog("Enter trader name");
         String marketName = "m1"; 	//JOptionPane.showInputDialog("Enter market name");
         String bankName = "b1";	//JOptionPane.showInputDialog("Enter bank name");
+        
+        try {
+        	TraderImpl trader = new TraderImpl();
+			trader.initRemoteObjects(marketName, bankName);
+			
+			new LoginGUI(trader, trader.getMarketObj());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
         //System.setProperty("java.rmi.server.hostname", "192.168.1.15");
 
 
-
-        try {
-            TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
-           
-            trader.getMarketObj().register(trader,"12345679");	// We register the trader
-            //trader.getMarketObj().register(trader,"12345610111");	// We register the trader
+        //TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
+       
+        //trader.getMarketObj().register(trader,"12345679");	// We register the trader
+        
+    	
+    	
+        	
+        	//trader.getMarketObj().register(trader,"12345610111");	// We register the trader
            
             //trader.startGUI();
 
-        } catch (RemoteException ex) {
-            ex.printStackTrace();
-        }
+       
 
 
 

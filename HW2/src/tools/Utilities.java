@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 
 public class Utilities {
@@ -61,5 +63,17 @@ public class Utilities {
         } catch (UnknownHostException e) {
             return InetAddress.getLocalHost();
         }
+    }
+    
+    public static String passwordToSha1(String pass) {
+    	String newPassword = pass + "theoSalt";
+    	try {
+    	      MessageDigest md = MessageDigest.getInstance("SHA-256");
+    	      md.update(newPassword.getBytes());
+    	      return new sun.misc.BASE64Encoder().encode(md.digest());
+    	    } catch (NoSuchAlgorithmException e) {
+    	      System.out.println("Failed to encrypt password.");
+    	    }
+    	    return "";
     }
 }

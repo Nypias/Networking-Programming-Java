@@ -1,11 +1,12 @@
 package marketplace;
 
-import bankjpa.Bank;
-import bankjpa.BankImpl;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
+
 import tools.Utilities;
+import bankjpa.Bank;
+import bankjpa.BankImpl;
 
 /**
  * Initiates a market remote class.

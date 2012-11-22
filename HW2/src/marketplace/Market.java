@@ -2,6 +2,7 @@ package marketplace;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
 import trader.Trader;
 
 /**

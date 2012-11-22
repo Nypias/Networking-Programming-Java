@@ -11,7 +11,6 @@ import marketplace.Item;
 import marketplace.Market;
 import tools.Utilities;
 import bankjpa.Bank;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,13 +26,18 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     private TraderGUI gui;
     private Market marketObj;
     private Bank bankObj;
+    
+    public TraderImpl() throws RemoteException {
+    	this.registered = false;
+    }
 
-    public TraderImpl(String name, String marketName, String bankName) throws RemoteException {
-
-        this.name = name;
+    public TraderImpl(String nameTrader) throws RemoteException {
+        this.name = nameTrader;
         this.registered = false;
-
-        try {
+    }
+    
+    public void initRemoteObjects(String marketName, String bankName)  throws RemoteException {
+    	try {
             marketObj = (Market) Naming.lookup(marketName);
             bankObj = (Bank) Naming.lookup(bankName);
         } catch (NotBoundException | MalformedURLException ex) {
@@ -127,6 +131,10 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
     public String getName() {
         System.out.println("Retrieved name");
         return name;
+    }
+    
+    public void setName(String name) {
+    	this.name = name;
     }
     
 }

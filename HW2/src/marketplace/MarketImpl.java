@@ -1,8 +1,5 @@
 package marketplace;
 
-import bankjpa.Bank;
-import bankjpa.RejectedException;
-import bankjpa.Account;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -13,13 +10,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+
 import tools.Utilities;
 import trader.Trader;
+import bankjpa.Bank;
+import bankjpa.RejectedException;
 
 /**
  *
