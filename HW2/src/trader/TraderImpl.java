@@ -54,6 +54,10 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
             }
         });
     }
+    
+    public void setGUI(TraderGUI gui) {
+    	this.gui = gui;
+    }
 
     @Override
     public void wishAvailable() throws RemoteException {
@@ -99,8 +103,25 @@ public class TraderImpl extends UnicastRemoteObject implements Trader {
                 this.gui.getListItemsModel().addAllItems((List<Item>) message);
                 this.gui.getListItemsModel().fireTableDataChanged();
 
+                this.gui.setStatistics("");
                 this.gui.addLog("All products have been updated from the Market");
                 break;
+            case Utilities.LISTITEMS_ON_SALE_TRADER:
+            	int numberSale = ((List<Item>) message).size();
+            	this.gui.setStatistics("Number of on sale items : " + numberSale);
+            	
+            	this.gui.getListItemsModel().addAllItems((List<Item>) message);
+                this.gui.getListItemsModel().fireTableDataChanged();
+                this.gui.addLog("The list of on sale items is displayed");
+            	break;
+            case Utilities.LISTITEMS_BOUGHT_TRADER:
+            	int numberBought = ((List<Item>) message).size();
+            	this.gui.setStatistics("Number of bought items : " + numberBought);
+            	
+            	this.gui.getListItemsModel().addAllItems((List<Item>) message);
+                this.gui.getListItemsModel().fireTableDataChanged();
+                this.gui.addLog("The list of trader bought items is displayed");
+            	break;
             case Utilities.PRODUCT_SOLD:
                 this.gui.addLog((String) message);
                 this.gui.addLog("CurrentBalance:"

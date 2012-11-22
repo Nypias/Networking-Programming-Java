@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import tools.Utilities;
+
 public class NewTrader extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -311508449207755917L;
 	private Trader trader;
@@ -161,12 +163,13 @@ public class NewTrader extends JFrame implements ActionListener {
 					// We create the account
 					try {
 						this.trader.setName(username);
-						//this.market.register(this.trader, Utilities.passwordToSha1(firstPass));
+						((TraderImpl)this.trader).getMarketObj().register(this.trader, Utilities.passwordToSha1(firstPass));
 						
 						this.setVisible(false);
 						this.dispose();
 						// We load the main window
-						new TraderGUI((TraderImpl) this.trader);
+						TraderGUI gui = new TraderGUI((TraderImpl) this.trader);
+						((TraderImpl) trader).setGUI(gui);
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}

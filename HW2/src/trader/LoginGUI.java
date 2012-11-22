@@ -159,8 +159,14 @@ public class LoginGUI extends JFrame implements ActionListener {
 					// We create a Sha1 version of the password
 					String newPasswordEncoded = Utilities.passwordToSha1(passwordText);
 					boolean result = market.login(trader, newPasswordEncoded);
+					System.out.print(result);
 					if (result) {
-						// We load main window
+						this.setVisible(false);
+						this.dispose();
+						
+						TraderGUI gui = new TraderGUI((TraderImpl)trader);
+						((TraderImpl)trader).setGUI(gui);
+						gui.setBalanceTrader(((TraderImpl)trader).getBankObj().findAccount(trader.getName()).getBalance()+"");
 					} else {
 						this.passwordJT.setText("");
 						JOptionPane.showMessageDialog(this, "Your login/password is not correct");

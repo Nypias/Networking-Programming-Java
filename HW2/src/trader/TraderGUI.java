@@ -36,11 +36,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     private static final long serialVersionUID = 3786034680888498980L;
     private JPanel listProductsPanel, panelLeft,
             panelRight, sellProductPanel, titleProductPanel,
-            panelAccountBalance, titleBuyPanel, panelBuy, titleWishPanel, panelWish;
+            panelAccountBalance, titleBuyPanel, panelBuy, titleWishPanel, panelWish, statistics;
     private JTextField nameProduct, priceProduct, balanceTrader, nameProductWished, priceProductWished;
     private JButton sellProduct, newAccountButton, newBuyButton, addWishedProduct, refreshListItemButton;
     private JTable listItems;
     private JScrollPane scrPaneTextArea;
+    private JLabel statisticsLabel;
     private JTextArea textArea;
     private TableModel listItemsModel;
     private List<Item> productsMarket;
@@ -73,6 +74,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
         this.createPanelWish();
         this.createTitleBuyProduct();
         this.createButtonBuy();
+        this.createStatistics();
         this.createPanelRight();
 
         this.add(panelLeft, BorderLayout.WEST);
@@ -91,6 +93,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
             }
         });
 
+    }
+    
+    public void createStatistics() {
+    	statistics = new JPanel();
+    	statisticsLabel = new JLabel("");
+    	statistics.add(statisticsLabel);
     }
 
     public void createListItems() {
@@ -235,7 +243,7 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
                     protected Integer doInBackground() throws Exception {
                         try {
                             account = trader.getBankObj().newAccount(trader.getName());
-                            trader.getBankObj().deposit(trader.getName(), 2000);
+                            trader.getBankObj().deposit(trader.getName(), 0);
                             balanceTrader.setText(trader.getBankObj().findAccount(trader.getName()).getBalance() + " €");
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -323,11 +331,12 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     public void createPanelRight() {
-        panelRight = new JPanel(new GridLayout(7, 1));
+        panelRight = new JPanel(new GridLayout(8, 1));
 
         panelRight.add(panelAccountBalance);
         panelRight.add(titleBuyPanel);
         panelRight.add(panelBuy);
+        panelRight.add(statistics);
         panelRight.add(titleWishPanel);
         panelRight.add(panelWish);
         panelRight.add(titleProductPanel);
@@ -336,6 +345,10 @@ public class TraderGUI extends JFrame implements MouseListener, ActionListener {
 
     public void addLog(String text) {
         textArea.append(text + "\n");
+    }
+    
+    public void setStatistics(String stat) {
+    	this.statisticsLabel.setText(stat);
     }
 
     public void setBalanceTrader(String price) {

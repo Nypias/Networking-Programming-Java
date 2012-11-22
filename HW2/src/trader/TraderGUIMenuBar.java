@@ -3,6 +3,7 @@ package trader;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -10,13 +11,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import tools.Utilities;
+
 public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 	private static final long serialVersionUID = 1492702585796958285L;
 	private JMenu fileMenu, accountMenu, statisticsMenu;
 	private TraderImpl trader;
-	private Frame currentFrame;
+	private TraderGUI currentFrame;
 
-	public TraderGUIMenuBar(Frame jframe, TraderImpl trader) {
+	public TraderGUIMenuBar(TraderGUI jframe, TraderImpl trader) {
 		super();
 		this.trader = trader;
 		this.currentFrame = jframe;
@@ -74,7 +77,7 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 		numberItemsBought.addActionListener(this);
 		this.statisticsMenu.add(numberItemsBought);
 
-		JMenuItem numberItemsSold = new JMenuItem("Number of Items Sold");
+		JMenuItem numberItemsSold = new JMenuItem("Number of Items On Sale");
 		numberItemsSold.setActionCommand("numberItemsSold");
 		numberItemsSold.addActionListener(this);
 		this.statisticsMenu.add(numberItemsSold);
@@ -88,7 +91,7 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 				new SwingWorker<Integer, String>() {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
-                    	trader.getMarketObj().unregister(trader.getName());
+                    	trader.getMarketObj().logout(trader.getName());
                     	return 1;
                     }
                     
@@ -100,13 +103,28 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 				// We create a new account for the existing trader
 				new SwingWorker<Integer, String>() {
                     //runs on a background thread.
+                    @Override
                     protected Integer doInBackground() throws Exception {
-                    	trader.getBankObj().newAccount(trader.getName());
-                    	return 1;
+                        try {
+                            trader.getBankObj().newAccount(trader.getName());
+                            trader.getBankObj().deposit(trader.getName(), 0);
+                            currentFrame.setBalanceTrader(""+trader.getBankObj().findAccount(trader.getName()).getBalance() + " €");
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                        return 1;
                     }
-                    
-                    public void done() {}
-				}.execute();
+
+                    //runs on EDT, allowed to update gui
+                    protected void done() {
+                        try {
+                            //textField.setText("UPDATE GUI");
+                        } catch (Exception e) {
+                            //this is where you handle any exceptions that occurred in the
+                            //doInBackground() method
+                        }
+                    }
+                }.execute();
 				
 				break;
 			case "deposit":
@@ -123,10 +141,13 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
                     	trader.getBankObj().deposit(trader.getName(), (float) amountDeposit);
+                    	currentFrame.setBalanceTrader(""+trader.getBankObj().findAccount(trader.getName()).getBalance());
                     	return 1;
                     }
                     
-                    public void done() {}
+                    public void done() {
+                    	
+                    }
 				}.execute();
 				
 				break;
@@ -144,6 +165,7 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
                     //runs on a background thread.
                     protected Integer doInBackground() throws Exception {
                     	trader.getBankObj().withdraw(trader.getName(), (float) amountWithdraw);
+                    	currentFrame.setBalanceTrader(""+trader.getBankObj().findAccount(trader.getName()).getBalance());
                     	return 1;
                     }
                     
@@ -165,14 +187,33 @@ public class TraderGUIMenuBar extends JMenuBar implements ActionListener {
 				
 				break;
 			case "numberItemsBought":
-			case "numberItemsSold":
-				// We display the same window for bought items and sold items
-				//int numberItemsBought = this.trader.getMarketObj()
-				//int numberItemsSold = this.trader.getMarketObj()
+				new SwingWorker<Integer, String>() {
+	                @Override
+	                protected Integer doInBackground() throws Exception {
+	                    try {
+	                        trader.getMarketObj().listItems(trader.getName(), Utilities.LISTITEMS_BOUGHT_TRADER);	// We want all the items
+	                    } catch (RemoteException e) {
+	                        e.printStackTrace();
+	                    }
+	                    return 1;
+	                }
+	            }.execute();
+	            break;
 				
-				 //JOptionPane.showMessageDialog(this.currentFrame,
-				//	        "Number of product bought: '" + numberItemsBought + "\nNumber of products sold:" +
-				//		numberItemsSold);
+			case "numberItemsSold":
+				
+				new SwingWorker<Integer, String>() {
+	                @Override
+	                protected Integer doInBackground() throws Exception {
+	                    try {
+	                        trader.getMarketObj().listItems(trader.getName(), Utilities.LISTITEMS_ON_SALE_TRADER);	// We want all the items
+	                    } catch (RemoteException e) {
+	                        e.printStackTrace();
+	                    }
+	                    return 1;
+	                }
+	            }.execute();
+				
 				break;
 			}
 
