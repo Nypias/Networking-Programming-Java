@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
  * @author Barbarossa Team
  */
 public class Main {
+    
 
     /**
      * @param args the command line arguments
