@@ -1,36 +1,39 @@
-1) If client crashes, we can not start another one with the same name
-2) Add register and unregister buttons. Unregister should also close trader account on bank.
-3) Fix buy item action performed (get item from table).
-
-
-
-HW2 SCENARIOS
+HW3 SCENARIOS
 PASSED!
-1) T1: Sell - bike,600
+1) T1: Register
+   T1: Create Account
+   T1: Deposit
+   T1: Sell - bike,600
    T1: Sell - camera, 300
-   T2: Buy - bike, 600 
+   T2: Register
+   T2: Create Account wish <8 char password
+   T2: Create Account wish unequal password
+   T2: Deposit   
+   T2: Buy - bike, 600
+   T1: Statistics
+   T2: Statistics
+   T2: Logout
+   T2: Login
+   T2: Unregister
+   T2: Login
+   T2: Register
+   T2: Buy - camera, 300
+
 PASSED!
+DROP TABLES
 2) T1: Wish - bike,500
    T2: Wish - bike,400
+   T2: Sell - camera, 300
+   T2: Sell - painting, 2000
+   T1: Buy - painting, 2000
+   SERVER SHUTDOWN
+   SERVER START
+   T1: LOGIN
+   T2: LOGIN
    T3: Sell - bike,600
+   T3: Statistics on sale
    T3: Sell - bike,450
    T1: Buy  - bike,450
-PASSED!
-3) T1: Sell - bike,500
-   T1: Wish - camera,300
-   T2: Buy  - bike,500
-   T2: Sell - camera,250
-   T1: Buy  - camera,250
-   T1: unregister
-   T1: register 
+   T1: Statistics items bought
+   LOGOUT
 
-
-HW3 Scenarios
-    TraderImpl trader = new TraderImpl(traderName, marketName, bankName);
-    TraderImpl trader2 = new TraderImpl(traderName+"123", marketName, bankName);
-    trader.getMarketObj().register(trader,"12345678");	// We register the trader
-    trader2.getMarketObj().register(trader2,"12345679");
-    trader.getMarketObj().login(trader, "12345678");
-    trader2.getMarketObj().login(trader2, "aaa");
-    trader.getMarketObj().unregister(traderName);
-    trader.getMarketObj().login(trader, "12345678");
