@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  */
 public class Node extends UnicastRemoteObject implements Runnable, Serializable, ChordInterface
 {
+    
 
   //-------------------|| VARIABLES ||------------------------
     private MulticastServer ms;
