@@ -28,8 +28,8 @@ public class CurrencyController {
     }
     
     public Double convert (Double amount, String firstCurrencyName, String secondCurrencyName) {
-        Currency firstCurrency = em.find(Currency.class, firstCurrencyName);
-        Currency secondCurrency = em.find(Currency.class, secondCurrencyName);
+        Currency firstCurrency = (Currency) em.find(Currency.class, firstCurrencyName);
+        Currency secondCurrency = (Currency) em.find(Currency.class, secondCurrencyName);
         Double result = -1.0;
         if (firstCurrency != null && secondCurrency != null) {
             result = (amount / firstCurrency.getRate())*secondCurrency.getRate();

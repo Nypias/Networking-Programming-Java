@@ -17,6 +17,7 @@ public class Currency implements Serializable, CurrencyDTO {
     private static final long serialVersionUID = 1L;
     @Id
     private String name;
+    
     private Double rate;
 
     public Currency() {
@@ -49,7 +50,7 @@ public class Currency implements Serializable, CurrencyDTO {
 
     @Override
     public String toString() {
-        return "HW4.model.Currency[ id=" + name + " ]";
+        return "Currency{" + "name=" + name + ", rate=" + rate + '}';
     }
 
     @Override
