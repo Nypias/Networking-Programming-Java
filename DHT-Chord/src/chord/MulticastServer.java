@@ -20,22 +20,25 @@ public class MulticastServer implements Runnable {
     private InetAddress clientAddr;
     private int proccessId;
     private Node node;
+
     public void setProccessId(int proccessId) {
         this.proccessId = proccessId;
     }
+
     public int getTCPPort() {
         return tcpPort;
     }
 
-    MulticastServer(Node node)
-    {
+    MulticastServer(Node node) {
 
         super();
-         this.node = node;
+        this.node = node;
 
     }
+
     /**
-     * Sends Multicast to specified ip
+     * Sends Multicast to the specified ip
+     *
      * @param tcpPort
      */
     void sendMulticast(int tcpPort) {
@@ -47,7 +50,7 @@ public class MulticastServer implements Runnable {
 
             ms.send(packet);
             ms.close();
-            node.window.getChordActivityText().append(">sent Multicast, port="+tcpPort+"\n");
+            node.window.getChordActivityText().append(">sent Multicast, port=" + tcpPort + "\n");
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -55,8 +58,10 @@ public class MulticastServer implements Runnable {
         }
 
     }
+
     /**
      * Receives Multicast
+     *
      * @throws InterruptedException
      */
     void receiveMulticast() throws InterruptedException {
@@ -64,30 +69,29 @@ public class MulticastServer implements Runnable {
             MulticastSocket ms = new MulticastSocket(MCAST_PORT);
             ms.joinGroup(InetAddress.getByName(MCAST_ADDR));
             byte[] buf = new byte[1024];
-               
-                DatagramPacket initPack = new DatagramPacket(buf, buf.length);
-                ms.receive(initPack);
-              
-                int clientTCPPort = byteToInt(initPack.getData());//msd * 100 + lsd;
-                clientAddr = initPack.getAddress();
-                if(clientTCPPort!=tcpPort)
-                {
-                    node.printActivity(">Received Multicast by clien: "+ clientTCPPort + " and Addr: " + clientAddr.toString());
-                    Thread thd = new Thread(new ServerRbl(clientTCPPort, clientAddr, node));
-                    thd.start();
-                }
-               
-            
+
+            DatagramPacket initPack = new DatagramPacket(buf, buf.length);
+            ms.receive(initPack);
+
+            int clientTCPPort = byteToInt(initPack.getData());//msd * 100 + lsd;
+            clientAddr = initPack.getAddress();
+            if (clientTCPPort != tcpPort) {
+                node.printActivity(">Received Multicast by clien: " + clientTCPPort + " and Addr: " + clientAddr.toString());
+                Thread thd = new Thread(new ServerRbl(clientTCPPort, clientAddr, node));
+                thd.start();
+            }
+
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
     private static int byteToInt(byte[] b) {
-        int val=0;
-        for (int i=b.length-1, j = 0; i >= 0; i--,j++){
-            val += (b[i] & 0xff) << (8*j);
-            }
+        int val = 0;
+        for (int i = b.length - 1, j = 0; i >= 0; i--, j++) {
+            val += (b[i] & 0xff) << (8 * j);
+        }
         return val;
     }
 
@@ -99,16 +103,16 @@ public class MulticastServer implements Runnable {
         }
         return b;
     }
-    
-    public void run()
-    {
+
+    public void run() {
         node.window.getChordActivityText().append(">my MC server set\n");
         try {
-            while (true){ receiveMulticast();}
+            while (true) {
+                receiveMulticast();
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(MulticastServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    }
 
+    }
 }

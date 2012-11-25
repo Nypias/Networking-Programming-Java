@@ -1,33 +1,24 @@
 package chord;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Provides TCP connectivy. Acts as a server and client
+ * Provides TCP connectivity. Acts as a server and client
+ *
  * @author Barbarossa Team
  */
-public class ServerRbl implements Runnable
-{
+public class ServerRbl implements Runnable {
+
     private int destinationPort;
     private InetAddress destinationAddr;
     private ServerSocket ss;
@@ -36,20 +27,20 @@ public class ServerRbl implements Runnable
     private String procid;
     private String rmiaddress;
     private String robj;
-   /**
-    * Constructor
-    * @param node
-    * @throws RemoteException
-    */
-    public ServerRbl(Node node) throws RemoteException
-    {
+
+    /**
+     * Constructor
+     *
+     * @param node
+     * @throws RemoteException
+     */
+    public ServerRbl(Node node) throws RemoteException {
         super();
         this.node = node;
- 
+
     }//constructor
 
-    ServerRbl(ServerSocket ss, Node node)
-    {
+    ServerRbl(ServerSocket ss, Node node) {
         this.node = node;
         this.ss = ss;
     }
@@ -58,97 +49,88 @@ public class ServerRbl implements Runnable
         this.destinationPort = tcpPort;
         this.destinationAddr = clientAddr;
         this.node = node;
-      
+
     }
+
     ServerRbl(int tcpPort, InetAddress clientAddr) {
         this.destinationPort = tcpPort;
         this.destinationAddr = clientAddr;
 
     }
-   
-    public void run()
-    {
-        if (destinationAddr != null)
-        {
+
+    public void run() {
+        if (destinationAddr != null) {
             try {
-                
+
                 Socket s = new Socket();
                 s.connect(new InetSocketAddress(destinationAddr, destinationPort), 10000);
-               
+
                 ObjectOutputStream responseObj = new ObjectOutputStream(s.getOutputStream());
-                robj = new String(s.getLocalAddress().toString()+"\n"+new Integer(node.getProccessId()).toString());
-               
+                robj = s.getLocalAddress().toString() + "\n" + new Integer(node.getProccessId()).toString();
+
                 responseObj.writeObject(robj);
                 s.close();
             } catch (IOException ex) {
-                Logger.getLogger(ServerRbl.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
-                
+
 
     }//run()
 
+    public String HearResponce(ServerSocket ss) {
+        String addrLocal;
+        String procidLocal;
+        InputStream inStream;
+        
+        try {
+            ss.setSoTimeout(1000);
+            Socket incoming = ss.accept();
+            inStream = incoming.getInputStream();
+            ObjectInputStream in = new ObjectInputStream(inStream);
+            try {
+                String response = (String) in.readObject();
 
-public String HearResponce(ServerSocket ss){
-    String addr;
-    String procid;
-    String rmiaddress;
-    String robj;
-            InputStream inStream = null;
-            try
-            {
-                ss.setSoTimeout(1000);
-                Socket incoming = ss.accept();
+                //Tokenizing to get ip kai proccessid
+                StringTokenizer st = new StringTokenizer(response);
+                addrLocal = st.nextToken("\n");
+                procidLocal = st.nextToken("\n");
+                String temp = "rmi:/" + addrLocal + "/Chord-" + procidLocal;
+                node.window.getChordActivityText().append("got responce:" + temp + "\n");
+                return temp;
 
-                inStream = incoming.getInputStream();
-                //Scanner in = new Scanner(inStream);
-                ObjectInputStream in = new ObjectInputStream(inStream);
-                try {
-                   String response = new String((String) in.readObject());
-
-                    //Tokenizing gia na paroume ip kai proccessid
-                    StringTokenizer st = new StringTokenizer(response);
-                    addr = st.nextToken("\n");
-                    procid = st.nextToken("\n");
-                    String temp = new String ("rmi:/"+ addr +"/Chord-"+ procid);
-                    node.window.getChordActivityText().append("got responce:"+temp+"\n");
-                    return temp;
-
-                    //FindSuccessor(0, node);
-
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ServerRbl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                catch (RemoteException ex) {
-                Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-               }
-                inStream.close();
-            } catch (SocketTimeoutException ste) {
-                node.window.getChordActivityText().append("No one is here! Creating my Chord\n");
-                //System.err.println("No one is here! Creating my Chord");
-                return null;
-            } catch (IOException ex) {
-                Logger.getLogger(ServerRbl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+               ex.printStackTrace();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
-            node.window.getChordActivityText().append("got no responce");
+            inStream.close();
+        } catch (SocketTimeoutException ste) {
+            node.window.getChordActivityText().append("No one is here! Creating my Chord\n");
             return null;
-        }//HearResponce
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        node.window.getChordActivityText().append("got no responce");
+        return null;
+    }//HearResponce
 
-
-     public synchronized String getAddr() {
+    public synchronized String getAddr() {
         return addr;
     }
 
     public synchronized void setAddr(String addr) {
         this.addr = addr;
     }
-       public synchronized String getClientRmiaddress() {
+
+    public synchronized String getClientRmiaddress() {
         return rmiaddress;
     }
 
     public synchronized void setClientRmiaddress(String rmiaddress) {
         this.rmiaddress = rmiaddress;
     }
+
     public synchronized String getProcid() {
         return procid;
     }
