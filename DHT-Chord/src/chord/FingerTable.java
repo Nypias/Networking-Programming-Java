@@ -2,14 +2,10 @@ package chord;
 
 import common.GUI.MainWindow;
 import common.Hasher;
-import java.net.ConnectException;
 import java.rmi.RemoteException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,10 +33,10 @@ public class FingerTable implements Runnable
             this.n = n;
             this.window = window;
             fingertable = new ChordInterface[32]; //m=32 bits of int
-            set = new HashSet<ChordInterface>();
+            set = new HashSet<>();
              for (int i = 1; i <= fingertable.length; i++) {
                 fingertable[i - 1] = n;
-                set.add(fingertable[i - 1]); //Krata 1 fora to kathe node
+                set.add(fingertable[i - 1]); //Hold one time each node
             } //for
             
             updater = new Thread(this);
@@ -67,7 +63,7 @@ public class FingerTable implements Runnable
 
     }
     /**
-     * Returs a String representation of FingerTable
+     * Returns a String representation of FingerTable
      * @return
      */
     public  void printFingerTable()
@@ -156,7 +152,7 @@ public class FingerTable implements Runnable
 
             for (int i = 1; i <= fingertable.length; i++) {
                 fingertable[i - 1] = n;
-                set.add(fingertable[i - 1]); //Krata 1 fora to kathe node
+                set.add(fingertable[i - 1]); //Hold 1 time each node
             } //for
            
         fixfingers();

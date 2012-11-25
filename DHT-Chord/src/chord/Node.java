@@ -19,57 +19,56 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
- * Class Node represending a chord node in the ring
+ * Class Node represents a chord node in the ring
+ *
  * @author Barbarossa Team
  */
-public class Node extends UnicastRemoteObject implements Runnable, Serializable, ChordInterface
-{
+public class Node extends UnicastRemoteObject implements Runnable, Serializable, ChordInterface {
 
-  //-------------------|| VARIABLES ||------------------------
+    //-------------------|| VARIABLES ||------------------------
     private MulticastServer ms;
     private int tcpPort;
     private InetAddress nodeaddress;
     private int proccessId;
     Thread thdMS;
-    private ChordInterface[] successor; //Periexei ews kai tous epomenous 3 successor
+    private ChordInterface[] successor; //Contains the next 3 sucessors
     private ChordInterface predecessor;
     private int nodeKey;
     private String rmiaddress;
     MainWindow window;
     Mapper mapper;
     InetAddress myIP;
-    private FingerTable fingers;
+    //private FingerTable fingers;
     private long time; //Stores time at startup
 
 //==================================/ CONSTRUCTORS \================================================
     /**
      * Constructor
+     *
      * @param window
      * @param mapper
      * @throws RemoteException
      * @throws UnknownHostException
      */
-    public Node(MainWindow window,Mapper mapper) throws RemoteException, UnknownHostException
-    {
+    public Node(MainWindow window, Mapper mapper) throws RemoteException, UnknownHostException {
         super();
-        window.getUserText().append("Welcome to Barbarossa!!  En quard!\nThe LAB PIRATE!!");
-        time =  System.currentTimeMillis();
+        window.getUserText().append("Welcome to DHT");
+        time = System.currentTimeMillis();
         successor = new ChordInterface[3];
 
-        this.mapper=mapper;
+        this.mapper = mapper;
         setProccessId();
         this.window = window;
-        window.setChord(this);
-        myIP=getCurrentEnvironmentNetworkIp();
-        try //Edw ksekinaei na trexei o RMI SERVER (prwta exei ginei start rmiregistry apo cmd
+
+        myIP = getCurrentEnvironmentNetworkIp();
+        try //Rebind node to rmiregistry 
         {
             Naming.rebind("rmi:/" + myIP + ":1099/Chord-" + this.getProccessId(), this);
             printActivity(">set my RMI Service\n");
-        } catch (Exception e) {
+        } catch (RemoteException | MalformedURLException e) {
             System.err.println("chord.Node:RMI Service binding failed: " + e);
             e.printStackTrace();
         }
@@ -79,7 +78,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
         bootstrap();
 
-        fingers = new FingerTable(this, window);
+        //  fingers = new FingerTable(this, window);
 
 
     }//node constructor
@@ -90,7 +89,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
      */
     private void bootstrap() {
         try {
-              //Arxikopoihsh successor array
+            window.setChord(this);
+            //Initialization of successor array
             successor[0] = this;
             successor[1] = null;
             successor[2] = null;
@@ -107,7 +107,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             tcpPort = s.getLocalPort();
             setRmiaddress(nodeaddress);//, tcpPort);
             nodeKey = common.Hasher.myCode(getRmiaddress());
-            window.setTitle("Node of code:"+nodeKey);
+            window.setTitle("Node of code:" + nodeKey);
             s.setSoTimeout(1000);
             ms.sendMulticast(s.getLocalPort());
             String responderRMIAdress = srb.HearResponce(s);
@@ -116,194 +116,210 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                 try {
                     ChordInterface responder = (ChordInterface) Naming.lookup(responderRMIAdress);
                     ChordInterface succ = responder.FindSuccessor(nodeKey);
-                    
-                    setSuccessor(succ);
-                    succ.notifyP(this);
 
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                    setSuccessor(succ);
+                    System.out.println("b1");
+                    succ.notifyP(this);
+                    System.out.println("b2");
+                } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+                    ex.printStackTrace();
                 }
             }
 
             thdMS.start(); //starting multicast server
 
         } catch (IOException ex) {
-            Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
         printVars(); //Update GUI
 
         try {
             mapper.connect(this);  //Connect mapper with keys
-        } catch (RemoteException ex) {
-            Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException | UnknownHostException ex) {
+            ex.printStackTrace();
         }
     }//bootSrap
 
 //=====================================||STABILIZE - NOTIFY  ||====================================================
-     /**
-     * Stabilizes the Chord ring. Takes care of successor list and predecessor of Node
+    /**
+     * Stabilizes the Chord ring. Takes care of successor list and predecessor
+     * of Node
      */
-    private  void stabilize() {
+    private void stabilize() {
         ChordInterface x;
 
         try {
             // if real successpr has no predecessor
             // then do successor.predecessor = this;
             x = successor[0].getPredecessor();
-
-            if ((x == null) && (successor[0] != this)) {
-
+            boolean flag = false;
+            if (successor[0].getNodeKey() == this.nodeKey) {
+                flag = true;
+            }
+            if ((x == null) && !flag) {
+                System.out.println("stabilize() :: 1");
                 successor[0].notifyP(this);
                 return;
             }
 
-            if (x == null) return;
+            if (x == null) {
+                System.out.println("stabilize() :: 2");
+                return;
+            }
 
             int xkey = x.getNodeKey();
             // if successor.predecessor > this;
             // then make him my successor
             if (Hasher.isBetween(this.nodeKey, xkey, successor[0].getNodeKey())) {
+                System.out.println("stabilize() :: 3");
                 this.setSuccessor(x);
                 successor[0].notifyP(this);
-            } 
+            }
 
         } catch (RemoteException ex) {
         }//catch   RemoteException
         catch (NullPointerException e) {
-
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }//catch NullPointerException
 
     }//stabilize()
-     /**
+
+    /**
      * Takes care of a Node's exit from the Chord ring
      */
-    public synchronized void leave()
-    {
+    public synchronized void leave() {
         window.getUserText().append("Waiting for Chord to stabilize..\nBYE!\n");
         try {    //if i am the only node, exit
-            fingers.updater.interrupt();
-            if(successor[0].getNodeKey() == this.getNodeKey()) 
-            {
+            //    fingers.updater.interrupt();
+            if (successor[0].getNodeKey() == this.getNodeKey()) {
                 thdMS.interrupt();
                 System.exit(0);
             }//else if there are 2 Node in the Chord ring
-            else if(successor[0].getNodeKey()==predecessor.getNodeKey()) //an einai 2 komboi kai o enas kanei exit
+            else if (successor[0].getNodeKey() == predecessor.getNodeKey()) //if there are 2 nodes and one exits
             {
                 predecessor.setPredecessor(null);  //Take care of the other node's references
                 predecessor.setSuccessor2(successor[0]);
                 thdMS.interrupt();
                 mapper.leave();//Send my keys to the other Nodes
-               try {
+                try {
 
-                    Thread.sleep((long)3000); //Wait for Chord to stabilize and exit
+                    Thread.sleep((long) 3000); //Wait for Chord to stabilize and exit
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
 
                 System.exit(0);
-            }
-            else                                            //an einai >2 kombwn kai enas kanei exit
+            } else //if ring has more than 2 nodes and one exits
             {
                 predecessor.setSuccessor(successor[0]);  //Take care of the other node's references
                 successor[0].setPredecessor(predecessor);
                 thdMS.interrupt();
                 mapper.leave(); //Send my keys to the other Nodes
                 try {
-                    Thread.sleep((long)3000); //Wait for Chord to stabilize and exit
+                    Thread.sleep((long) 3000); //Wait for Chord to stabilize and exit
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
-               System.exit(0);
+                System.exit(0);
             }
 
         } catch (RemoteException ex) {
-            Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
     }
-    //-----------------checkPredecessor-------------(an pethane o pred, kane ton null
+    //-----------------checkPredecessor-------------
+
     /**
      * If predecessor is dead, make it null
      */
-    public synchronized void checkPredecessor()
-    {
-        if (predecessor==null) return;
+    public synchronized void checkPredecessor() {
+        if (predecessor == null) {
+            return;
+        }
         try {
             predecessor.getNodeKey();
         } catch (RemoteException ex) {
-           predecessor = null;
-           mapper.setPredKey(0);
-           fingers.fixfingers();
+            predecessor = null;
+            mapper.setPredKey(0);
+            //  fingers.fixfingers();
         }
     }
+
     /**
      * Check my successor for failures
      */
     public synchronized void checkSuccessors() {
 
         try {//===/begin checking 1st successor\================
+
             successor[0].getNodeKey();//check successor0
             successor[1] = successor[0].getSuccessors(0);//if successor0 ok
             successor[2] = successor[0].getSuccessors(1);
+
         } catch (RemoteException ex) {//apotyxia successor 0
             try {
+
                 successor[1].getNodeKey();//check successor1
                 successor[0] = successor[1];//if successor1 ok
-                 System.out.print("1 ");
+                System.out.print("1");
                 successor[1] = successor[1].getSuccessors(0);
                 System.out.print("2");
                 successor[2] = successor[1].getSuccessors(1);
                 System.out.print("3");
-                fingers.reset();
-            } catch (RemoteException ex1) {//tautoxronh apotyxia successor 1
-                try {System.out.print("4");
+                //    fingers.reset();
+            } catch (RemoteException ex1) {//concurrent failure of successor 1
+                try {
+                    System.out.print("4");
                     successor[0] = successor[2];//check if successor2 ok
                     successor[1] = successor[2].getSuccessors(0);
                     successor[2] = successor[2].getSuccessors(1);
-                    fingers.reset();
-                } catch (RemoteException ex2) { //tautoxronh apotyxia olwn twn successors
+                    //      fingers.reset();
+                } catch (RemoteException ex2) { //concurrent failure of all successors
                     successor[0] = successor[1] = successor[2] = this;
-                    fingers.reset();
+                    //    fingers.reset();
                 }
-                fingers.reset();
+                // fingers.reset();
             }
         }//catch 0===\end checking 1st successor/================
 
     }//check Successors
-    
+
     //------------------notifyP------------
-       /**
+    /**
      * notify about a change in Predecessor
+     *
      * @param n
      */
+    @Override
     public synchronized void notifyP(ChordInterface n) { //notify about a change in Predecessor
 
         try {
             //if i am alone, make who called me predecessor and successor
-            if ((predecessor == null) && (successor[0] == this)) {
+            boolean flag = false;
+            try {
+                if (successor[0].getNodeKey() == this.nodeKey) {
+                    flag = true;
+                }
+            } catch (Exception e) {
+            }
+
+            if ((predecessor == null) && flag) {
+                System.out.println("notifyP() :: 1");
                 this.setPredecessor(n);
                 this.setSuccessor(n);
-                return;
-            }
-            //if i have no predecessor, make him who called me
+            } //if i have no predecessor, make him who called me
             else if (predecessor == null) {
+                System.out.println("notifyP() :: 2");
                 this.setPredecessor(n);
-                return;
             }// 
             else if (Hasher.isBetween(predecessor.getNodeKey(), n.getNodeKey(), this.getNodeKey())) {
+                System.out.println("notifyP() :: 3");
                 this.setPredecessor(n);
-                return;
             }
         } catch (RemoteException ex) {
-           System.err.println("notifyP remote exception");
-        }  //catch
+            System.err.println("notifyP remote exception");
+        } //catch
         catch (NullPointerException ex) {
             System.err.println("notifyP NullPointer exception");
         }  //catch
@@ -313,137 +329,162 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     //------------------notifyS------------
     /**
      * notify about a change in Successor
+     *
      * @param n
      */
-
+    @Override
     public synchronized void notifyS(ChordInterface n) { //notify about a change in Successor
-      try {
+        try {
             if (Hasher.isBetween(this.nodeKey, n.getNodeKey(), successor[0].getNodeKey())) {
                 successor[0].notifyP(this);
                 this.setSuccessor(n);
-
             }
         } catch (RemoteException ex) {
             System.err.println("notifyS remote exception");
-        }  //catch
+        }  
 
     }//notifyS
 
     /**
      * Set Nodes RMI address
+     *
      * @param nodeaddress
      */
     public void setRmiaddress(InetAddress nodeaddress) {//, int TCPPort) {
-        this.rmiaddress = "rmi:/" + nodeaddress.toString() + ":1099" /* + TCPPort */+ "/Chord-" + this.proccessId;
+        this.rmiaddress = "rmi:/" + nodeaddress.toString() + ":1099" /* + TCPPort */ + "/Chord-" + this.proccessId;
 
     }
 
-
     //=====================================||  FIND SUCCESSOR  ||====================================================
     /**
-     * Finds  a successor of a key k using a nodes n finger table
+     * Finds a successor of a key k using a nodes n finger table
+     *
      * @param k
      * @return
      * @throws RemoteException
      */
+    @Override
     public ChordInterface FindSuccessor(int k) throws RemoteException {
         int succkey = this.successor[0].getNodeKey();
 
         if ((successor[0].getNodeKey() == this.nodeKey)) {
-            printActivity(">FindSuccessor:"+ k +" returned myself");
+            printActivity(">FindSuccessor:" + k + " returned myself");
             return this;
         }
 
-       ChordInterface ntemp=null;
-       if (Hasher.isBetween(this.nodeKey,k,succkey))
-       {
-            printActivity(">FindSuccessor:"+ k +" returned my successor ("+succkey+")");
+       
+        if (Hasher.isBetween(this.nodeKey, k, succkey)) {
+            printActivity(">FindSuccessor:" + k + " returned my successor (" + succkey + ")");
             return this.successor[0];
-       }
-       else
-       {
-            ntemp = fingers.checkprecNode(k);
-            if (ntemp.getNodeKey()==this.nodeKey) return this;
-            else return ntemp.FindSuccessor(k);
-       }
+        } else {
+            ChordInterface ntemp;
+            ntemp = successor[0];///fingers.checkprecNode(k);
+            if (ntemp == null) {
+                ntemp = this;
+            }
+            if (ntemp.getNodeKey() == this.nodeKey) {
+                return this;
+            } else {
+                return ntemp.FindSuccessor(k);
+            }
+        }
     }//Find Successor
 
-
-  
-
-  //=======================================|| GETTERS-SETTERS  ||=====================================================
+    //=======================================|| GETTERS-SETTERS  ||=====================================================
     public String getRmiaddress() {
         return rmiaddress;
     }
-    public void setProccessId() {
+
+    private void setProccessId() {
         StringTokenizer st = new StringTokenizer(ManagementFactory.getRuntimeMXBean().getName(), "@");
         this.proccessId = new Integer(st.nextToken());
     }
+
     public int getProccessId() {
         return proccessId;
     }
+
     public int getTCPPort() {
         return tcpPort;
     }
-    public  ChordInterface getSuccessors(int i) {
+
+    @Override
+    public ChordInterface getSuccessors(int i) {
         return successor[i];
     }
+
     public MulticastServer getMS() {
         return ms;
     }
-    public  ChordInterface getPredecessor() {
+
+    @Override
+    public ChordInterface getPredecessor() {
         return predecessor;
     }
+
+    @Override
     public InetAddress getIP() {
         return this.myIP;
     }
-    public synchronized void setPredecessor2(ChordInterface predecessor) throws RemoteException
-    {
+
+    @Override
+    public synchronized void setPredecessor2(ChordInterface predecessor) throws RemoteException {
         this.predecessor = predecessor;
     }
+
+    @Override
     public synchronized void setPredecessor(ChordInterface predecessor) throws RemoteException {
         if (this.predecessor != null) {
             this.predecessor = predecessor;
         } else {
             this.predecessor = predecessor;
         }
-        if (mapper.isConnected())  mapper.reDistributeKeys();
+        if (mapper.isConnected()) {
+            mapper.reDistributeKeys();
+        }
     }
+
+    @Override
     public synchronized void setSuccessor(ChordInterface successor) throws RemoteException {
 
-       this.successor[0]=successor;
+        this.successor[0] = successor;
     }
 
-
-    public void setSuccessor2(ChordInterface successor) throws RemoteException
-    {
+    @Override
+    public void setSuccessor2(ChordInterface successor) throws RemoteException {
         this.successor[0] = this;
     }
+
     public void setNodeKey(int nodeKey) {
         this.nodeKey = nodeKey;
         printVars();
     }
+
+    @Override
     public int getNodeKey() throws RemoteException {
         return nodeKey;
     }
+
     public InetAddress getNodeaddress() {
         return nodeaddress;
     }
+
     public void setNodeaddress(InetAddress nodeaddress) {
         this.nodeaddress = nodeaddress;
     }
 
-     /**
+    /**
      * Returns local ip address, code by jguru
+     *
      * @return
      * @throws UnknownHostException
      */
-    public static InetAddress getCurrentEnvironmentNetworkIp() throws UnknownHostException { 
+    public static InetAddress getCurrentEnvironmentNetworkIp() throws UnknownHostException {
         Enumeration<NetworkInterface> netInterfaces = null;
         try {
             netInterfaces = NetworkInterface.getNetworkInterfaces();
         } catch (SocketException e) {
-            //log.error("Somehow we have a socket error...");
+            e.printStackTrace();
         }
 
         while (netInterfaces.hasMoreElements()) {
@@ -463,23 +504,32 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         }
     }
 
-     public int getPredecessorKey(){
-        int key=0;
-        if (predecessor==null)return 0;
+    /**
+     * 
+     * @return 
+     */
+    public int getPredecessorKey() {
+        int key = 0;
+        if (predecessor == null) {
+            return 0;
+        }
         try {
+            if (predecessor.getNodeKey() == this.nodeKey) {
+                predecessor = null;
+                return 0;
+            }
+            System.out.println("my pred:" + predecessor.getNodeKey());
             return predecessor.getNodeKey();
         } catch (RemoteException ex) {
-
-
             System.err.println("get predecessorkey remote exception");
         }
         return key;
     }
 
-
 //==========================================|| GUI METHODS ||===================================================
-     /**
-     * Prints at GUI the Successor list, the predecessor and the rmi address of the Node
+    /**
+     * Prints at GUI the Successor list, the predecessor and the rmi address of
+     * the Node
      */
     public void printVars() {
         String s = "\n";
@@ -487,48 +537,58 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
         try {
             s += "Succesor[0]Key:\t" + successor[0].getNodeKey() + "\n\n";
-            if(successor[1]!=null) s += "Succesor[1]Key:\t" + successor[1].getNodeKey() + "\n";
-            else  s += "SuccesorKey:\t ---- \n";
-            if(successor[2]!=null)  s += "Succesor[2]Key:\t" + successor[2].getNodeKey() + "\n";
-            else s += "SuccesorKey:\t ---- \n";
-            if(predecessor!=null)s += "PredescessorKey:\t" + predecessor.getNodeKey() + "\n";
-            else s += "No predecessor\n";
+            if (successor[1] != null) {
+                s += "Succesor[1]Key:\t" + successor[1].getNodeKey() + "\n";
+            } else {
+                s += "SuccesorKey:\t ---- \n";
+            }
+            if (successor[2] != null) {
+                s += "Succesor[2]Key:\t" + successor[2].getNodeKey() + "\n";
+            } else {
+                s += "SuccesorKey:\t ---- \n";
+            }
+            if (predecessor != null) {
+                s += "PredescessorKey:\t" + predecessor.getNodeKey() + "\n";
+            } else {
+                s += "No predecessor\n";
+            }
         } catch (RemoteException ex) {
             System.err.println("chord printVars remote exception");
         }
-        s += "RMI url: "+rmiaddress + "\n";
+        s += "RMI url: " + rmiaddress + "\n";
         window.getChordVarsText().setText(s);
     }//printVars
 
     /**
      * Updates the text area of the GUI with the Node's chord activity
+     *
      * @param a
      */
-    void printActivity(String a){ window.getChordActivityText().append(a+"\n"); }
+    public void printActivity(String a) {
+        window.getChordActivityText().append(a + "\n");
+    }
 
 //=========================================|| RUN  ||==========================================================
-
-        public void run() {
-        while(true){
-        checkPredecessor();
-        checkSuccessors();
-        stabilize();
-        long temp = (System.currentTimeMillis() - time)/1000; //calculate elapsed time
-        window.getjTextArea1().setText("    Running time: "+temp+" sec\n");
-        try
-        {
-            Random r = new Random();
-            Thread.sleep( 500*r.nextInt(2));
-          
-        } catch (InterruptedException ex) {}
-          catch (Exception e){System.err.println("Node.run():"+e.getClass());}
+    public void run() {
+        while (true) {
+            checkPredecessor();
+            checkSuccessors();
+            stabilize();
+            long temp = (System.currentTimeMillis() - time) / 1000; //calculate elapsed time
+            window.getjTextArea1().setText("    Running time: " + temp + " sec\n");
+            try {
+                Random r = new Random();
+                Thread.sleep(500 * r.nextInt(2));
+            } catch (InterruptedException ex) {
+            } catch (Exception e) {
+                System.err.println("Node.run():" + e.getClass());
+            }
 
         }//while (true)
 
     }//run
 
     public void printFingers() {
-        fingers.printFingerTable();
+        //fingers.printFingerTable();
     }
-
 }

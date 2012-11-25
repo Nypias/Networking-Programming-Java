@@ -5,12 +5,12 @@ import KeyManager.Mapper;
 import common.FileLocation;
 import common.GUI.MainWindow;
 import common.Hasher;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.InetAddress;
-import java.io.File;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +61,7 @@ public class MaybeAnApp {
     }//constructor
 
     /**
-     * changes the directiry that this application uses and uses the Mapper
+     * changes the directory that this application uses and uses the Mapper
      * of the node to un-distribute the old keys and distribute the new ones
      * @param dir the new Directory
      */
