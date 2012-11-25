@@ -1,6 +1,7 @@
 package HW4.view;
 
 import HW4.controller.CurrencyController;
+import HW4.controller.Utilities;
 import javax.inject.Named;
 import javax.enterprise.context.ConversationScoped;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class CurrencyManager implements Serializable {
     @Inject
     private Conversation conversation;
     
+    private String errorAmount;
     private Double currentAmountConverted;
 
 
@@ -55,10 +57,13 @@ public class CurrencyManager implements Serializable {
     public void convert() {
         try {
             startConversation();
-            System.out.println("Debut convert");
             transactionFailure = null;
-            this.currentAmountConverted = currencyController.convert(this.amount, this.firstCurrencyName, this.secondCurrencyName);
-            System.out.println("Convert currency : " + this.currentAmountConverted);
+            if (this.amount > 0) {
+                this.currentAmountConverted = currencyController.convert(this.amount, this.firstCurrencyName, this.secondCurrencyName);
+                this.currentAmountConverted = Utilities.reduceDouble(this.currentAmountConverted);
+            } else {
+                this.errorAmount = "Please enter a positif amount of money";
+            }
         } catch (Exception e) {
             handleException(e);
         }
@@ -107,6 +112,14 @@ public class CurrencyManager implements Serializable {
     
     public void setCurrentAmountConverted(Double currentAmountConverted) {
         this.currentAmountConverted = currentAmountConverted;
+    }
+    
+    public String getErrorAmount() {
+        return errorAmount;
+    }
+
+    public void setErrorAmount(String errorAmount) {
+        this.errorAmount = errorAmount;
     }
     
     

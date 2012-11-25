@@ -12,12 +12,13 @@
         
         <h:form>
         <p>Please, enter your amount:</p>
-        <h:inputText id="amount" value="#{currencyManager.amount}"/>
+       
+        <h:inputText id="amount" value="#{currencyManager.amount}"/><br />
+        <h:outputText id="errorAmount" value="#{currencyManager.errorAmount}"/>
         
         <br />
         
         <p>Select your currencies:</p>
-        <br />
         <p>
             
             <h:selectOneMenu id="menuCurrency1" value="${currencyManager.firstCurrency}">
@@ -32,9 +33,10 @@
                     </c:forEach>
                 </h:selectOneMenu>
                 
-                <br /><br />
-                
+                <br />
+                <p>
                 <h:commandButton value="Convert" action="#{currencyManager.convert}"/>
+                </p>
             
         </p>
         
