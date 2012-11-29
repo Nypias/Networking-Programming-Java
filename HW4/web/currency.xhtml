@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Currency Converter</title>
+    </h:head>
+    <h:body>
+        <h2>Welcome to the currency converter !</h2>
+        
+        <h:form>
+        <p>Please, enter your amount:</p>
+       
+        <h:inputText id="amount" value="#{currencyManager.amount}"/><br />
+        <h:outputText id="errorAmount" value="#{currencyManager.errorAmount}"/>
+        
+        <br />
+        
+        <p>Select your currencies:</p>
+        <p>
+            
+            <h:selectOneMenu id="menuCurrency1" value="${currencyManager.firstCurrency}">
+                    <c:forEach var="itemName" items="#{currencyManager.listCurrency}" varStatus="loopCount">
+                        <f:selectItem id="itemName#{loopCount.count}" itemLabel="#{itemName}" itemValue="#{itemName}" />
+                    </c:forEach>
+                </h:selectOneMenu>
+                to
+                <h:selectOneMenu id="menuCurrency2" value="${currencyManager.secondCurrency}">
+                    <c:forEach var="itemName1" items="#{currencyManager.listCurrency}" varStatus="loopCount">
+                        <f:selectItem id="itemName1#{loopCount.count}" itemLabel="#{itemName1}" itemValue="#{itemName1}" />
+                    </c:forEach>
+                </h:selectOneMenu>
+                
+                <br />
+                <p>
+                <h:commandButton value="Convert" action="#{currencyManager.convert}"/>
+                </p>
+            
+        </p>
+        
+        <p>
+            <h:outputLabel for="currConverter" rendered="#{currencyManager.currentAmountConverted != null}"  value="Result: "/>
+            <h:outputText id="currConverter" value="#{currencyManager.currentAmountConverted}"/>
+        </p>
+        </h:form>
+
+    </h:body>
+</html>
+
