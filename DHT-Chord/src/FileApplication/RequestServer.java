@@ -17,32 +17,37 @@ public class RequestServer implements Runnable {
     ServerSocket hearingSocket;
     JTextArea log;
     MaybeAnApp father;
-/**
- * Constructor
- * @param father
- * @param hearingSocket
- * @param log
- */
-    public RequestServer(MaybeAnApp father, ServerSocket hearingSocket, JTextArea log ) {
+
+    /**
+     * Constructor
+     *
+     * @param father
+     * @param hearingSocket
+     * @param log
+     */
+    public RequestServer(MaybeAnApp father, ServerSocket hearingSocket, JTextArea log) {
         this.hearingSocket = hearingSocket;
         this.log = log;
         this.father = father;
     }
 
-
+    /**
+     * 
+     */
     public void run() {
         while (true) {
             receiveRequest();
         }
 
     }//run
+
     /**
-     * Method to Receive a request for a file
+     * Method to Receive a request for a file.
      */
     void receiveRequest() {
         int request = -1;
         try {
-            Socket s = hearingSocket.accept();           
+            Socket s = hearingSocket.accept();
             ObjectInputStream in = new ObjectInputStream(s.getInputStream());
             request = in.readInt();
             int clientPort = in.readInt();
@@ -52,13 +57,13 @@ public class RequestServer implements Runnable {
             switch (request) {
                 case 1: { //sendFile
                     int fileCode = in.readInt();
-                    log.append(">received a request for code "+fileCode+"\n");
+                    log.append(">received a request for code " + fileCode + "\n");
                     in.close();
                     s.close();
                     sendFile(cIP, clientPort, fileCode);
                 }//case 1
-                case 2:{//isAlive
-                    log.append("isAliveRequest from"+cIP+clientPort+"\n");
+                case 2: {//isAlive
+                    log.append("isAliveRequest from" + cIP + clientPort + "\n");
                     in.close();
                     s.close();
                 }
@@ -66,7 +71,7 @@ public class RequestServer implements Runnable {
             }//switch
 
         } catch (IOException ioe) {
-            log.append("Clould not hear request " +ioe.getClass()+"\n");
+            log.append("Clould not hear request " + ioe.getClass() + "\n");
             ioe.printStackTrace();
         }//catch
     }//receiveRequest()
@@ -74,7 +79,7 @@ public class RequestServer implements Runnable {
     //============================/sendFile\========================================
     void sendFile(InetAddress clientAddr, int clientPort, File file) {
         log.append(">Sending file: " + file.getAbsolutePath() + " to: " + clientAddr + ":" + clientPort);
-        FileSenderServant fs = new FileSenderServant(clientAddr, clientPort, file,log);
+        FileSenderServant fs = new FileSenderServant(clientAddr, clientPort, file, log);
         Thread sender = new Thread(fs);
         sender.start();
     }//sendFile
@@ -84,9 +89,7 @@ public class RequestServer implements Runnable {
         if (file != null) {
             sendFile(clientAddr, clientPort, file);
         } else {
-            log.append("requested of me a file I don't have. (code=" + code + ") from:" + clientAddr + ":" + clientPort+"\n");
+            log.append("requested of me a file I don't have. (code=" + code + ") from:" + clientAddr + ":" + clientPort + "\n");
         }
     }//sendFile - code
-
-
 }//RequestServer

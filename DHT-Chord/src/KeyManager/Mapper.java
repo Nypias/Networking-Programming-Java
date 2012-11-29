@@ -21,7 +21,7 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 /**
- *
+ * Class responsible to hold and distribute keys to the Chord ring.
  * @author DHT-Chord Team
  */
 public class Mapper extends java.rmi.server.UnicastRemoteObject implements RemoteMapper, Runnable {

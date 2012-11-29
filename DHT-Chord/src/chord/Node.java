@@ -41,12 +41,12 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     MainWindow window;
     Mapper mapper;
     InetAddress myIP;
-    //private FingerTable fingers;
+    private FingerTable fingers;
     private long time; //Stores time at startup
 
-//==================================/ CONSTRUCTORS \================================================
+    //==================================/ CONSTRUCTORS \================================================
     /**
-     * Constructor
+     * Constructor.
      *
      * @param window
      * @param mapper
@@ -78,14 +78,14 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
         bootstrap();
 
-        //  fingers = new FingerTable(this, window);
+        fingers = new FingerTable(this, window);
 
 
     }//node constructor
 
 //=====================================|| BOOTSTRAP ||========================================
     /**
-     * Does the bootstrap of a Node in the Chord
+     * Does the bootstrap of a Node in the Chord.
      */
     private void bootstrap() {
         try {
@@ -140,10 +140,11 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         }
     }//bootSrap
 
-//=====================================||STABILIZE - NOTIFY  ||====================================================
+    //=====================================||STABILIZE - NOTIFY  ||====================================================
+    
     /**
      * Stabilizes the Chord ring. Takes care of successor list and predecessor
-     * of Node
+     * of Node.
      */
     private void stabilize() {
         ChordInterface x;
@@ -185,12 +186,12 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }//stabilize()
 
     /**
-     * Takes care of a Node's exit from the Chord ring
+     * Takes care of a Node's exit from the Chord ring.
      */
     public synchronized void leave() {
         window.getUserText().append("Waiting for Chord to stabilize..\nBYE!\n");
         try {    //if i am the only node, exit
-            //    fingers.updater.interrupt();
+                fingers.updater.interrupt();
             if (successor[0].getNodeKey() == this.getNodeKey()) {
                 thdMS.interrupt();
                 System.exit(0);
@@ -231,7 +232,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     //-----------------checkPredecessor-------------
 
     /**
-     * If predecessor is dead, make it null
+     * If predecessor is dead, make it null.
      */
     public synchronized void checkPredecessor() {
         if (predecessor == null) {
@@ -242,12 +243,12 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         } catch (RemoteException ex) {
             predecessor = null;
             mapper.setPredKey(0);
-            //  fingers.fixfingers();
+            fingers.fixfingers();
         }
     }
 
     /**
-     * Check my successor for failures
+     * Check my successor for failures.
      */
     public synchronized void checkSuccessors() {
 
@@ -267,19 +268,19 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                 System.out.print("2");
                 successor[2] = successor[1].getSuccessors(1);
                 System.out.print("3");
-                //    fingers.reset();
+                fingers.reset();
             } catch (RemoteException ex1) {//concurrent failure of successor 1
                 try {
                     System.out.print("4");
                     successor[0] = successor[2];//check if successor2 ok
                     successor[1] = successor[2].getSuccessors(0);
                     successor[2] = successor[2].getSuccessors(1);
-                    //      fingers.reset();
+                    fingers.reset();
                 } catch (RemoteException ex2) { //concurrent failure of all successors
                     successor[0] = successor[1] = successor[2] = this;
-                    //    fingers.reset();
+                    fingers.reset();
                 }
-                // fingers.reset();
+                 //fingers.reset();
             }
         }//catch 0===\end checking 1st successor/================
 
@@ -287,7 +288,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     //------------------notifyP------------
     /**
-     * notify about a change in Predecessor
+     * Notify about a change in Predecessor.
      *
      * @param n
      */
@@ -328,7 +329,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     //------------------notifyS------------
     /**
-     * notify about a change in Successor
+     * Notify about a change in Successor.
+     * NOT USED !!
      *
      * @param n
      */
@@ -346,7 +348,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }//notifyS
 
     /**
-     * Set Nodes RMI address
+     * Set Nodes RMI address.
      *
      * @param nodeaddress
      */
@@ -356,8 +358,9 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     //=====================================||  FIND SUCCESSOR  ||====================================================
+    
     /**
-     * Finds a successor of a key k using a nodes n finger table
+     * Finds a successor of a key k using a nodes n finger table.
      *
      * @param k
      * @return
@@ -371,14 +374,13 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             printActivity(">FindSuccessor:" + k + " returned myself");
             return this;
         }
-
        
         if (Hasher.isBetween(this.nodeKey, k, succkey)) {
             printActivity(">FindSuccessor:" + k + " returned my successor (" + succkey + ")");
             return this.successor[0];
         } else {
             ChordInterface ntemp;
-            ntemp = successor[0];///fingers.checkprecNode(k);
+            ntemp = fingers.checkprecNode(k);
             if (ntemp == null) {
                 ntemp = this;
             }
@@ -391,47 +393,89 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }//Find Successor
 
     //=======================================|| GETTERS-SETTERS  ||=====================================================
+    /**
+     * 
+     * @return 
+     */
     public String getRmiaddress() {
         return rmiaddress;
     }
 
+    /**
+     * Sets nodes processID from JVM.
+     */
     private void setProccessId() {
         StringTokenizer st = new StringTokenizer(ManagementFactory.getRuntimeMXBean().getName(), "@");
         this.proccessId = new Integer(st.nextToken());
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getProccessId() {
         return proccessId;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getTCPPort() {
         return tcpPort;
     }
-
+    
+    /**
+     * Get i'th successor.
+     * @param i
+     * @return 
+     */
     @Override
     public ChordInterface getSuccessors(int i) {
         return successor[i];
     }
 
+    /**
+     * 
+     * @return 
+     */
     public MulticastServer getMS() {
         return ms;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public ChordInterface getPredecessor() {
         return predecessor;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public InetAddress getIP() {
         return this.myIP;
     }
 
+    /**
+     * 
+     * @param predecessor
+     * @throws RemoteException 
+     */
     @Override
     public synchronized void setPredecessor2(ChordInterface predecessor) throws RemoteException {
         this.predecessor = predecessor;
     }
 
+    /**
+     * Set my predecessor and call mapper.reDistributeKeys().
+     * @param predecessor
+     * @throws RemoteException 
+     */
     @Override
     public synchronized void setPredecessor(ChordInterface predecessor) throws RemoteException {
         if (this.predecessor != null) {
@@ -444,37 +488,63 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         }
     }
 
+    /**
+     * 
+     * @param successor
+     * @throws RemoteException 
+     */
     @Override
     public synchronized void setSuccessor(ChordInterface successor) throws RemoteException {
-
         this.successor[0] = successor;
     }
 
+    /**
+     * 
+     * @param successor
+     * @throws RemoteException 
+     */
     @Override
     public void setSuccessor2(ChordInterface successor) throws RemoteException {
         this.successor[0] = this;
     }
 
+    /**
+     * Sets node key and prints message to GUI.
+     * @param nodeKey 
+     */
     public void setNodeKey(int nodeKey) {
         this.nodeKey = nodeKey;
         printVars();
     }
 
+    /**
+     * 
+     * @return
+     * @throws RemoteException 
+     */
     @Override
     public int getNodeKey() throws RemoteException {
         return nodeKey;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public InetAddress getNodeaddress() {
         return nodeaddress;
     }
 
+    /**
+     * 
+     * @param nodeaddress 
+     */
     public void setNodeaddress(InetAddress nodeaddress) {
         this.nodeaddress = nodeaddress;
     }
 
     /**
-     * Returns local ip address, code by jguru
+     * Returns local ip address, code by jguru.
      *
      * @return
      * @throws UnknownHostException
@@ -526,10 +596,11 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         return key;
     }
 
-//==========================================|| GUI METHODS ||===================================================
+    //==========================================|| GUI METHODS ||===================================================
+    
     /**
      * Prints at GUI the Successor list, the predecessor and the rmi address of
-     * the Node
+     * the Node.
      */
     public void printVars() {
         String s = "\n";
@@ -560,7 +631,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }//printVars
 
     /**
-     * Updates the text area of the GUI with the Node's chord activity
+     * Updates the text area of the GUI with the Node's chord activity.
      *
      * @param a
      */
@@ -568,7 +639,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
         window.getChordActivityText().append(a + "\n");
     }
 
-//=========================================|| RUN  ||==========================================================
+    //=========================================|| RUN  ||==========================================================
     public void run() {
         while (true) {
             checkPredecessor();
@@ -588,7 +659,10 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     }//run
 
+    /**
+     * Print finger table.
+     */
     public void printFingers() {
-        //fingers.printFingerTable();
+        fingers.printFingerTable();
     }
 }

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Implements the multicast server required to find ring nodes for bootstrap.
  *
  * @author DHT-Chord Team
  */
@@ -21,19 +22,28 @@ public class MulticastServer implements Runnable {
     private int proccessId;
     private Node node;
 
+    /*
+     * Constructor.
+     */
+    MulticastServer(Node node) {
+        super();
+        this.node = node;
+    }
+
+    /**
+     *
+     * @param proccessId
+     */
     public void setProccessId(int proccessId) {
         this.proccessId = proccessId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTCPPort() {
         return tcpPort;
-    }
-
-    MulticastServer(Node node) {
-
-        super();
-        this.node = node;
-
     }
 
     /**
@@ -60,7 +70,7 @@ public class MulticastServer implements Runnable {
     }
 
     /**
-     * Receives Multicast
+     * Receives Multicast.
      *
      * @throws InterruptedException
      */
@@ -87,6 +97,12 @@ public class MulticastServer implements Runnable {
         }
     }
 
+    /**
+     * Converts data to be read from multicast.
+     *
+     * @param b
+     * @return
+     */
     private static int byteToInt(byte[] b) {
         int val = 0;
         for (int i = b.length - 1, j = 0; i >= 0; i--, j++) {
@@ -95,6 +111,12 @@ public class MulticastServer implements Runnable {
         return val;
     }
 
+    /**
+     * Converts data to be sent by multicast.
+     *
+     * @param value
+     * @return
+     */
     private static byte[] intToByteArray(int value) {
         byte[] b = new byte[4];
         for (int i = 0; i < 4; i++) {
@@ -104,6 +126,9 @@ public class MulticastServer implements Runnable {
         return b;
     }
 
+    /**
+     * Executes receive multicast.
+     */
     public void run() {
         node.window.getChordActivityText().append(">my MC server set\n");
         try {
@@ -111,7 +136,7 @@ public class MulticastServer implements Runnable {
                 receiveMulticast();
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(MulticastServer.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
     }

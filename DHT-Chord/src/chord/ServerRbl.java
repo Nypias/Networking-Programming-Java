@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
 import java.util.StringTokenizer;
 
 /**
- * Provides TCP connectivity. Acts as a server and client
+ * Provides TCP connectivity. Acts as a server and client.
  *
  * @author DHT-Chord Team
  */
