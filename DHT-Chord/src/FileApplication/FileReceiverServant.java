@@ -10,7 +10,7 @@ import java.net.Socket;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class FileReceiverServant implements Runnable {
 

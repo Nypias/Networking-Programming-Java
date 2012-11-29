@@ -3,7 +3,7 @@ package KeyManager;
 import common.FileLocation;
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class Entry implements java.io.Serializable {
 

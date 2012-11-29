@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 /**
  * Class Node represents a chord node in the ring
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class Node extends UnicastRemoteObject implements Runnable, Serializable, ChordInterface {
 
@@ -163,7 +163,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             }
 
             if (x == null) {
-                System.out.println("stabilize() :: 2");
+                //System.out.println("stabilize() :: 2");
                 return;
             }
 

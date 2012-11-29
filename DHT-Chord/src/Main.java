@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class Main {
     

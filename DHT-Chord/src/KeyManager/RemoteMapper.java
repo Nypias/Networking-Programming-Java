@@ -4,7 +4,7 @@ import common.FileLocation;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public interface RemoteMapper extends java.rmi.Remote {
    

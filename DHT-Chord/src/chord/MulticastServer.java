@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class MulticastServer implements Runnable {
 

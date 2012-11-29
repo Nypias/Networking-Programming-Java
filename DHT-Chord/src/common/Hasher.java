@@ -3,7 +3,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 /**
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  *
  * A Class to Offer a 160bit SHA-1 Hash function
  * and a 32bit Integer Hash Function

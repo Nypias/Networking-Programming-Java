@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 
 public class FingerTable implements Runnable

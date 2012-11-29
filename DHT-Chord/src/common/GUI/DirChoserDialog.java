@@ -4,7 +4,7 @@ import java.awt.Frame;
 
 /**
  *
- * @author Barbarossa Team
+ * @author DHT-Chord Team
  */
 public class DirChoserDialog extends javax.swing.JDialog {
 

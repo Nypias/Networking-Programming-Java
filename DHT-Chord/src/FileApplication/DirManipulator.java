@@ -1,12 +1,12 @@
 package FileApplication;
 import common.Hasher;
 import java.io.File;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
- *@author Barbarossa Team
+ *@author DHT-Chord Team
  *
  * A Class to Manipulate The Contents of a Directory
  * (reads filenames, attaches the according Codes and maps the Codes to absolute FilePaths)
@@ -48,7 +48,7 @@ public class DirManipulator {
         listOfCodes = new int[listOfFiles.length];
         for(int i=0;i<listOfFiles.length;i++){
             listOfCodes[i]=Hasher.myCode(listOfFiles[i]);
-            //System.out.println(listOfFiles[i]+"="+listOfCodes[i]);
+            System.out.println("DirManipulator.updateListOfCodes() :: "+listOfFiles[i]+"="+listOfCodes[i]);
         }
     }//end updateListOfCodes()
 
