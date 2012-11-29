@@ -121,7 +121,7 @@ public class FingerTable implements Runnable
      }
 
     /**
-     * Checks for closest preceding Node in Finger Table
+     * Checks for closest preceding Node in Finger Table.
      * @param k
      * @return
      */
