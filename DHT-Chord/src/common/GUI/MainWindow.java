@@ -166,6 +166,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         userText.setBackground(new java.awt.Color(28, 20, 13));
         userText.setColumns(1);
+        userText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         userText.setForeground(new java.awt.Color(203, 232, 107));
         userText.setRows(5);
         userText.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -287,6 +288,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         ServerText.setEditable(false);
         ServerText.setBackground(new java.awt.Color(28, 20, 13));
         ServerText.setColumns(20);
+        ServerText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         ServerText.setForeground(new java.awt.Color(203, 232, 107));
         ServerText.setRows(5);
         jScrollPane2.setViewportView(ServerText);
@@ -294,6 +296,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         ClientText.setEditable(false);
         ClientText.setBackground(new java.awt.Color(28, 20, 13));
         ClientText.setColumns(20);
+        ClientText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         ClientText.setForeground(new java.awt.Color(203, 232, 107));
         ClientText.setRows(5);
         jScrollPane3.setViewportView(ClientText);
@@ -389,7 +392,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         DHTText.setEditable(false);
         DHTText.setBackground(new java.awt.Color(28, 20, 13));
         DHTText.setColumns(20);
-        DHTText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        DHTText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         DHTText.setForeground(new java.awt.Color(203, 232, 107));
         DHTText.setRows(5);
         jScrollPane1.setViewportView(DHTText);
@@ -397,7 +400,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         KeysInfoText.setEditable(false);
         KeysInfoText.setBackground(new java.awt.Color(28, 20, 13));
         KeysInfoText.setColumns(20);
-        KeysInfoText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        KeysInfoText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         KeysInfoText.setForeground(new java.awt.Color(203, 232, 107));
         KeysInfoText.setRows(5);
         jScrollPane4.setViewportView(KeysInfoText);
@@ -413,7 +416,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         KeyActivityText.setEditable(false);
         KeyActivityText.setBackground(new java.awt.Color(28, 20, 13));
         KeyActivityText.setColumns(20);
-        KeyActivityText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        KeyActivityText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         KeyActivityText.setForeground(new java.awt.Color(203, 232, 107));
         KeyActivityText.setRows(5);
         jScrollPane5.setViewportView(KeyActivityText);
@@ -479,7 +482,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         ChordVarsText.setEditable(false);
         ChordVarsText.setBackground(new java.awt.Color(28, 20, 13));
         ChordVarsText.setColumns(20);
-        ChordVarsText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        ChordVarsText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         ChordVarsText.setForeground(new java.awt.Color(203, 232, 107));
         ChordVarsText.setRows(5);
         ChordVarsText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -488,7 +491,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         FingerTableText.setEditable(false);
         FingerTableText.setBackground(new java.awt.Color(28, 20, 13));
         FingerTableText.setColumns(20);
-        FingerTableText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        FingerTableText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         FingerTableText.setForeground(new java.awt.Color(203, 232, 107));
         FingerTableText.setLineWrap(true);
         FingerTableText.setRows(5);
@@ -507,7 +510,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         ChordActivityText.setEditable(false);
         ChordActivityText.setBackground(new java.awt.Color(28, 20, 13));
         ChordActivityText.setColumns(20);
-        ChordActivityText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        ChordActivityText.setFont(new java.awt.Font("Ubuntu Light", 0, 13)); // NOI18N
         ChordActivityText.setForeground(new java.awt.Color(203, 232, 107));
         ChordActivityText.setRows(5);
         ChordActivityText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -532,7 +535,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(34, 34, 34))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(112, Short.MAX_VALUE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(106, 106, 106)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
