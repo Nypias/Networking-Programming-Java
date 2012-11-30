@@ -127,9 +127,9 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     public common.FileLocation lookup(int key) throws RemoteException {
         common.FileLocation fl = map.get(key);
         if (fl == null) {
-            printAct(">requested of key: " + key + ", rerurned null");
+            printAct(">requested of key: " + key + ", returned null");
         } else {
-            printAct(">requested of key: " + key + ", rerurned: " + fl);
+            printAct(">requested of key: " + key + ", returned: " + fl);
         }
         return fl;
     }

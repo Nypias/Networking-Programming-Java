@@ -57,13 +57,13 @@ public class RequestServer implements Runnable {
             switch (request) {
                 case 1: { //sendFile
                     int fileCode = in.readInt();
-                    log.append(">received a request for code " + fileCode + "\n");
+                    log.append(">received a request for code " + fileCode +"from port:"+clientPort+"\n");
                     in.close();
                     s.close();
                     sendFile(cIP, clientPort, fileCode);
                 }//case 1
                 case 2: {//isAlive
-                    log.append("isAliveRequest from" + cIP + ":"+clientPort + "\n");
+                    //log.append("isAliveRequest from" + cIP + "\n");
                     in.close();
                     s.close();
                 }
