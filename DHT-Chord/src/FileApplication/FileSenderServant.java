@@ -42,7 +42,7 @@ public class FileSenderServant implements Runnable {
     public void run() {
         Socket receiverServer = null;
         byte[] mybytearray = new byte[bufferSize];
-        log.append("attemping to send file: +" + file.getAbsolutePath() + "\n");
+        log.append("attempting to send file: +" + file.getAbsolutePath() + "\n");
 
         try {
             receiverServer = new Socket(clientAddr, clientPort);
