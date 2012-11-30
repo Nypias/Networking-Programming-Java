@@ -9,7 +9,7 @@ import java.net.Socket;
 import javax.swing.JTextArea;
 
 /**
- *
+ * Listens to Requests from other nodes and executes appropriate functions.
  * @author DHT-Chord Team
  */
 public class RequestServer implements Runnable {

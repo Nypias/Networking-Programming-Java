@@ -479,7 +479,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
             try {
                 if (i % 20 == 0) {
                     // System.out.println("Mapper.run() :: 1");
-                    // reDistributeMyKeys(); //runs less than once in 5sec
+                    reDistributeMyKeys(); //runs less than once in 5sec
                 }
                 if (i % 10 == 0) {
                     //System.out.println("Mapper.run() :: 2");
