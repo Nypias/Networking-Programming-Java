@@ -608,6 +608,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
+            long start = System.currentTimeMillis();
             String fname = jTextField1.getText();
             if (jTextField1.getText().isEmpty()) {
                 return;
@@ -617,6 +618,9 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             int s = chord.FindSuccessor(hash).getNodeKey();
             String sr = "" + s;
             fileNameDucc.setText(sr);
+            long end1 = System.currentTimeMillis() - start;
+            float end = (float)((System.currentTimeMillis() - start)/1000);
+            userText.append(">FindSuccessor took "+end1+" milliseconds\n");
         } catch (RemoteException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }

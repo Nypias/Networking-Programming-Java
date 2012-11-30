@@ -188,6 +188,7 @@ public class MaybeAnApp {
      * @param code the hashcode of the file to download
      */
     public void download(File f, int code) {
+        long startTime = System.currentTimeMillis();
         FileLocation fl = mapper.findFile(code);
         if (fl == null) {
             try {
@@ -201,8 +202,11 @@ public class MaybeAnApp {
             printUserAct("> File Not Found in the system\n");
         }//if (fl==null) again
         else {
+            long endTime = System.currentTimeMillis()-startTime;
             printUserAct("> File Found, sending request...");
+            
             sendFileRequest(fl.getIP(), fl.getPort(), code, f);
+            printUserAct("Download took "+endTime+" milliseconds.");
         }//else
 
     }//download
