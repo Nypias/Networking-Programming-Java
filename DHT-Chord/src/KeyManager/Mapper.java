@@ -19,16 +19,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
- * @author Barbarossa Team
+ * Class responsible to hold and distribute keys to the Chord ring.
+ * @author DHT-Chord Team
  */
 public class Mapper extends java.rmi.server.UnicastRemoteObject implements RemoteMapper, Runnable {
 
-//-----------|| VARIABLES ||-----------------------
+    //-----------|| VARIABLES ||-----------------------
     TreeMap<Integer, FileLocation> map;
     MaybeAnApp FileApp;
     MainWindow window;
@@ -38,12 +36,15 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     Node chord;
     Thread manager;
 
+    /*
+     * Executes after constructor.
+     */
     private void init() throws UnknownHostException, RemoteException {
 
         FileApp.setMapper(this);
         predKey = 0;
         toDistribute = readNodeEntries();
-
+        //System.out.println("Mapper.init() :: toDistribute="+toDistribute);
     }
 
 //==================================/ CONSTRUCTORS \================================================
@@ -65,7 +66,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     }//STD Constructor
 
     /**
-     * connects this Mapper Object to a Node
+     * connects this Mapper Object to a Node.
      *
      * @param node node the "chord.Node" that this Mapper Object will be
      * connected to
@@ -85,9 +86,9 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         manager.start();
     }
 
-//=================================/REMOTE SERVICES\============================
+    //=================================/REMOTE SERVICES\============================
     /**
-     * adds an entry of the CHORD system to this Mapper
+     * adds an entry of the CHORD system to this Mapper.
      *
      * @param e the Entry Object that will be added to this Mappers' map (an
      * entry that belongs to the portion of the DHT that the Mapper should keep
@@ -98,6 +99,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         if (this.map.containsKey(e.getHash())) {
             return;
         }
+        //System.out.println("Mapper.addEntry() :: entry="+e.getHash()+","+e.getLocation());
         this.map.put(e.getHash(), e.getLocation());
         printAct(">added entry:" + e.hash);
     }
@@ -113,8 +115,8 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     }
 
     /**
-     * gets a key (for which this node is accounting for) and looks it up to
-     * find its "FileLocation"
+     * Gets a key (for which this node is accounting for) and looks it up to
+     * find its "FileLocation".
      *
      * @param key represents a key that will be looked-up to find it's
      * FileLocation
@@ -132,20 +134,25 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         return fl;
     }
 
+    /**
+     * Add elements of TreeMap toAdd to current elements map.
+     *
+     * @param toAdd
+     */
     @Override
     synchronized public void addMap(TreeMap toAdd) {
         this.map.putAll(toAdd);
         printAct("added a whole map with keys from:" + toAdd.firstKey() + " up to:" + toAdd.lastKey());
     }
 
-//=================/LOCAL METHODES WITH REMOTE ACCESS\=================
+    //=================/LOCAL METHODES WITH REMOTE ACCESS\=================
     /**
-     * distributes to the CHORD system all the Entries stored in the
-     * "toDistribute" Stack that this Mapper holds
+     * Distributes to the CHORD system all the Entries stored in the
+     * "toDistribute" Stack that this Mapper holds.
      *
      */
     void distributeKeys() {
-
+        // System.out.println("Mapper.distributeKeys() :: 1");
         while (!toDistribute.empty()) {
             Entry e = toDistribute.pop();
             sendEntry(e);
@@ -160,6 +167,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
      * @param e
      */
     void sendEntry(Entry e) {
+        // System.out.println("Mapper.sendEntry()");
         RemoteMapper dest = findMapper(e.getHash());
         try {
             if (predKey != 0) {
@@ -176,7 +184,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     /**
      * Goes through all the entries stored in this Mapper and adds those for
      * which this Mapper is not accountant for in the "toDistribute Stack so
-     * they can be later (automatically) distributed in the system
+     * they can be later (automatically) distributed in the system.
      *
      */
     public void reDistributeKeys() {
@@ -191,6 +199,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         Iterator it = map.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, FileLocation> entry = (Map.Entry) it.next();
+            //If I am not a successor of this Entry, put in in toDistribute Stack
             if (!Hasher.isBetween(predKey, entry.getKey(), nodeKey)) {
                 toDistribute.push(new Entry(entry));
             }
@@ -199,14 +208,14 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     }//reDistributeKeys
 
     /**
-     * re-distributes the keys of the files physically stored in this node
+     * Re-distributes the keys of the files physically stored in this node.
      */
     public void reDistributeMyKeys() {
         toDistribute = readNodeEntries();
     }
 
     /**
-     * Searches in the system for the mapper accounting for the key "k"
+     * Searches in the system for the mapper accounting for the key "k".
      *
      * @param k the key for which it finds a Mapper accountant for
      * @return the remote-Mapper accounting for the key "k", null if it fails
@@ -229,7 +238,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
 
     //---------| find File |----------------
     /**
-     * Finds the FileLocation of the file corresponding to "k" key
+     * Finds the FileLocation of the file corresponding to "k" key.
      *
      * @param k the key of the file that will be found
      * @return the FileLocation of the file corresponding to "k" key, null if it
@@ -248,7 +257,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     }
 
     /**
-     * Removes from the system all of the "Entry" objects stored in a stack
+     * Removes from the system all of the "Entry" objects stored in a stack.
      *
      * @param rs the Stack of Entries that are going to be removed
      */
@@ -266,7 +275,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
 
     /**
      * Removes from the system all the Entries of the files physically stored in
-     * the Node
+     * the Node.
      */
     public void unDistributeMyKeys() {
         unDistributeKeys(readNodeEntries());
@@ -274,7 +283,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
 
     /**
      * Interrupts the Mappers "manager" thread and adds all of the Entries
-     * stored in the map to the map of its successor's Mapper
+     * stored in the map to the map of its successor's Mapper.
      */
     synchronized public void leave() {
         manager.interrupt();
@@ -309,8 +318,8 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
     }//leave
 
     /**
-     * checks if the nodes that physically store every key that this Mapper
-     * keeps are alive
+     * Checks if the nodes that physically store every key that this Mapper
+     * keeps are alive.
      *
      */
     synchronized void checkAlive() {
@@ -337,14 +346,14 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         printAct("==>Checked all my Entries if alive ");
     }//checkAlive
 
-//===============================/LOCAL METHODES\=====================
+    //===============================/LOCAL METHODES\=====================
     //----------|readNodeHashes|----------
     /**
      * Returns in a Stack the Entries of all the files physically stored in the
-     * Node (it gets the keys from the "FileApp"
+     * Node (it gets the keys from the "FileApp").
      *
      * @return a Stack the Entries of all the files physically stored in the
-     * Node
+     * Node.
      */
     public Stack<Entry> readNodeEntries() {
         FileLocation thisNode = null;
@@ -367,8 +376,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
      * Binds this Mapper Object to an RMI url, that is dependant on the nodeKey
      * (used as the key of the node this mapper is connected to)
      *
-     * @param nodeKey the key that will be used to bind this Mapper to an RMI
-     * url
+     * @param nodeKey the key that will be used to bind this Mapper to an RMI url.
      * @throws UnknownHostException
      * @throws RemoteException
      */
@@ -380,7 +388,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         try {
             Naming.rebind("rmi:/" + ip + ":1099/Keys-" + nodeKey, this);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(Mapper.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -432,7 +440,7 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
 
     /**
      * Replaces in the window the text showing general information about this
-     * Mapper
+     * Mapper.
      */
     public void printInfo() {
         String s = "";
@@ -447,15 +455,15 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         window.getKeysInfoText().setText(s);
     }
 
-//================/run\=======================
+    //================/run\=======================
     /**
-     * Does the "houseKeeping" of the Mapper... Sends all entries that are to be
-     * disributed from this Node to the System (for whatever reason)
+     * Does the "houseKeeping" of the Mapper. Sends all entries that are to be
+     * distributed from this Node to the System (for whatever reason)
      * ReDistributes periodically the keys physically stored in this Node to the
      * System Checks what entries this Mapper keeps are not in its
      * responsibility and should be sent to the according Mapper (end sends
      * them) checks if the nodes that store the actual Files the keys correspond
-     * to are alive
+     * to are alive.
      */
     public void run() {
         int i = 0;
@@ -470,17 +478,23 @@ public class Mapper extends java.rmi.server.UnicastRemoteObject implements Remot
         while (true) {
             try {
                 if (i % 20 == 0) {
-                    reDistributeMyKeys(); //runs less than once in 5sec
+                    // System.out.println("Mapper.run() :: 1");
+                    // reDistributeMyKeys(); //runs less than once in 5sec
                 }
-                if (i % 5 == 0) {
+                if (i % 10 == 0) {
+                    //System.out.println("Mapper.run() :: 2");
                     reDistributeKeys();    //runs less than 0,75 per second
                 }
-                distributeKeys();                   //runs less than 4 times a second
-
+                if (i % 5 == 0) {
+                    //System.out.println("Mapper.run() :: 3");
+                    distributeKeys();                   //runs less than 4 times a second
+                }
                 if (i % 20 == 0) {
+                    //System.out.println("Mapper.run() :: 4");
                     checkAlive();//runs less than once in 5ssec
                 }
                 if (i % 100 == 0) {              //runs less than once in 25sec sees updates in directory files
+                    //System.out.println("Mapper.run() :: 5");
                     FileApp.changeDirectrory(FileApp.getDirectory());
                 }
 

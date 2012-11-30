@@ -9,34 +9,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- *
- * @author Barbarossa Team
+ * A runnable class that receives a single file via TCP.
+ * @author DHT-Chord Team
  */
 public class FileReceiverServant implements Runnable {
 
-    /**
-     * A runnable class that receives a single file via TCP
-     */
-    public static int bufferSize=1024;
+    public static int bufferSize = 1024;
     MaybeAnApp father;
     File file;
     ServerSocket hearingSocket;
 
     /**
-     *Default Constructor
+     * Default Constructor.
+     *
      * @param hearingSocket the socket throw where the file will be sent
      * @param file the file that will be created locally
      * @param father the application that uses this servant
      */
     public FileReceiverServant(ServerSocket hearingSocket, File file, MaybeAnApp father) {
-        this.father=father;
+        this.father = father;
         this.file = file;
         this.hearingSocket = hearingSocket;
     }
 
     /**
-     *Receives one file from the " hearingSocket" that someone is sending there
-     *
+     * Receives one file from the " hearingSocket" that someone is sending
+     * there.
      */
     public void run() {
 
@@ -59,11 +57,11 @@ public class FileReceiverServant implements Runnable {
             }
             in.close();
             out.flush();
-            long end = System.currentTimeMillis();            
+            long end = System.currentTimeMillis();
             out.close();
             sock.close();
             father.printClientAct("Transfer lasted: " + (end - start) + " msec");
-            father.printUserAct("---downloaded "+file.getName()+"----");
+            father.printUserAct("---downloaded " + file.getName() + "----");
 
         } catch (IOException e) {
             father.printClientAct("could not receive file");
