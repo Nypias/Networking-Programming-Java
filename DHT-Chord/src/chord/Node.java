@@ -20,7 +20,6 @@ import java.util.Enumeration;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-
 /**
  * Class Node represents a chord node in the ring
  *
@@ -118,9 +117,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                     ChordInterface succ = responder.FindSuccessor(nodeKey);
 
                     setSuccessor(succ);
-                    System.out.println("b1");
                     succ.notifyP(this);
-                    System.out.println("b2");
                 } catch (NotBoundException | MalformedURLException | RemoteException ex) {
                     ex.printStackTrace();
                 }
@@ -129,7 +126,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             thdMS.start(); //starting multicast server
 
         } catch (IOException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
         printVars(); //Update GUI
 
@@ -141,7 +138,6 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }//bootSrap
 
     //=====================================||STABILIZE - NOTIFY  ||====================================================
-    
     /**
      * Stabilizes the Chord ring. Takes care of successor list and predecessor
      * of Node.
@@ -158,13 +154,13 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                 flag = true;
             }
             if ((x == null) && !flag) {
-                System.out.println("stabilize() :: 1");
+                
                 successor[0].notifyP(this);
                 return;
             }
 
             if (x == null) {
-                //System.out.println("stabilize() :: 2");
+                
                 return;
             }
 
@@ -191,7 +187,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     public synchronized void leave() {
         window.getUserText().append("Waiting for Chord to stabilize..\nBYE!\n");
         try {    //if i am the only node, exit
-                fingers.updater.interrupt();
+            fingers.updater.interrupt();
             if (successor[0].getNodeKey() == this.getNodeKey()) {
                 thdMS.interrupt();
                 System.exit(0);
@@ -280,7 +276,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                     successor[0] = successor[1] = successor[2] = this;
                     fingers.reset();
                 }
-                 //fingers.reset();
+                //fingers.reset();
             }
         }//catch 0===\end checking 1st successor/================
 
@@ -329,8 +325,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     //------------------notifyS------------
     /**
-     * Notify about a change in Successor.
-     * NOT USED !!
+     * Notify about a change in Successor. NOT USED !!
      *
      * @param n
      */
@@ -343,7 +338,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             }
         } catch (RemoteException ex) {
             System.err.println("notifyS remote exception");
-        }  
+        }
 
     }//notifyS
 
@@ -358,7 +353,6 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     //=====================================||  FIND SUCCESSOR  ||====================================================
-    
     /**
      * Finds a successor of a key k using a nodes n finger table.
      *
@@ -374,7 +368,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
             printActivity(">FindSuccessor:" + k + " returned myself");
             return this;
         }
-       
+
         if (Hasher.isBetween(this.nodeKey, k, succkey)) {
             printActivity(">FindSuccessor:" + k + " returned my successor (" + succkey + ")");
             return this.successor[0];
@@ -394,8 +388,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     //=======================================|| GETTERS-SETTERS  ||=====================================================
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getRmiaddress() {
         return rmiaddress;
@@ -410,25 +404,26 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getProccessId() {
         return proccessId;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getTCPPort() {
         return tcpPort;
     }
-    
+
     /**
      * Get i'th successor.
+     *
      * @param i
-     * @return 
+     * @return
      */
     @Override
     public ChordInterface getSuccessors(int i) {
@@ -436,16 +431,16 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public MulticastServer getMS() {
         return ms;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public ChordInterface getPredecessor() {
@@ -453,8 +448,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public InetAddress getIP() {
@@ -462,9 +457,9 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
+     *
      * @param predecessor
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public synchronized void setPredecessor2(ChordInterface predecessor) throws RemoteException {
@@ -473,8 +468,9 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     /**
      * Set my predecessor and call mapper.reDistributeKeys().
+     *
      * @param predecessor
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public synchronized void setPredecessor(ChordInterface predecessor) throws RemoteException {
@@ -489,9 +485,9 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
+     *
      * @param successor
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public synchronized void setSuccessor(ChordInterface successor) throws RemoteException {
@@ -499,9 +495,9 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
+     *
      * @param successor
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public void setSuccessor2(ChordInterface successor) throws RemoteException {
@@ -510,7 +506,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
 
     /**
      * Sets node key and prints message to GUI.
-     * @param nodeKey 
+     *
+     * @param nodeKey
      */
     public void setNodeKey(int nodeKey) {
         this.nodeKey = nodeKey;
@@ -518,9 +515,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return
-     * @throws RemoteException 
+     *
+     * @return @throws RemoteException
      */
     @Override
     public int getNodeKey() throws RemoteException {
@@ -528,16 +524,16 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public InetAddress getNodeaddress() {
         return nodeaddress;
     }
 
     /**
-     * 
-     * @param nodeaddress 
+     *
+     * @param nodeaddress
      */
     public void setNodeaddress(InetAddress nodeaddress) {
         this.nodeaddress = nodeaddress;
@@ -575,8 +571,8 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getPredecessorKey() {
         int key = 0;
@@ -588,7 +584,7 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
                 predecessor = null;
                 return 0;
             }
-            System.out.println("my pred:" + predecessor.getNodeKey());
+            //System.out.println("my pred:" + predecessor.getNodeKey());
             return predecessor.getNodeKey();
         } catch (RemoteException ex) {
             System.err.println("get predecessorkey remote exception");
@@ -597,7 +593,6 @@ public class Node extends UnicastRemoteObject implements Runnable, Serializable,
     }
 
     //==========================================|| GUI METHODS ||===================================================
-    
     /**
      * Prints at GUI the Successor list, the predecessor and the rmi address of
      * the Node.

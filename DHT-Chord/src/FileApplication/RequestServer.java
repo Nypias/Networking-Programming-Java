@@ -57,7 +57,7 @@ public class RequestServer implements Runnable {
             switch (request) {
                 case 1: { //sendFile
                     int fileCode = in.readInt();
-                    log.append(">received a request for code " + fileCode +"from port:"+clientPort+"\n");
+                    log.append(">received a request for code " + fileCode + "\n");
                     in.close();
                     s.close();
                     sendFile(cIP, clientPort, fileCode);
@@ -79,7 +79,7 @@ public class RequestServer implements Runnable {
 
     //============================/sendFile\========================================
     void sendFile(InetAddress clientAddr, int clientPort, File file) {
-        log.append(">Sending file: " + file.getAbsolutePath() + " to: " + clientAddr + ":" + clientPort);
+        log.append(">Sending file: " + file.getAbsolutePath() + " to: " + clientAddr + ":" + clientPort+"\n");
         FileSenderServant fs = new FileSenderServant(clientAddr, clientPort, file, log);
         Thread sender = new Thread(fs);
         sender.start();

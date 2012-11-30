@@ -55,7 +55,7 @@ public class DirManipulator {
         listOfCodes = new int[listOfFiles.length];
         for (int i = 0; i < listOfFiles.length; i++) {
             listOfCodes[i] = Hasher.myCode(listOfFiles[i]);
-            System.out.println("DirManipulator.updateListOfCodes() :: " + listOfFiles[i] + "=" + listOfCodes[i]);
+            //System.out.println("DirManipulator.updateListOfCodes() :: " + listOfFiles[i] + "=" + listOfCodes[i]);
         }
     }//end updateListOfCodes()
 
