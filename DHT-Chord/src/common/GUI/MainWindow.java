@@ -122,26 +122,26 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(1, 1, 1));
         setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
-        setFont(new java.awt.Font("Comic Sans MS", 0, 10));
+        setFont(new java.awt.Font("Comic Sans MS", 0, 10)); // NOI18N
         setForeground(java.awt.Color.green);
         setIconImage(img.getImage());
 
         jTabbedPane1.setBackground(new java.awt.Color(1, 1, 1));
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jTabbedPane1.setForeground(new java.awt.Color(254, 254, 254));
-        jTabbedPane1.setFont(new java.awt.Font("Bitstream Charter", 1, 16));
+        jTabbedPane1.setFont(new java.awt.Font("Bitstream Charter", 1, 16)); // NOI18N
 
         jPanel4.setBackground(new java.awt.Color(1, 1, 1));
         jPanel4.setForeground(new java.awt.Color(254, 254, 254));
         jPanel4.setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel10.setBackground(java.awt.SystemColor.text);
-        jLabel10.setFont(new java.awt.Font("Bitstream Charter", 1, 14));
+        jLabel10.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(254, 254, 254));
         jLabel10.setText("Search for Filename");
 
         jTextField1.setBackground(new java.awt.Color(1, 1, 1));
-        jTextField1.setFont(new java.awt.Font("Bitstream Charter", 0, 16));
+        jTextField1.setFont(new java.awt.Font("Bitstream Charter", 0, 16)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(32, 255, 0));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,9 +150,9 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         });
 
         jButton1.setBackground(new java.awt.Color(1, 1, 1));
-        jButton1.setFont(new java.awt.Font("Bitstream Charter", 1, 24));
+        jButton1.setFont(new java.awt.Font("Bitstream Charter", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 255, 11));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/Bitlord.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/kth_logo.jpg"))); // NOI18N
         jButton1.setText("Search");
         jButton1.setAlignmentY(0.0F);
         jButton1.setAutoscrolls(true);
@@ -172,7 +172,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jScrollPane9.setViewportView(userText);
 
         jButton3.setBackground(new java.awt.Color(1, 1, 1));
-        jButton3.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        jButton3.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         jButton3.setForeground(new java.awt.Color(254, 254, 254));
         jButton3.setText("Find Successor");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -183,16 +183,16 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         fileNameDucc.setBackground(new java.awt.Color(1, 1, 1));
         fileNameDucc.setEditable(false);
-        fileNameDucc.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        fileNameDucc.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         fileNameDucc.setForeground(new java.awt.Color(254, 254, 254));
 
         jLabel11.setBackground(new java.awt.Color(254, 254, 254));
-        jLabel11.setFont(new java.awt.Font("Bitstream Charter", 1, 14));
+        jLabel11.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(254, 254, 254));
         jLabel11.setText("----General Activity-----");
 
         jButton4.setBackground(new java.awt.Color(1, 1, 1));
-        jButton4.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        jButton4.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         jButton4.setForeground(new java.awt.Color(254, 254, 254));
         jButton4.setText("EXIT Node");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -223,7 +223,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addComponent(jTextField1))
                     .addComponent(jButton4)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,7 +242,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -262,10 +262,10 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         jPanel1.setBackground(new java.awt.Color(1, 1, 1));
         jPanel1.setForeground(new java.awt.Color(254, 254, 254));
-        jPanel1.setFont(new java.awt.Font("Bitstream Charter", 0, 14));
+        jPanel1.setFont(new java.awt.Font("Bitstream Charter", 0, 14)); // NOI18N
 
         ChoseDirectoryButton.setBackground(new java.awt.Color(1, 1, 1));
-        ChoseDirectoryButton.setFont(new java.awt.Font("Bitstream Charter", 1, 14));
+        ChoseDirectoryButton.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
         ChoseDirectoryButton.setForeground(new java.awt.Color(254, 254, 254));
         ChoseDirectoryButton.setText("Change");
         ChoseDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
@@ -294,23 +294,23 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jScrollPane3.setViewportView(ClientText);
 
         jLabel1.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel1.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel1.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(254, 254, 254));
         jLabel1.setText("---Client Notiffications---");
 
         jLabel2.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel2.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel2.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(254, 254, 254));
         jLabel2.setText("---Server Notiffications---");
 
         jLabel3.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel3.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel3.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(254, 254, 254));
         jLabel3.setText("Directory:");
 
         DirText.setBackground(new java.awt.Color(1, 1, 1));
         DirText.setEditable(false);
-        DirText.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        DirText.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         DirText.setForeground(new java.awt.Color(254, 254, 254));
 
         jButton2.setBackground(new java.awt.Color(1, 1, 1));
@@ -338,34 +338,32 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(DirText, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(48, 48, 48)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(DirText, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(ChoseDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(27, 27, 27)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
-                                    .addContainerGap())
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(101, 101, 101)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                                .addContainerGap())
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(101, 101, 101))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addContainerGap())))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,7 +387,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -401,7 +399,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         DHTText.setBackground(new java.awt.Color(1, 1, 1));
         DHTText.setColumns(20);
         DHTText.setEditable(false);
-        DHTText.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        DHTText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         DHTText.setForeground(new java.awt.Color(253, 100, 228));
         DHTText.setRows(5);
         jScrollPane1.setViewportView(DHTText);
@@ -409,28 +407,28 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         KeysInfoText.setBackground(new java.awt.Color(1, 1, 1));
         KeysInfoText.setColumns(20);
         KeysInfoText.setEditable(false);
-        KeysInfoText.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        KeysInfoText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         KeysInfoText.setForeground(new java.awt.Color(253, 59, 222));
         KeysInfoText.setRows(5);
         jScrollPane4.setViewportView(KeysInfoText);
 
-        jLabel4.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel4.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(254, 254, 254));
         jLabel4.setText("---Keys Info---");
 
-        jLabel5.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel5.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(254, 254, 254));
         jLabel5.setText("---DHT kept by Node---");
 
         KeyActivityText.setBackground(new java.awt.Color(1, 1, 1));
         KeyActivityText.setColumns(20);
         KeyActivityText.setEditable(false);
-        KeyActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 13));
+        KeyActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
         KeyActivityText.setForeground(new java.awt.Color(253, 100, 228));
         KeyActivityText.setRows(5);
         jScrollPane5.setViewportView(KeyActivityText);
 
-        jLabel6.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel6.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(254, 254, 254));
         jLabel6.setText("---Activity---");
 
@@ -444,7 +442,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,7 +470,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addGap(49, 49, 49)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -482,14 +480,14 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jPanel3.setBackground(new java.awt.Color(1, 1, 1));
         jPanel3.setForeground(new java.awt.Color(255, 27, 0));
 
-        jLabel7.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel7.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(254, 254, 254));
         jLabel7.setText("---Main Variables---");
 
         ChordVarsText.setBackground(new java.awt.Color(1, 1, 1));
         ChordVarsText.setColumns(20);
         ChordVarsText.setEditable(false);
-        ChordVarsText.setFont(new java.awt.Font("Baskerville Old Face", 1, 14));
+        ChordVarsText.setFont(new java.awt.Font("Baskerville Old Face", 1, 14)); // NOI18N
         ChordVarsText.setForeground(new java.awt.Color(255, 0, 21));
         ChordVarsText.setRows(5);
         ChordVarsText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -498,7 +496,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         FingerTableText.setBackground(new java.awt.Color(26, 21, 21));
         FingerTableText.setColumns(20);
         FingerTableText.setEditable(false);
-        FingerTableText.setFont(new java.awt.Font("Bitstream Charter", 1, 13));
+        FingerTableText.setFont(new java.awt.Font("Bitstream Charter", 1, 13)); // NOI18N
         FingerTableText.setForeground(new java.awt.Color(255, 0, 21));
         FingerTableText.setLineWrap(true);
         FingerTableText.setRows(5);
@@ -506,18 +504,18 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jScrollPane7.setViewportView(FingerTableText);
 
         jLabel8.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel8.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel8.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(254, 254, 254));
         jLabel8.setText("---Finger Table---");
 
-        jLabel9.setFont(new java.awt.Font("Bitstream Charter", 1, 15));
+        jLabel9.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(254, 254, 254));
         jLabel9.setText("---Chord Activity---");
 
         ChordActivityText.setBackground(new java.awt.Color(20, 20, 20));
         ChordActivityText.setColumns(20);
         ChordActivityText.setEditable(false);
-        ChordActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 12));
+        ChordActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 12)); // NOI18N
         ChordActivityText.setForeground(new java.awt.Color(255, 0, 21));
         ChordActivityText.setRows(5);
         ChordActivityText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -549,9 +547,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(95, 95, 95)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
         jPanel3Layout.setVerticalGroup(
@@ -568,7 +564,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addGap(37, 37, 37)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
                 .addContainerGap())
         );

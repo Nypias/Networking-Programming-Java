@@ -243,7 +243,7 @@
                   <Color blue="b" green="ff" red="0" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/GUI/Bitlord.png"/>
+                  <Image iconType="3" name="/common/GUI/kth_logo.jpg"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Search"/>
                 <Property name="alignmentY" type="float" value="0.0"/>
@@ -304,10 +304,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="fileNameDucc">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="1" green="1" red="1" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Bitstream Charter" size="13" style="0"/>
                 </Property>
@@ -394,7 +394,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jSeparator1" pref="763" max="32767" attributes="0"/>
+                              <Component id="jSeparator1" pref="760" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -413,7 +413,7 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane2" pref="372" max="32767" attributes="1"/>
+                                      <Component id="jScrollPane2" pref="369" max="32767" attributes="1"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
@@ -578,10 +578,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="DirText">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="1" green="1" red="1" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Bitstream Charter" size="15" style="1"/>
                 </Property>
