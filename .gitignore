@@ -18,3 +18,9 @@ RMI-Exercise/*
 /HW4/nbproject/private/
 /HW4/build/
 /HW4/dist/
+/nbproject/private/
+/build/
+/dist/
+/DHT-Chord/nbproject/private/
+/DHT-Chord/build/
+/DHT-Chord/dist/

@@ -64,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         DirText = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         DHTText = new javax.swing.JTextArea();
@@ -121,38 +121,38 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(1, 1, 1));
-        setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Comic Sans MS", 0, 10)); // NOI18N
         setForeground(java.awt.Color.green);
         setIconImage(img.getImage());
 
-        jTabbedPane1.setBackground(new java.awt.Color(1, 1, 1));
+        jTabbedPane1.setBackground(new java.awt.Color(236, 229, 206));
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jTabbedPane1.setForeground(new java.awt.Color(254, 254, 254));
-        jTabbedPane1.setFont(new java.awt.Font("Bitstream Charter", 1, 16)); // NOI18N
+        jTabbedPane1.setForeground(new java.awt.Color(28, 20, 13));
+        jTabbedPane1.setFont(new java.awt.Font("Ubuntu", 1, 16)); // NOI18N
 
-        jPanel4.setBackground(new java.awt.Color(1, 1, 1));
+        jPanel4.setBackground(new java.awt.Color(236, 229, 206));
         jPanel4.setForeground(new java.awt.Color(254, 254, 254));
         jPanel4.setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel10.setBackground(java.awt.SystemColor.text);
-        jLabel10.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(28, 20, 13));
         jLabel10.setText("Search for Filename");
 
-        jTextField1.setBackground(new java.awt.Color(1, 1, 1));
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1.setFont(new java.awt.Font("Bitstream Charter", 0, 16)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(32, 255, 0));
+        jTextField1.setForeground(new java.awt.Color(28, 20, 13));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(1, 1, 1));
-        jButton1.setFont(new java.awt.Font("Bitstream Charter", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 255, 11));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/kth_logo.jpg"))); // NOI18N
+        jButton1.setBackground(new java.awt.Color(203, 232, 107));
+        jButton1.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(28, 20, 13));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/Nyan_Cat.gif"))); // NOI18N
         jButton1.setText("Search");
         jButton1.setAlignmentY(0.0F);
         jButton1.setAutoscrolls(true);
@@ -164,16 +164,16 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        userText.setBackground(new java.awt.Color(1, 1, 1));
+        userText.setBackground(new java.awt.Color(28, 20, 13));
         userText.setColumns(1);
-        userText.setForeground(new java.awt.Color(32, 255, 0));
+        userText.setForeground(new java.awt.Color(203, 232, 107));
         userText.setRows(5);
         userText.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jScrollPane9.setViewportView(userText);
 
-        jButton3.setBackground(new java.awt.Color(1, 1, 1));
-        jButton3.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(254, 254, 254));
+        jButton3.setBackground(new java.awt.Color(203, 232, 107));
+        jButton3.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(28, 20, 13));
         jButton3.setText("Find Successor");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,19 +181,19 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        fileNameDucc.setBackground(new java.awt.Color(1, 1, 1));
         fileNameDucc.setEditable(false);
+        fileNameDucc.setBackground(new java.awt.Color(255, 255, 255));
         fileNameDucc.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        fileNameDucc.setForeground(new java.awt.Color(254, 254, 254));
+        fileNameDucc.setForeground(new java.awt.Color(28, 20, 13));
 
         jLabel11.setBackground(new java.awt.Color(254, 254, 254));
-        jLabel11.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(28, 20, 13));
         jLabel11.setText("----General Activity-----");
 
-        jButton4.setBackground(new java.awt.Color(1, 1, 1));
-        jButton4.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(254, 254, 254));
+        jButton4.setBackground(new java.awt.Color(203, 232, 107));
+        jButton4.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(28, 20, 13));
         jButton4.setText("EXIT Node");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +201,8 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Papyrus", 0, 14)); // NOI18N
         jTextArea1.setRows(5);
@@ -211,18 +213,21 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(fileNameDucc, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField1))
-                    .addComponent(jButton4)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fileNameDucc))
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1)
+                            .addComponent(jButton4)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -242,16 +247,16 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton3)
                                     .addComponent(fileNameDucc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(7, 7, 7)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(49, 49, 49)
+                                .addGap(33, 33, 33)
+                                .addComponent(jButton1)
+                                .addGap(90, 90, 90)
                                 .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(76, 76, 76)
                                 .addComponent(jButton4)))
@@ -260,13 +265,13 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         jTabbedPane1.addTab("User Level", jPanel4);
 
-        jPanel1.setBackground(new java.awt.Color(1, 1, 1));
+        jPanel1.setBackground(new java.awt.Color(236, 229, 206));
         jPanel1.setForeground(new java.awt.Color(254, 254, 254));
         jPanel1.setFont(new java.awt.Font("Bitstream Charter", 0, 14)); // NOI18N
 
-        ChoseDirectoryButton.setBackground(new java.awt.Color(1, 1, 1));
-        ChoseDirectoryButton.setFont(new java.awt.Font("Bitstream Charter", 1, 14)); // NOI18N
-        ChoseDirectoryButton.setForeground(new java.awt.Color(254, 254, 254));
+        ChoseDirectoryButton.setBackground(new java.awt.Color(203, 232, 107));
+        ChoseDirectoryButton.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        ChoseDirectoryButton.setForeground(new java.awt.Color(28, 20, 13));
         ChoseDirectoryButton.setText("Change");
         ChoseDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -279,56 +284,41 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        ServerText.setBackground(new java.awt.Color(1, 1, 1));
-        ServerText.setColumns(20);
         ServerText.setEditable(false);
-        ServerText.setForeground(new java.awt.Color(252, 255, 0));
+        ServerText.setBackground(new java.awt.Color(28, 20, 13));
+        ServerText.setColumns(20);
+        ServerText.setForeground(new java.awt.Color(203, 232, 107));
         ServerText.setRows(5);
         jScrollPane2.setViewportView(ServerText);
 
-        ClientText.setBackground(new java.awt.Color(1, 1, 1));
-        ClientText.setColumns(20);
         ClientText.setEditable(false);
-        ClientText.setForeground(new java.awt.Color(252, 255, 0));
+        ClientText.setBackground(new java.awt.Color(28, 20, 13));
+        ClientText.setColumns(20);
+        ClientText.setForeground(new java.awt.Color(203, 232, 107));
         ClientText.setRows(5);
         jScrollPane3.setViewportView(ClientText);
 
         jLabel1.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel1.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel1.setText("---Client Notiffications---");
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(28, 20, 13));
+        jLabel1.setText("---Client Notifications---");
 
         jLabel2.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel2.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel2.setText("---Server Notiffications---");
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(28, 20, 13));
+        jLabel2.setText("---Server Notifications---");
 
-        jLabel3.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel3.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel3.setBackground(new java.awt.Color(28, 20, 13));
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(28, 20, 13));
         jLabel3.setText("Directory:");
 
-        DirText.setBackground(new java.awt.Color(1, 1, 1));
         DirText.setEditable(false);
-        DirText.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        DirText.setForeground(new java.awt.Color(254, 254, 254));
+        DirText.setBackground(new java.awt.Color(255, 255, 255));
+        DirText.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        DirText.setForeground(new java.awt.Color(28, 20, 13));
 
-        jButton2.setBackground(new java.awt.Color(1, 1, 1));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/Pirate.png"))); // NOI18N
-        jButton2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButton2.setBorderPainted(false);
-        jButton2.setDefaultCapable(false);
-        jButton2.setEnabled(false);
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
-        jButton2.setRequestFocusEnabled(false);
-        jButton2.setRolloverEnabled(false);
-        jButton2.setVerifyInputWhenFocusTarget(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/GUI/kth_logo.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -338,98 +328,98 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+                        .addComponent(jSeparator1)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(48, 48, 48)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(DirText, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(ChoseDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
-                                .addContainerGap())
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(101, 101, 101))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap())))))))
+                                .addComponent(ChoseDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12)
+                                .addGap(31, 31, 31))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(26, Short.MAX_VALUE))))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(95, 95, 95)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(102, 102, 102))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DirText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ChoseDirectoryButton)
-                        .addGap(94, 94, 94))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ChoseDirectoryButton))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("File,TCP Level", jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(1, 1, 1));
+        jPanel2.setBackground(new java.awt.Color(236, 229, 206));
 
-        DHTText.setBackground(new java.awt.Color(1, 1, 1));
-        DHTText.setColumns(20);
         DHTText.setEditable(false);
-        DHTText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        DHTText.setForeground(new java.awt.Color(253, 100, 228));
+        DHTText.setBackground(new java.awt.Color(28, 20, 13));
+        DHTText.setColumns(20);
+        DHTText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        DHTText.setForeground(new java.awt.Color(203, 232, 107));
         DHTText.setRows(5);
         jScrollPane1.setViewportView(DHTText);
 
-        KeysInfoText.setBackground(new java.awt.Color(1, 1, 1));
-        KeysInfoText.setColumns(20);
         KeysInfoText.setEditable(false);
-        KeysInfoText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        KeysInfoText.setForeground(new java.awt.Color(253, 59, 222));
+        KeysInfoText.setBackground(new java.awt.Color(28, 20, 13));
+        KeysInfoText.setColumns(20);
+        KeysInfoText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        KeysInfoText.setForeground(new java.awt.Color(203, 232, 107));
         KeysInfoText.setRows(5);
         jScrollPane4.setViewportView(KeysInfoText);
 
-        jLabel4.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(28, 20, 13));
         jLabel4.setText("---Keys Info---");
 
-        jLabel5.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(28, 20, 13));
         jLabel5.setText("---DHT kept by Node---");
 
-        KeyActivityText.setBackground(new java.awt.Color(1, 1, 1));
-        KeyActivityText.setColumns(20);
         KeyActivityText.setEditable(false);
-        KeyActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 13)); // NOI18N
-        KeyActivityText.setForeground(new java.awt.Color(253, 100, 228));
+        KeyActivityText.setBackground(new java.awt.Color(28, 20, 13));
+        KeyActivityText.setColumns(20);
+        KeyActivityText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        KeyActivityText.setForeground(new java.awt.Color(203, 232, 107));
         KeyActivityText.setRows(5);
         jScrollPane5.setViewportView(KeyActivityText);
 
-        jLabel6.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(28, 20, 13));
         jLabel6.setText("---Activity---");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -442,19 +432,21 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(22, 22, 22)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(119, 119, 119))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(132, 132, 132))))
+                        .addGap(93, 93, 93))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -466,57 +458,57 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                 .addGap(3, 3, 3)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Key Level", jPanel2);
 
-        jPanel3.setBackground(new java.awt.Color(1, 1, 1));
+        jPanel3.setBackground(new java.awt.Color(236, 229, 206));
         jPanel3.setForeground(new java.awt.Color(255, 27, 0));
 
-        jLabel7.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(28, 20, 13));
         jLabel7.setText("---Main Variables---");
 
-        ChordVarsText.setBackground(new java.awt.Color(1, 1, 1));
-        ChordVarsText.setColumns(20);
         ChordVarsText.setEditable(false);
-        ChordVarsText.setFont(new java.awt.Font("Baskerville Old Face", 1, 14)); // NOI18N
-        ChordVarsText.setForeground(new java.awt.Color(255, 0, 21));
+        ChordVarsText.setBackground(new java.awt.Color(28, 20, 13));
+        ChordVarsText.setColumns(20);
+        ChordVarsText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        ChordVarsText.setForeground(new java.awt.Color(203, 232, 107));
         ChordVarsText.setRows(5);
         ChordVarsText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane6.setViewportView(ChordVarsText);
 
-        FingerTableText.setBackground(new java.awt.Color(26, 21, 21));
-        FingerTableText.setColumns(20);
         FingerTableText.setEditable(false);
-        FingerTableText.setFont(new java.awt.Font("Bitstream Charter", 1, 13)); // NOI18N
-        FingerTableText.setForeground(new java.awt.Color(255, 0, 21));
+        FingerTableText.setBackground(new java.awt.Color(28, 20, 13));
+        FingerTableText.setColumns(20);
+        FingerTableText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        FingerTableText.setForeground(new java.awt.Color(203, 232, 107));
         FingerTableText.setLineWrap(true);
         FingerTableText.setRows(5);
         FingerTableText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane7.setViewportView(FingerTableText);
 
         jLabel8.setBackground(new java.awt.Color(1, 1, 1));
-        jLabel8.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(28, 20, 13));
         jLabel8.setText("---Finger Table---");
 
-        jLabel9.setFont(new java.awt.Font("Bitstream Charter", 1, 15)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(28, 20, 13));
         jLabel9.setText("---Chord Activity---");
 
-        ChordActivityText.setBackground(new java.awt.Color(20, 20, 20));
-        ChordActivityText.setColumns(20);
         ChordActivityText.setEditable(false);
-        ChordActivityText.setFont(new java.awt.Font("Bitstream Charter", 0, 12)); // NOI18N
-        ChordActivityText.setForeground(new java.awt.Color(255, 0, 21));
+        ChordActivityText.setBackground(new java.awt.Color(28, 20, 13));
+        ChordActivityText.setColumns(20);
+        ChordActivityText.setFont(new java.awt.Font("Ubuntu", 0, 13)); // NOI18N
+        ChordActivityText.setForeground(new java.awt.Color(203, 232, 107));
         ChordActivityText.setRows(5);
         ChordActivityText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         ChordActivityText.setSelectionColor(new java.awt.Color(145, 153, 92));
@@ -564,7 +556,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
                         .addGap(37, 37, 37)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE))
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -584,16 +576,6 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ChoseDirectoryButtonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ChoseDirectoryButtonKeyReleased
-}//GEN-LAST:event_ChoseDirectoryButtonKeyReleased
-
-    private void ChoseDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChoseDirectoryButtonActionPerformed
-        // TODO add your handling code here:
-        DirChoserDialog fc = new DirChoserDialog(this, true);
-        fc.setVisible(true);
-
-}//GEN-LAST:event_ChoseDirectoryButtonActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -644,8 +626,15 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         chord.leave();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void ChoseDirectoryButtonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ChoseDirectoryButtonKeyReleased
+
+    }//GEN-LAST:event_ChoseDirectoryButtonKeyReleased
+
+    private void ChoseDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChoseDirectoryButtonActionPerformed
+        // TODO add your handling code here:
+        DirChoserDialog fc = new DirChoserDialog(this, true);
+        fc.setVisible(true);
+    }//GEN-LAST:event_ChoseDirectoryButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -795,7 +784,6 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextArea ServerText;
     private javax.swing.JTextField fileNameDucc;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JFrame jFrame1;
@@ -804,6 +792,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
