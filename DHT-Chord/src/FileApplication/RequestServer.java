@@ -63,7 +63,7 @@ public class RequestServer implements Runnable {
                     sendFile(cIP, clientPort, fileCode);
                 }//case 1
                 case 2: {//isAlive
-                    log.append("isAliveRequest from" + cIP + clientPort + "\n");
+                    log.append("isAliveRequest from" + cIP + ":"+clientPort + "\n");
                     in.close();
                     s.close();
                 }
